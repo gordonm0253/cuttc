@@ -16,7 +16,6 @@ code {
 .navbar .active,
 .navbar .active:focus {
   color: #D02F2F;
-  text-decoration: underline;
 }
 
 .navbar {
@@ -84,4 +83,17 @@ code {
 
 .teamListDiv {
   padding: 1%;
+}
+
+.bottomContainer {
+  background-color:#D02F2F;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: 50px;
+}
+
+.bottomContainer p {
+  color: white;
+  margin: 0;
+  padding: 7px;
 }

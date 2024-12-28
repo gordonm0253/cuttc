@@ -16,7 +16,6 @@ code {
 .navbar .active,
 .navbar .active:focus {
   color: #D02F2F;
-  text-decoration: underline;
 }
 
 .navbar {

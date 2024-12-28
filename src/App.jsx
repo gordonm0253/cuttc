@@ -27,6 +27,7 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
+      <Footer/>
     </Router>
   );
 }
@@ -57,6 +58,16 @@ function Heading() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+  );
+}
+
+function Footer() {
+  return (
+    <footer>
+      <div className = "bottomContainer">
+        <p>Cornell University Table Tennis Club 2024.</p>
+      </div>
+    </footer>
   );
 }
 
