@@ -52,3 +52,36 @@ code {
   padding-top: 1%;
   text-align: center;
 }
+
+.teamSectionDiv {
+  padding: 2%;
+}
+
+.teamTextDiv {
+  padding-top: 2.5%;
+  padding-bottom: 2.5%;
+  padding-left: 5%;
+}
+
+.teamSectionDiv {
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.teamImageDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.teamPicture {
+  max-width: 75%;
+  height: auto; 
+}
+
+.teamListDiv {
+  padding: 1%;
+}
