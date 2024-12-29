@@ -5,7 +5,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import fa2024div from './assets/fa2024div.jpg';
 import {BrowserRouter as Router, Routes, Route, Link, useLocation} from 'react-router-dom';
 import Home from "./home.jsx";
 import About from "./about.jsx";
@@ -81,11 +80,3 @@ function dropdown() {
   );
 }
 
-function PageHeading({title}) {
-    return (
-        <div className = "headingDiv">
-            <img src = {fa2024div} className = "headingImage"></img>
-            <h1 className = "headingTitle">{title}</h1>
-        </div>
-    );
-}

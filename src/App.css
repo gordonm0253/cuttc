@@ -23,18 +23,80 @@ code {
 }
 
 .headingDiv {
-  background-color: white;
-  
+  background-color: black;
+  position: relative;
 }
 
 .headingImage {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  height: auto;
+  opacity: .75;
+}
+
+.headingTitle {
+  color: white;
+  text-align: center;
+  font-size: 7.5ch;
+}
+
+.headingTitleDiv {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid white;
+  padding: 2%;
+}
+
+.welcomeDiv {
+  padding: 2%;
+  padding-left: 20%;
+  padding-right: 20%;
+  align-items: center;
+}
+
+.welcomeDiv p {
+  font-size: large;
+}
+
+.welcomeDiv h1 {
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.homepageAboutBtn {
+  background-color: #D02F2F;
+  color: antiquewhite;
+  border-radius: 5px;
+  font-size: x-large;
+}
+
+.recentDiv {
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+.recentDiv p {
+  font-size: large;
+}
+
+.recentImageDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recentImageDiv img {
+  max-width: 70%;
+  height: auto;
+}
+
+.homeGalleryText {
+  padding-top: 2%;
 }
 
 .profileDiv {
-  padding: 7.5%;
+  margin: auto;
 }
 
 .bioText {
@@ -48,7 +110,8 @@ code {
 }
 
 .pageTitle {
-  padding-top: 1%;
+  padding-top: 2%;
+  padding-bottom: 1%;
   text-align: center;
 }
 
