@@ -43,7 +43,7 @@ export default function Board() {
                             netid = "kk996"
                             bioimage = {malong}
                             major = {["Information Science?"]}
-                            year = "26"
+                            year = "27"
                         />
                     </Col>
                 </Row>
