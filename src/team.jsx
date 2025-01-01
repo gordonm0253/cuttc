@@ -12,19 +12,19 @@ export default function Team() {
             </div>
             <Description
                 teamName = "A Team"
-                members = {["Taran Tummala", "Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren"]}
+                members = {["Taran Tummala", "Emilie Lin","Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren", "Chris Zhang", "Evan Shih"]}
                 teamPicture = {china}
                 textAlign = "left"
             />
             <Description
                 teamName = "B Team"
-                members = {["Ma Long", "Xu Xin", "Fan Zhendong", "Chen Meng*"]}
+                members = {["Max Levinson", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", "Elliot Chow", "Nico Ma", "Meris Goldfarb", "Oliver Wu"]}
                 teamPicture = {china}
                 textAlign = "right"
             />
             <Description
                 teamName = "Women's Team"
-                members = {["Ma Long", "Xu Xin", "Fan Zhendong", "Chen Meng"]}
+                members = {["Emilie Lin", "Muskan Gupta", "Gina Fu", "Surabhi Shastry", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Bea Buenaventura", "Judy Wang"]}
                 teamPicture = {china}
                 textAlign = "left"
             />

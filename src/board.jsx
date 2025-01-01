@@ -18,61 +18,61 @@ export default function Board() {
                 <Row>
                     <Col>
                         <Profile
-                            name = "Ma Long"
-                            position = "Supreme Leader"
-                            netid = "ml44"
+                            name = "Taran Tummala"
+                            position = "President"
+                            netid = "tt553"
                             bioimage = {malong}
-                            major = {["Biology", "History"]}
-                            year = "26"
-                        />
-                    </Col>
-                    <Col>
-                        <Profile
-                            name = "Ma Long"
-                            position = "Supreme Leader"
-                            netid = "ml44"
-                            bioimage = {malong}
-                            major = {["Electrical Engineering"]}
+                            major = {["Biology?"]}
                             year = "27"
                         />
                     </Col>
                     <Col>
                         <Profile
-                            name = "Ma Long"
-                            position = "Supreme Leader"
-                            netid = "ml44"
+                            name = "Gina Fu"
+                            position = "Vice President"
+                            netid = "cf546"
                             bioimage = {malong}
-                            major = {["Computer Science", "Math"]}
+                            major = {["Economics", "Statistics?"]}
                             year = "28"
+                        />
+                    </Col>
+                    <Col>
+                        <Profile
+                            name = "Khai Xin Kuan"
+                            position = "Secretary"
+                            netid = "kk996"
+                            bioimage = {malong}
+                            major = {["Information Science?"]}
+                            year = "26"
                         />
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Profile
-                            name = "Ma Long"
-                            position = "Supreme Leader"
-                            netid = "ml44"
+                            name = "Muskan Gupta"
+                            position = "Treasurer"
+                            netid = "mg2479"
                             bioimage = {malong}
-                            major = {["Biology", "History"]}
-                            year = "26"
+                            major = {["Computer Science"]}
+                            year = "28"
                         />
                     </Col>
                     <Col>
                         <Profile
-                            name = "Ma Long"
-                            position = "Supreme Leader"
-                            netid = "ml44"
+                            name = "Anna Donahue"
+                            position = "Publicity Chair"
+                            netid = "acd244"
                             bioimage = {malong}
-                            major = {["Electrical Engineering"]}
-                            year = "27"
+                            major = {["ILR?"]}
+                            year = "28"
                         />
                     </Col>
                     <Col>
                         <Profile
-                            name = "Ma Long"
-                            position = "Supreme Leader"
-                            netid = "ml44"
+                            name = "Gordon Mei"
+                            position = "Webmaster"
+                            netid = "gam278"
                             bioimage = {malong}
                             major = {["Computer Science", "Math"]}
                             year = "28"
