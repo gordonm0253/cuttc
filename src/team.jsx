@@ -12,9 +12,8 @@ export default function Team() {
             </div>
             <Description
                 teamName = "A Team"
-                members = {["Ma Long", "Xu Xin", "Fan Zhendong", "Chen Meng*"]}
+                members = {["Taran Tummala", "Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren"]}
                 teamPicture = {china}
-                additionalInfo = "* also members of the women's team"
                 textAlign = "left"
             />
             <Description
@@ -84,8 +83,8 @@ function TeamTextDiv({teamName, teamList, additionalInfo}) {
     const listedTeam = teamList.map(member => <div className = "teamListDiv"><p>{member}</p></div>);
     return (
         <div className= "teamTextDiv">
-            <h2>{teamName}</h2>
-            <ul>{listedTeam}</ul>
+            <h2><b>{teamName}</b></h2>
+            <div>{listedTeam}</div>
             <p>{additionalInfo}</p>
         </div>
     );

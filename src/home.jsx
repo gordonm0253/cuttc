@@ -26,28 +26,25 @@ export default function Home() {
                     national tournaments each year.
                 </p>
                 <p>
-                    The club meets each week for open practice. Sign up on CampusGroups and join us from 1-3 PM on Saturdays in
-                    room?!
-                    Check the <a href="/about">About Us</a> page for more information.
+                    The club meets each week for open practice. Sign up on CampusGroups and join us from 1-3 PM on Saturdays at Appel Commons!
+                    Check the <a href="/about" className = "redlink">About Us</a> page for more information on practices.
                 </p>
-                
             </div>
             <div className = "recentDiv">
-                <h1>
+                <h2>
                     Recent News
-                </h1>
-                <p>This is a paragraph explaining a list of items:</p>
+                </h2>
+                <p>On November 2nd, the A, B, and women’s teams traveled to Elevate Fitness in Syracuse to compete in the NCTTA Upstate NY fall divisionals (West NY division). All 3 teams went undefeated in their matches, facing teams from RIT, SUNY Buffalo, etc. Our next tournament will be the spring divisionals, where we will also send our A, B, and women’s teams.</p>
                 <ul>
-                    <li>First item in the list</li>
-                    <li>Second item in the list</li>
-                    <li>Third item in the list</li>
-                    <li>Fourth item in the list</li>
+                    <li>Cornell A: def. SUNY Buffalo A (4-0), def. RIT A (4-0), def. Rochester A (4-0)</li>
+                    <li>Cornell B: def. SUNY Buffalo B (3-1), def. RIT B (3-1), def. Binghamton W (4-0)</li>
+                    <li>Cornell Women's: def. Rochester W (4-0), def. RIT B (3-1), def. Binghamton W (4-0)</li>
                 </ul>
                 <div className= "recentImageDiv">
                     <img src = {div2024} />
                 </div>
                 <p className = "homeGalleryText">
-                    Check out our <a href = "/gallery">Gallery</a> for more tournament pictures!
+                    Check out our <a href = "/gallery" className = "redlink">Gallery</a> for more tournament pictures!
                 </p>
             </div>
         </>

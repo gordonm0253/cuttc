@@ -11,7 +11,6 @@ import About from "./about.jsx";
 import Team from "./team.jsx";
 import Board from "./board.jsx";
 import Gallery from "./gallery.jsx";
-import Contact from "./contact.jsx";
 import { useEffect, useState} from 'react';
 
 function App() {
@@ -24,7 +23,6 @@ function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/board" element={<Board />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer/>
     </Router>
@@ -52,7 +50,6 @@ function Heading() {
             <Nav.Link as={Link} to="/team">Team</Nav.Link>
             <Nav.Link as={Link} to="/board">E-Board</Nav.Link>
             <Nav.Link as={Link} to="/gallery">Gallery</Nav.Link>
-            <Nav.Link as={Link} to="/contact">Contact Us</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -64,19 +61,9 @@ function Footer() {
   return (
     <footer>
       <div className = "bottomContainer">
+        <p>Any questions? Contact any <a href = "/board" className="redlink">e-board</a> member or email us at Cornelluniversityttc@gmail.com.</p>
         <p>Cornell University Table Tennis Club 2024.</p>
       </div>
     </footer>
   );
 }
-
-function dropdown() {
-  return (
-    <NavDropdown title="About Us" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#about/board">E-Board</NavDropdown.Item>
-              <NavDropdown.Item href="#about/team">Club Team</NavDropdown.Item>
-            </NavDropdown>
-            
-  );
-}
-
