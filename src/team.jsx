@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 export default function Team() {
     return (
         <>
-            <div className = "pageTitle">
+            <div className = "pageTitle loadingAnimate">
                 <h1>Current Team</h1>
             </div>
             <Description
@@ -35,7 +35,7 @@ export default function Team() {
 function Description({teamName, members, teamPicture, additionalInfo, textAlign}) {
     if (textAlign == 'left') {
         return (
-            <div className = "teamSectionDiv">
+            <div className = "teamSectionDiv loadingAnimate">
                 <Container>
                     <Row>
                         <Col>
@@ -57,7 +57,7 @@ function Description({teamName, members, teamPicture, additionalInfo, textAlign}
     } else {
         
         return (
-            <div className = "teamSectionDiv">
+            <div className = "teamSectionDiv loadingAnimate">
             <Container>
                 <Row>
                     <Col>

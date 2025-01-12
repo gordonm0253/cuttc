@@ -1,11 +1,14 @@
 import React from "react";
-import malong from "./assets/malong.jpeg";
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './App.css'; 
+
+import malong from "./assets/malong.jpeg";
+import tt553 from "./assets/tt553.png";
 
 
 export default function Board() {
@@ -21,8 +24,8 @@ export default function Board() {
                             name = "Taran Tummala"
                             position = "President"
                             netid = "tt553"
-                            bioimage = {malong}
-                            major = {["Biology?"]}
+                            bioimage = {tt553}
+                            major = {["Biology & Society"]}
                             year = "27"
                         />
                     </Col>
@@ -42,7 +45,7 @@ export default function Board() {
                             position = "Secretary"
                             netid = "kk996"
                             bioimage = {malong}
-                            major = {["Information Science?"]}
+                            major = {["Information Science"]}
                             year = "27"
                         />
                     </Col>
@@ -89,16 +92,19 @@ export default function Board() {
 
 function Profile({name, position, netid, bioimage, major, year}) {
     function getMajor(majorList) {
-        return majorList.join(", ");
+        if (majorList.length == 1) {
+            return "Major: " + majorList[0];
+        }
+        return "Majors: " + majorList.join(", ");
     }
     return (
-        <div className = "profileDiv">
+        <div className = "profileDiv loadingAnimate">
             <img src = {bioimage} className = "bioImages"></img>
             <div className = "bioText">
                 <p>{name} '{year}</p>
-                <p>{position}</p>
+                <p className="position">{position}</p>
                 <p>Email: {netid}@cornell.edu</p>
-                <p>Major(s): {getMajor(major)}</p>
+                <p>{getMajor(major)}</p>
             </div>
         </div>
     );

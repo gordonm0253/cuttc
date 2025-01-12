@@ -19,15 +19,18 @@ export default function Gallery() {
       ];
     return (
         <>
-            <div className = "pageTitle">
+            <div className = "pageTitle loadingAnimate">
                 <h1>Gallery</h1>
             </div>
-            <ImageGallery 
-                items = {images} 
-                showFullscreenButton = {false}
-                showPlayButton = {false}
-                autoPlay = {false}
-            />
+            <div className = "loadingAnimate">
+              <ImageGallery 
+                  items = {images} 
+                  showFullscreenButton = {false}
+                  showPlayButton = {false}
+                  autoPlay = {false}
+              />
+            </div>
+            
         </>
     );
 }

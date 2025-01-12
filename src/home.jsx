@@ -8,14 +8,14 @@ import Col from 'react-bootstrap/Col';
 export default function Home() {
     return (
         <>
-            <div className = "headingDiv">
+            <div className = "headingDiv loadingAnimate">
                 <img src = {fa2024div} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
                     <h1 className = "headingTitle">Cornell Table Tennis</h1>
                 </div>
                 
             </div>
-            <div className = "welcomeDiv">
+            <div className = "welcomeDiv loadingAnimate">
                 <h1>
                     Welcome!
                 </h1>
@@ -30,7 +30,7 @@ export default function Home() {
                     Check the <a href="/about" className = "redlink">About Us</a> page for more information on practices.
                 </p>
             </div>
-            <div className = "recentDiv">
+            <div className = "recentDiv loadingAnimate">
                 <h2>
                     Recent News
                 </h2>
@@ -40,10 +40,10 @@ export default function Home() {
                     <li>Cornell B: def. SUNY Buffalo B (3-1), def. RIT B (3-1), def. Binghamton W (4-0)</li>
                     <li>Cornell Women's: def. Rochester W (4-0), def. RIT B (3-1), def. Binghamton W (4-0)</li>
                 </ul>
-                <div className= "recentImageDiv">
+                <div className= "recentImageDiv loadingAnimate">
                     <img src = {div2024} />
                 </div>
-                <p className = "homeGalleryText">
+                <p className = "homeGalleryText loadingAnimate">
                     Check out our <a href = "/gallery" className = "redlink">Gallery</a> for more tournament pictures!
                 </p>
             </div>
