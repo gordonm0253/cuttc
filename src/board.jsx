@@ -35,7 +35,7 @@ export default function Board() {
                             position = "Vice President"
                             netid = "cf546"
                             bioimage = {malong}
-                            major = {["Economics", "Statistics?"]}
+                            major = {["Economics", "Statistics"]}
                             year = "28"
                         />
                     </Col>
@@ -67,7 +67,7 @@ export default function Board() {
                             position = "Publicity Chair"
                             netid = "acd244"
                             bioimage = {malong}
-                            major = {["ILR?"]}
+                            major = {["ILR"]}
                             year = "28"
                         />
                     </Col>
