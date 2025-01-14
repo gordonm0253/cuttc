@@ -37,7 +37,8 @@ code {
 .headingTitle {
   color: white;
   text-align: center;
-  font-size: 450%;
+  font-size: 7.5vw;
+  white-space: nowrap;
 }
 
 .headingTitleDiv {
@@ -162,6 +163,8 @@ code {
   padding-top: 2.5%;
   padding-bottom: 2.5%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .teamTextDiv h2 {
@@ -170,6 +173,7 @@ code {
 }
 
 .teamSectionDiv {
+  display: flex;
   width: 100%;
   padding-left: 10%;
   padding-right: 10%;

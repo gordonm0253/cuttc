@@ -1,5 +1,6 @@
 import React from "react";
 import fa2024div from './assets/cropped.jpg';
+import nats2024 from './assets/nats2024.jpg';
 import div2024 from './assets/fa2024div.jpg';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -9,7 +10,7 @@ export default function Home() {
     return (
         <>
             <div className = "headingDiv loadingAnimate">
-                <img src = {fa2024div} className = "headingImage"></img>
+                <img src = {nats2024} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
                     <h1 className = "headingTitle">Cornell Table Tennis</h1>
                 </div>

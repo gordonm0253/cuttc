@@ -1,5 +1,7 @@
 import React from "react";
 import fa2024div from "./assets/fa2024div.jpg";
+import teampractice from "./assets/teampractice.jpeg";
+import nathantaran from "./assets/nathantaran.jpg";
 
 export default function About() {
     return (
@@ -17,7 +19,7 @@ export default function About() {
                     some new people! We will provide paddles and balls (but feel free to bring your own equipment).
                 </p>
                 <div className= "aboutImageDiv loadingAnimate">
-                    <img src = {fa2024div} />
+                    <img src = {teampractice} />
                 </div>
                 <div className = "loadingAnimate">
                     <h3>
@@ -32,7 +34,7 @@ export default function About() {
                     </ul>
                 </div>
                 <div className= "aboutImageDiv loadingAnimate">
-                    <img src = {fa2024div} />
+                    <img src = {nathantaran} />
                 </div>
                 <div className = "loadingAnimate">
                     <h4>Tryouts</h4>

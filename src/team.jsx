@@ -4,6 +4,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import ateam from './assets/ateam.jpeg';
+import bteam from './assets/bteam.jpg';
+
 export default function Team() {
     return (
         <>
@@ -13,13 +16,13 @@ export default function Team() {
             <Description
                 teamName = "A Team"
                 members = {["Taran Tummala", "Emilie Lin","Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren", "Chris Zhang", "Evan Shih"]}
-                teamPicture = {china}
+                teamPicture = {ateam}
                 textAlign = "left"
             />
             <Description
                 teamName = "B Team"
                 members = {["Max Levinson", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", "Elliot Chow", "Nico Ma", "Meris Goldfarb", "Oliver Wu"]}
-                teamPicture = {china}
+                teamPicture = {bteam}
                 textAlign = "right"
             />
             <Description
@@ -58,24 +61,24 @@ function Description({teamName, members, teamPicture, additionalInfo, textAlign}
         
         return (
             <div className = "teamSectionDiv loadingAnimate">
-            <Container>
-                <Row>
-                    <Col>
-                        <div className = "teamImageDiv">
-                            <img src = {teamPicture} className = "teamPicture"/>
-                        </div>
-                    </Col>
-                    <Col>
-                        <TeamTextDiv
-                            teamName = {teamName}
-                            teamList = {members}
-                            additionalInfo = {additionalInfo}
-                        />
-                    </Col>
-                    
-                </Row>
-            </Container>
-        </div>
+                <Container>
+                    <Row>
+                        <Col>
+                            <div className = "teamImageDiv">
+                                <img src = {teamPicture} className = "teamPicture"/>
+                            </div>
+                        </Col>
+                        <Col>
+                            <TeamTextDiv
+                                teamName = {teamName}
+                                teamList = {members}
+                                additionalInfo = {additionalInfo}
+                            />
+                        </Col>
+                        
+                    </Row>
+                </Container>
+            </div>
         );
     }
 }
