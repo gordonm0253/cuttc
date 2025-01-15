@@ -24,7 +24,7 @@ export default function Board() {
                             name = "Taran Tummala"
                             position = "President"
                             netid = "tt553"
-                            bioimage = {tt553}
+                            bioimage = {malong}
                             major = {["Biology & Society"]}
                             year = "27"
                         />
@@ -35,7 +35,7 @@ export default function Board() {
                             position = "Vice President"
                             netid = "cf546"
                             bioimage = {malong}
-                            major = {["Economics", "Statistics"]}
+                            major = {["Economics", "Statistical Sciences"]}
                             year = "28"
                         />
                     </Col>
@@ -77,7 +77,7 @@ export default function Board() {
                             position = "Webmaster"
                             netid = "gam278"
                             bioimage = {malong}
-                            major = {["Computer Science", "Math"]}
+                            major = {["Computer Science", "Mathematics"]}
                             year = "28"
                         />
                     </Col>
