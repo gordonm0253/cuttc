@@ -41,10 +41,10 @@ export default function Home() {
                     <li>Cornell B: def. SUNY Buffalo B (3-1), def. RIT B (3-1), def. Binghamton W (4-0)</li>
                     <li>Cornell Women's: def. Rochester W (4-0), def. RIT B (3-1), def. Binghamton W (4-0)</li>
                 </ul>
-                <div className= "recentImageDiv loadingAnimate">
+                <div className= "recentImageDiv">
                     <img src = {div2024} />
                 </div>
-                <p className = "homeGalleryText loadingAnimate">
+                <p className = "homeGalleryText">
                     Check out our <a href = "/gallery" className = "redlink">Gallery</a> for more tournament pictures!
                 </p>
             </div>
