@@ -3,7 +3,6 @@ import * as React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter as Router, Routes, Route, Link, useLocation} from 'react-router-dom';
 import Home from "./home.jsx";
@@ -62,7 +61,7 @@ function Footer() {
     <footer>
       <div className = "bottomContainer">
         <p>Any questions? Contact any <a href = "/board" className="redlink">e-board</a> member or email us at Cornelluniversityttc@gmail.com.</p>
-        <p>Cornell University Table Tennis Club 2024.</p>
+        <p>Cornell University Table Tennis Club 2025.</p>
       </div>
     </footer>
   );
