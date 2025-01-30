@@ -60,7 +60,7 @@ function Footer() {
   return (
     <footer>
       <div className = "bottomContainer">
-        <p>Any questions? Contact any <a href = "/board" className="redlink">e-board</a> member or email us at Cornelluniversityttc@gmail.com.</p>
+        <p>Any questions? Contact any board member or email us at Cornelluniversityttc@gmail.com.</p>
         <p>Cornell University Table Tennis Club 2025.</p>
       </div>
     </footer>
