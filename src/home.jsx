@@ -28,7 +28,7 @@ export default function Home() {
                 </p>
                 <p>
                     The club meets each week for open practice. Sign up on CampusGroups and join us from 1-3 PM on Saturdays at Appel Commons!
-                    Check the <a href="/about" className = "redlink">About Us</a> page for more information on practices.
+                    Check the About Us page for more information on practices.
                 </p>
             </div>
             <div className = "recentDiv loadingAnimate">
@@ -45,7 +45,7 @@ export default function Home() {
                     <img src = {div2024} />
                 </div>
                 <p className = "homeGalleryText">
-                    Check out our <a href = "/gallery" className = "redlink">Gallery</a> for more tournament pictures!
+                    Check out our Gallery for more tournament pictures!
                 </p>
             </div>
         </>
