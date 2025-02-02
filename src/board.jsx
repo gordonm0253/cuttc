@@ -7,9 +7,12 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './App.css'; 
 
-import malong from "./assets/malong.jpeg";
 import tt553 from "./assets/tt553.png";
-
+import cf546 from "./assets/cf546.jpg";
+import kk996 from "./assets/kk996.jpg";
+import mg2479 from "./assets/mg2479.png";
+import acd244 from "./assets/acd244.jpg";
+import gam278 from "./assets/gam278.jpg";
 
 export default function Board() {
     return (
@@ -24,7 +27,7 @@ export default function Board() {
                             name = "Taran Tummala"
                             position = "President"
                             netid = "tt553"
-                            bioimage = {malong}
+                            bioimage = {tt553}
                             major = {["Biology & Society"]}
                             year = "27"
                         />
@@ -34,7 +37,7 @@ export default function Board() {
                             name = "Gina Fu"
                             position = "Vice President"
                             netid = "cf546"
-                            bioimage = {malong}
+                            bioimage = {cf546}
                             major = {["Economics", "Statistical Sciences"]}
                             year = "28"
                         />
@@ -44,7 +47,7 @@ export default function Board() {
                             name = "Khai Xin Kuan"
                             position = "Secretary"
                             netid = "kk996"
-                            bioimage = {malong}
+                            bioimage = {kk996}
                             major = {["Information Science"]}
                             year = "27"
                         />
@@ -56,7 +59,7 @@ export default function Board() {
                             name = "Muskan Gupta"
                             position = "Treasurer"
                             netid = "mg2479"
-                            bioimage = {malong}
+                            bioimage = {mg2479}
                             major = {["Computer Science"]}
                             year = "28"
                         />
@@ -66,8 +69,8 @@ export default function Board() {
                             name = "Anna Donahue"
                             position = "Publicity Chair"
                             netid = "acd244"
-                            bioimage = {malong}
-                            major = {["ILR"]}
+                            bioimage = {acd244}
+                            major = {["Industrial and Labor Relations"]}
                             year = "28"
                         />
                     </Col>
@@ -76,7 +79,7 @@ export default function Board() {
                             name = "Gordon Mei"
                             position = "Webmaster"
                             netid = "gam278"
-                            bioimage = {malong}
+                            bioimage = {gam278}
                             major = {["Computer Science", "Mathematics"]}
                             year = "28"
                         />
@@ -102,9 +105,9 @@ function Profile({name, position, netid, bioimage, major, year}) {
             <img src = {bioimage} className = "bioImages"></img>
             <div className = "bioText">
                 <p>{name} '{year}</p>
-                <p className="position">{position}</p>
-                <p>Email: {netid}@cornell.edu</p>
-                <p>{getMajor(major)}</p>
+                <p className="position smaller">{position}</p>
+                <p className = "smaller">Email: {netid}@cornell.edu</p>
+                <p className = "smaller">{getMajor(major)}</p>
             </div>
         </div>
     );
