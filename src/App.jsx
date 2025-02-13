@@ -1,5 +1,5 @@
 import './App.css';
-import * as React from 'react';
+import 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -32,7 +32,7 @@ export default App;
 
 function Heading() {
   const location = useLocation();
-  const [path, setPath] = useState("");
+  const [, setPath] = useState("");
   useEffect(() => {
     const path = location.pathname;
     setPath(path);

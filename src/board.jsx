@@ -1,4 +1,4 @@
-import React from "react";
+import "react";
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -93,7 +93,7 @@ export default function Board() {
 
 
 
-function Profile({name, position, netid, bioimage, major, year}) {
+function Profile(name, position, netid, bioimage, major, year) {
     function getMajor(majorList) {
         if (majorList.length == 1) {
             return "Major: " + majorList[0];
@@ -104,7 +104,7 @@ function Profile({name, position, netid, bioimage, major, year}) {
         <div className = "profileDiv loadingAnimate">
             <img src = {bioimage} className = "bioImages"></img>
             <div className = "bioText">
-                <p>{name} '{year}</p>
+                <p>{name} &apos;{year}</p>
                 <p className="position smaller">{position}</p>
                 <p className = "smaller">Email: {netid}@cornell.edu</p>
                 <p className = "smaller">{getMajor(major)}</p>

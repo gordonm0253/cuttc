@@ -1,4 +1,4 @@
-import React from "react";
+import "react";
 import china from './assets/teamchina.jpg';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -35,7 +35,7 @@ export default function Team() {
     );
 }
 
-function Description({teamName, members, teamPicture, additionalInfo, textAlign}) {
+function Description(teamName, members, teamPicture, additionalInfo, textAlign) {
     if (textAlign == 'left') {
         return (
             <div className = "teamSectionDiv loadingAnimate">
@@ -82,8 +82,8 @@ function Description({teamName, members, teamPicture, additionalInfo, textAlign}
         );
     }
 }
-function TeamTextDiv({teamName, teamList, additionalInfo}) {
-    const listedTeam = teamList.map(member => <div className = "teamListDiv"><p>{member}</p></div>);
+function TeamTextDiv(teamName, teamList, additionalInfo) {
+    const listedTeam = teamList.map(member => (<div key = "" className = "teamListDiv"><p>{member}</p></div>));
     return (
         <div className= "teamTextDiv">
             <h2><b>{teamName}</b></h2>

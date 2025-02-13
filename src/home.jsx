@@ -1,10 +1,6 @@
-import React from "react";
-import fa2024div from './assets/cropped.jpg';
+import "react";
 import nats2024 from './assets/nats2024.jpg';
 import div2024 from './assets/fa2024div.jpg';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 export default function Home() {
     return (
@@ -14,7 +10,7 @@ export default function Home() {
                 <div className = "headingTitleDiv">
                     <h1 className = "headingTitle">Cornell Table Tennis</h1>
                 </div>
-                
+            
             </div>
             <div className = "welcomeDiv loadingAnimate">
                 <h1>
@@ -39,7 +35,7 @@ export default function Home() {
                 <ul>
                     <li>Cornell A: def. SUNY Buffalo A (4-0), def. RIT A (4-0), def. Rochester A (4-0)</li>
                     <li>Cornell B: def. SUNY Buffalo B (3-1), def. RIT B (3-1), def. Binghamton W (4-0)</li>
-                    <li>Cornell Women's: def. Rochester W (4-0), def. RIT B (3-1), def. Binghamton W (4-0)</li>
+                    <li>Cornell Women: def. Rochester W (4-0), def. RIT B (3-1), def. Binghamton W (4-0)</li>
                 </ul>
                 <div className= "recentImageDiv">
                     <img src = {div2024} />

@@ -34,11 +34,31 @@ code {
   opacity: .75;
 }
 
-.headingTitle {
+.headingTitleDiv h1 {
+  font-family: monospace;
   color: white;
   text-align: center;
-  font-size: 7.5vw;
+  font-size: 6vw;
   white-space: nowrap;
+  overflow: hidden;
+  animation: typing 3s steps(20) forwards,
+  blink 1s step-end infinite;
+  border-right: 3px solid;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
 }
 
 .headingTitleDiv {

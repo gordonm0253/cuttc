@@ -1,5 +1,4 @@
-import React from "react";
-import fa2024div from "./assets/fa2024div.jpg";
+import "react";
 import teampractice from "./assets/teampractice.jpeg";
 import nathantaran from "./assets/nathantaran.jpg";
 
@@ -15,7 +14,7 @@ export default function About() {
                 </h3>
                 <p>
                     The club meets each week for open practice from <b>1-3 PM on Saturdays at Appel Commons 303ABC </b>
-                    (upstairs from North Star dining hall). We'll have tables set up, so bring a friend to play or meet 
+                    (upstairs from North Star dining hall). We&apos;ll have tables set up, so bring a friend to play or meet 
                     some new people! We will provide paddles and balls (but feel free to bring your own equipment).
                 </p>
                 <div className= "aboutImageDiv loadingAnimate">
