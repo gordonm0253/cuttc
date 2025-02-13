@@ -1,4 +1,4 @@
-import "react";
+import 'react';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -13,6 +13,7 @@ import kk996 from "./assets/kk996.jpg";
 import mg2479 from "./assets/mg2479.png";
 import acd244 from "./assets/acd244.jpg";
 import gam278 from "./assets/gam278.jpg";
+import hel29 from "./assets/hel29.jpg"
 
 export default function Board() {
     return (
@@ -85,21 +86,27 @@ export default function Board() {
                         />
                     </Col>
                 </Row>
+                <Row>
+                    <Col></Col>
+                    <Col>
+                        <Profile
+                            name = "Heidi Lim"
+                            position = "Social Chair"
+                            netid = "hel29"
+                            bioimage={hel29}
+                            major={["Operations Research and Information Engineering"]}
+                            year = "28"
+                        />
+                    </Col>
+                    <Col></Col>
+                </Row>
             </Container>
         </>
         
     );
 }
 
-
-
-function Profile(name, position, netid, bioimage, major, year) {
-    function getMajor(majorList) {
-        if (majorList.length == 1) {
-            return "Major: " + majorList[0];
-        }
-        return "Majors: " + majorList.join(", ");
-    }
+function Profile({name, position, netid, bioimage, major, year}) {
     return (
         <div className = "profileDiv loadingAnimate">
             <img src = {bioimage} className = "bioImages"></img>
@@ -111,4 +118,10 @@ function Profile(name, position, netid, bioimage, major, year) {
             </div>
         </div>
     );
+}
+function getMajor(majorList) {
+    if (majorList.length == 1) {
+        return "Major: " + majorList[0];
+    }
+    return "Majors: " + majorList.join(", ");
 }

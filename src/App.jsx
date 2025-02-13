@@ -32,7 +32,7 @@ export default App;
 
 function Heading() {
   const location = useLocation();
-  const [, setPath] = useState("");
+  const [path, setPath] = useState("");
   useEffect(() => {
     const path = location.pathname;
     setPath(path);
