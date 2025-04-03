@@ -13,7 +13,8 @@ import kk996 from "./assets/kk996.jpg";
 import mg2479 from "./assets/mg2479.png";
 import acd244 from "./assets/acd244.jpg";
 import gam278 from "./assets/gam278.jpg";
-import hel29 from "./assets/hel29.jpg"
+import hel29 from "./assets/hel29.jpg";
+import esl226 from "./assets/esl226.jpg";
 
 export default function Board() {
     return (
@@ -101,11 +102,37 @@ export default function Board() {
                     <Col></Col>
                 </Row>
             </Container>
+            <div className = "pageTitle">
+                <h1>Hall of Fame</h1>
+                <Row>
+                    <Col></Col>
+                    <Col>
+                        <Profile
+                            name = "Emilie Lin"
+                            position = "President"
+                            bioimage = {esl226}
+                            major = {["Mechanical Engineering"]}
+                            year = "24"
+                        />
+                    </Col>
+                    <Col></Col>
+                </Row>
+            </div>
         </>
         
     );
 }
 
+// eslint-disable-next-line react/prop-types
+function Contact({netid}) {
+    if (netid) {
+        return <p className = "smaller">Email: {netid}@cornell.edu</p>
+    } else {
+        return <></>
+    }
+}
+
+// eslint-disable-next-line react/prop-types
 function Profile({name, position, netid, bioimage, major, year}) {
     return (
         <div className = "profileDiv loadingAnimate">
@@ -113,7 +140,7 @@ function Profile({name, position, netid, bioimage, major, year}) {
             <div className = "bioText">
                 <p>{name} &apos;{year}</p>
                 <p className="position smaller">{position}</p>
-                <p className = "smaller">Email: {netid}@cornell.edu</p>
+                <Contact netid= {netid}/>
                 <p className = "smaller">{getMajor(major)}</p>
             </div>
         </div>

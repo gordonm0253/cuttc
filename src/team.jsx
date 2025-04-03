@@ -35,6 +35,7 @@ export default function Team() {
     );
 }
 
+// eslint-disable-next-line react/prop-types
 function Description({teamName, members, teamPicture, additionalInfo, textAlign}) {
     if (textAlign == 'left') {
         return (
@@ -82,7 +83,10 @@ function Description({teamName, members, teamPicture, additionalInfo, textAlign}
         );
     }
 }
+
+// eslint-disable-next-line react/prop-types
 function TeamTextDiv({teamName, teamList, additionalInfo}) {
+    // eslint-disable-next-line react/prop-types
     const listedTeam = teamList.map(member => (<div key = "" className = "teamListDiv"><p>{member}</p></div>));
     return (
         <div className= "teamTextDiv">
