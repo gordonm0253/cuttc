@@ -7,14 +7,15 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './App.css'; 
 
-import tt553 from "./assets/tt553.png";
-import cf546 from "./assets/cf546.jpg";
-import kk996 from "./assets/kk996.jpg";
-import mg2479 from "./assets/mg2479.png";
-import acd244 from "./assets/acd244.jpg";
-import gam278 from "./assets/gam278.jpg";
-import hel29 from "./assets/hel29.jpg";
-import esl226 from "./assets/esl226.jpg";
+import tt553 from "./assets/headshots/tt553.png";
+import cf546 from "./assets/headshots/cf546.jpg";
+import kk996 from "./assets/headshots/kk996.jpg";
+import mg2479 from "./assets/headshots/mg2479.png";
+import acd244 from "./assets/headshots/acd244.jpg";
+import gam278 from "./assets/headshots/gam278.jpg";
+import hel29 from "./assets/headshots/hel29.jpg";
+import esl226 from "./assets/headshots/esl226.jpg";
+import nw274 from "./assets/headshots/nw274.jpg";
 
 export default function Board() {
     return (
@@ -103,9 +104,8 @@ export default function Board() {
                 </Row>
             </Container>
             <div className = "pageTitle">
-                <h1>Hall of Fame</h1>
+                <h1 className = "loadingAnimate">Hall of Fame</h1>
                 <Row>
-                    <Col></Col>
                     <Col>
                         <Profile
                             name = "Emilie Lin"
@@ -115,7 +115,15 @@ export default function Board() {
                             year = "24"
                         />
                     </Col>
-                    <Col></Col>
+                    <Col>
+                        <Profile
+                            name = "Nathan Wu"
+                            position = "President"
+                            bioimage = {nw274}
+                            major = {["Biological Sciences", "Animal Sciences"]}
+                            year = "25"
+                        />
+                    </Col>
                 </Row>
             </div>
         </>
