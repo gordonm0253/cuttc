@@ -38,17 +38,19 @@ function Heading() {
     setPath(path);
   }, [location]);
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand as = {Link} to = "/">Cornell University Table Tennis</Navbar.Brand>
+        <Navbar.Brand as = {Link} to = "/">
+          <div className="site-title">Cornell University Table Tennis</div>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav"> {}
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/about">About Us</Nav.Link>
-            <Nav.Link as={Link} to="/team">Team</Nav.Link>
-            <Nav.Link as={Link} to="/board">E-Board</Nav.Link>
-            <Nav.Link as={Link} to="/gallery">Gallery</Nav.Link>
+            <Nav.Link as={Link} to="/"><div className = "red-box">Home</div></Nav.Link>
+            <Nav.Link as={Link} to="/about"><div className = "red-box">About Us</div></Nav.Link>
+            <Nav.Link as={Link} to="/team"><div className = "red-box">Team</div></Nav.Link>
+            <Nav.Link as={Link} to="/board"><div className = "red-box">E-Board</div></Nav.Link>
+            <Nav.Link as={Link} to="/gallery"><div className = "red-box">Gallery</div></Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -12,10 +12,27 @@ code {
     monospace;
 }
 
-.navbar a:hover,
-.navbar .active,
-.navbar .active:focus {
-  color: #D02F2F;
+.red-box {
+  color: black;
+  padding-left: 7.5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 7.5px;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.site-title {
+  font-family: 'Merriweather', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.red-box:hover {
+  color: antiquewhite;
+  background-color: #D02F2F;
+  cursor: pointer;
 }
 
 

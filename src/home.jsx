@@ -1,12 +1,13 @@
 import "react";
-import nats2024 from './assets/nats2024.jpg';
+//import nats2024 from './assets/nats2024.jpg';
 import div2024 from './assets/fa2024div.jpg';
+import nathan from './assets/gallery1.jpg'; 
 
 export default function Home() {
     return (
         <>
             <div className = "headingDiv loadingAnimate">
-                <img src = {nats2024} className = "headingImage"></img>
+                <img src = {nathan} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
                     <h1 className = "headingTitle">Cornell Table Tennis</h1>
                 </div>
