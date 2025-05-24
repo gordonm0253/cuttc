@@ -4,31 +4,112 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {BrowserRouter as Router, Routes, Route, Link, useLocation} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import Home from "./home.jsx";
 import About from "./about.jsx";
 import Team from "./team.jsx";
 import Board from "./board.jsx";
 import Gallery from "./gallery.jsx";
 import { useEffect, useState} from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
-function App() {
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+       <ScrollToTop />
+      <Routes key={location.pathname} location={location}>
+       
+        <Route
+          path="/"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Home />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <About />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/team"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Team />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/board"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Board />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/gallery"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Gallery />
+            </motion.div>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
   return (
     <Router>
       <Heading />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/team" element={<Team />} />
-        <Route path="/board" element={<Board />} />
-        <Route path="/gallery" element={<Gallery />} />
-      </Routes>
-      <Footer/>
+      <AnimatedRoutes />
+      <Footer />
     </Router>
   );
 }
 
-export default App;
 
 function Heading() {
   const location = useLocation();
@@ -38,7 +119,7 @@ function Heading() {
     setPath(path);
   }, [location]);
   return (
-     <Navbar expand="lg" className="bg-body-tertiary">
+     <Navbar expand="lg" className="navbar-container">
       <Container>
         <Navbar.Brand as = {Link} to = "/">
           <div className="site-title">Cornell University Table Tennis</div>
@@ -62,7 +143,7 @@ function Footer() {
   return (
     <footer>
       <div className = "bottomContainer">
-        <p>Any questions? Contact any board member or email us at Cornelluniversityttc@gmail.com.</p>
+        <p>Any questions? Contact any <Link to = '/board' className='redlink'>board member </Link>or email us at Cornelluniversityttc [at] gmail.com.</p>
         <p>Cornell University Table Tennis Club 2025.</p>
       </div>
     </footer>
