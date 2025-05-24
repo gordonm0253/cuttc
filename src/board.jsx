@@ -17,13 +17,18 @@ import hel29 from "./assets/headshots/hel29.jpg";
 import esl226 from "./assets/headshots/esl226.jpg";
 import nw274 from "./assets/headshots/nw274.jpg";
 
+import nats2024 from "./assets/gallery2.jpg";
+
 export default function Board() {
     return (
         <>
-            <div className = "pageTitle">
-                <h1>2024-2025 E-Board</h1>
+            <div className = "headingDiv">
+                <img src = {nats2024} className = "headingImage"></img>
+                <div className = "headingTitleDiv">
+                <h1 className = "headingTitle">2024-2025 E-Board</h1>
+                </div>
             </div>
-            <Container fluid="lg">
+            <Container className = "boardContainer" fluid="lg">
                 <Row>
                     <Col>
                         <Profile
@@ -105,26 +110,29 @@ export default function Board() {
             </Container>
             <div className = "pageTitle">
                 <h1 className = "loadingAnimate">Hall of Fame</h1>
-                <Row>
-                    <Col>
-                        <Profile
-                            name = "Emilie Lin"
-                            position = "President"
-                            bioimage = {esl226}
-                            major = {["Mechanical Engineering"]}
-                            year = "24"
-                        />
-                    </Col>
-                    <Col>
-                        <Profile
-                            name = "Nathan Wu"
-                            position = "President"
-                            bioimage = {nw274}
-                            major = {["Biological Sciences", "Animal Sciences"]}
-                            year = "25"
-                        />
-                    </Col>
-                </Row>
+                <Container className='boardContainer' fluid="lg">
+                    <Row>
+                        <Col>
+                            <Profile
+                                name = "Emilie Lin"
+                                position = "President"
+                                bioimage = {esl226}
+                                major = {["Mechanical Engineering"]}
+                                year = "24"
+                            />
+                        </Col>
+                        <Col>
+                            <Profile
+                                name = "Nathan Wu"
+                                position = "President"
+                                bioimage = {nw274}
+                                major = {["Biological Sciences"]}
+                                year = "25"
+                            />
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                </Container>
             </div>
         </>
         

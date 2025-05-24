@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap');
 
 html {
-  background-color: #1f1919;
+  background-color: #d16464;
 }
 
 body {
@@ -24,7 +24,7 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 
 
 .navbar-container {
-  background-color: #1f1919;
+  background-color: #d16464;
 }
 
 .navbar .navbar-brand, .navbar .nav-link {
@@ -53,11 +53,11 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   font-size: 1.6rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-  color: #d55656;
+  color: white;
 }
 
 .red-box:hover {
-  color: #161010;
+  color: #d16464;
   background-color: white;
   cursor: pointer;
 }
@@ -168,7 +168,7 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 }
 
 /* change the px when done */
-@media (max-width: 50px) {
+@media (max-width: 150px) {
   .welcomeImage {
     width: 25%;
     height: auto;
@@ -272,7 +272,6 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   height: auto;
 }
 
-
 .homepageAboutBtn {
   background-color: #D02F2F;
   color: antiquewhite;
@@ -280,13 +279,22 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   font-size: x-large;
 }
 
+.boardContainer {
+  margin: 2%;
+}
+
+
+
 .profileDiv {
   padding-left: 15%;
   padding-right: 15%;
   margin: 5%;
-  border-radius: 25px;
-  border: 5px solid #D02F2F;
-  padding: 15px;
+  border-radius: 12px;
+  border-width: 4px;
+  border-style: solid;
+  border-color : #d27272;
+  box-shadow: 10px 10px 5px #d27272;
+  padding: 5%;
 }
 
 .bioText {
@@ -304,52 +312,57 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 .pageTitle {
   padding-top: 2%;
   padding-bottom: 1%;
+}
+
+.pageTitle h1 {
   text-align: center;
 }
 
-.teamSectionDiv {
+.pageTitle h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+
+.teamCard {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2.5%;
+}
+
+.teamCard h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 2%;
+}
+
+.memberCard {
+  border-radius: 12px;
+  padding-top: 5%;
+  margin: 2%;
+  text-align: center;
+}
+
+.memberCard p {
   padding: 2%;
 }
 
-.teamTextDiv {
-  padding-top: 2.5%;
-  padding-bottom: 2.5%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.teamTextDiv h2 {
-  padding-top: 2%;
-  padding-bottom: 2%;
-}
-
-.teamSectionDiv {
-  display: flex;
-  width: 100%;
-  padding-left: 10%;
-  padding-right: 10%;
-}
-
-
-.teamImageDiv {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.teamPicture {
-  max-width: 100%;
-  height: auto; 
+.memberImage {
+  width: 80%;
+  height: auto;
 }
 
 .bottomContainer {
-  background-color:black;
+  background-color: #d16464;
   text-align: center;
   padding: 10px 0;
   margin-top: 50px;
+}
+
+.blacklink {
+  color: black;
+  text-decoration: none;
 }
 
 .bottomContainer p {
@@ -386,4 +399,8 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 
 .smaller {
   font-size: small;
+}
+
+.galleryDiv {
+  margin: 5%;
 }

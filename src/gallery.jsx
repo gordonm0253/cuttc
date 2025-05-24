@@ -9,6 +9,7 @@ import gallery1 from './assets/gallery1.jpg';
 import gallery2 from './assets/gallery2.jpg';
 import fa2024celeb from './assets/fa2024celeb.jpg';
 import team1 from './assets/teampic1.jpg';
+import nats2024 from './assets/nats2024.jpg';
 
 export default function Gallery() {
     const images = [
@@ -47,10 +48,13 @@ export default function Gallery() {
       ];
     return (
         <>
-            <div className = "pageTitle loadingAnimate">
-                <h1>Gallery</h1>
+            <div className = "headingDiv">
+              <img src = {nats2024} className = "headingImage"></img>
+              <div className = "headingTitleDiv">
+                <h1 className = "headingTitle">Gallery</h1>
+              </div>
             </div>
-            <div className = "loadingAnimate">
+            <div className = "galleryDiv">
               <ImageGallery 
                   items = {images} 
                   showFullscreenButton = {false}

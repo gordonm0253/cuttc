@@ -1,12 +1,13 @@
 import "react";
-import teampractice from "./assets/teampractice.jpeg";
+//import teampractice from "./assets/teampractice.jpeg";
 import nathantaran from "./assets/nathantaran.jpg";
+import nats2024 from './assets/gallery2.jpg';
 
 export default function About() {
     return (
         <>
             <div className = "headingDiv">
-                <img src = {teampractice} className = "headingImage"></img>
+                <img src = {nats2024} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
                     <h1 className = "headingTitle">About Us</h1>
                 </div>
@@ -25,10 +26,13 @@ export default function About() {
             </center>
 
             <div className= "recentDiv loadingAnimate">
-                <center className = "titleWrapper">
-                    <h1 className = "welcomeTitle">Club Team</h1>
-                    <div className= "underline-bar"></div>
+                <center>
+                    <div className = "titleWrapper">
+                        <h1 className = "welcomeTitle">Club Team</h1>
+                        <div className= "underline-bar"></div>
+                    </div>
                 </center>
+                
                 <p>Cornell Table Tennis competes in the National Collegiate Table Tennis Association (NCTTA). We send our A (co-ed varsity), B (co-ed junior varsity), and women’s team to regional and national tournaments each year, where we are among the top schools in the upstate NY region. We compete in four tournaments each year, listed below.</p>                    <ul>
                     <li>Fall Divisionals (11/2/24)</li>
                     <li>Spring Divisionals (date TBD)</li>

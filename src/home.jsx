@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export default function Home() {
     return (
         <>
-            <div className = "headingDiv loadingAnimate">
+            <div className = "headingDiv">
                 <img src = {nats2024} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
                     <h1 className = "headingTitle">Cornell Table Tennis</h1>
@@ -29,7 +29,7 @@ export default function Home() {
                             national tournaments each year.
                         </p>
                         <p>
-                            The club meets each week for open practice. Sign up on CampusGroups and join us from 1-3 PM on Saturdays at Appel Commons!
+                            The club meets each week for open practice. Sign up on <a target = "_blank" href = "https://cornell.campusgroups.com/CTTC/club_signup" className="redlink">CampusGroups</a> and join us from 1-3 PM on Saturdays at Appel Commons!
                             Check the <Link to = "/about" className = "redlink">About Us</Link> page for more information on practices.
                         </p>
                         <Link to = "/about">

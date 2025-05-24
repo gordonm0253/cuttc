@@ -124,7 +124,7 @@ function Heading() {
         <Navbar.Brand as = {Link} to = "/">
           <div className="site-title">Cornell University Table Tennis</div>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav"> {}
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/"><div className = "red-box">Home</div></Nav.Link>
@@ -143,7 +143,7 @@ function Footer() {
   return (
     <footer>
       <div className = "bottomContainer">
-        <p>Any questions? Contact any <Link to = '/board' className='redlink'>board member </Link>or email us at Cornelluniversityttc [at] gmail.com.</p>
+        <p>Any questions? Contact any <Link to = '/board' className='blacklink'>board member </Link>or email us at Cornelluniversityttc [at] gmail [dot] com.</p>
         <p>Cornell University Table Tennis Club 2025.</p>
       </div>
     </footer>
