@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 //import ateam from './assets/ateam.jpeg';
 import placeholder from './assets/big_red.png';
-import nats2024 from './assets/nats2024.jpg';
+import nats2025_6 from './assets/nats2025_6.jpg';
 //import bteam from './assets/bteam.jpg';
 
 // A members = {["Taran Tummala", "Emilie Lin","Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren", "Chris Zhang", "Evan Shih"]}
@@ -35,7 +35,7 @@ export default function Team() {
     return (
         <>
             <div className = "headingDiv">
-                <img src = {nats2024} className = "headingImage"></img>
+                <img src = {nats2025_6} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
                     <h1 className = "headingTitle">Club Team</h1>
                 </div>

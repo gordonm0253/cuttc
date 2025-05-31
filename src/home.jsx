@@ -1,7 +1,7 @@
 import "react";
 import nats2024 from './assets/nats2024.jpg';
-import fadiv2024_1 from './assets/fa2024div.jpg';
-import fadiv2024_2 from './assets/fa2024div1.jpg';
+import nats2025_1 from './assets/nats2025_1.jpg';
+import nats2025_19 from './assets/nats2025_19.jpg';
 import nathan from './assets/gallery1.jpg'; 
 import { Link } from "react-router-dom";
 
@@ -49,18 +49,21 @@ export default function Home() {
                         <h1 className = "welcomeTitle">Recent News</h1>
                         <div className= "underline-bar"></div>
                 </div>
-                <p>On November 2nd, the A, B, and women’s teams traveled to Elevate Fitness in Syracuse to compete in the NCTTA Upstate NY fall divisionals (West NY division). All 3 teams went undefeated in their matches, facing teams from RIT, SUNY Buffalo, and more. Our next tournament will be the spring divisionals, where we will also send our A, B, and women’s teams.</p>
+                <p>From April 3rd-6th, the Cornell A and women's team traveled UW Health Sports Factory in Rockford, Illinois to compete in the NCTTA National Championships against the best collegiate teams in the country. 
+                    Congratulations to our women's team, who finished 2nd in the nation! Our A team also finished 8th place. </p>
                 <ul>
-                    <li>Cornell A: def. SUNY Buffalo A (4-0), def. RIT A (4-0), def. Rochester A (4-0)</li>
-                    <li>Cornell B: def. SUNY Buffalo B (3-1), def. RIT B (3-1), def. Binghamton W (4-0)</li>
-                    <li>Cornell Women: def. Rochester W (4-0), def. RIT B (3-1), def. Binghamton W (4-0)</li>
+                    <li>Cornell A: Nathan Wu, Taran Tummala, Gina Fu, Muskan Gupta, Janson Chan</li>
+                    <li>Cornell Women's: Gina Fu, Muskan Gupta, Surabhi Shastry, Heidi Lim</li>
                 </ul>
+                <p>
+                    Congratulations to our graduating seniors - Nathan Wu, Janson Chan, Maxwell Levinson, and Emilie Lin. We thank you all for your hard work and dedication to the club, and will certainly miss you next year. 
+                </p>
                 <div className = "doubleImageContainer">
                     <div className= "image-container">
-                        <img src = {fadiv2024_1} />
+                        <img src = {nats2025_1} />
                     </div>
                     <div className= "image-container">
-                        <img src = {fadiv2024_2} />
+                        <img src = {nats2025_19} />
                     </div>
                 </div>
                 

@@ -10,6 +10,7 @@ import About from "./about.jsx";
 import Team from "./team.jsx";
 import Board from "./board.jsx";
 import Gallery from "./gallery.jsx";
+import Archive from "./archive.jsx";
 import { useEffect, useState} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -95,6 +96,19 @@ function AnimatedRoutes() {
             </motion.div>
           }
         />
+        <Route
+          path="/archive"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Archive />
+            </motion.div>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
@@ -132,6 +146,7 @@ function Heading() {
             <Nav.Link as={Link} to="/team"><div className = "red-box">Team</div></Nav.Link>
             <Nav.Link as={Link} to="/board"><div className = "red-box">E-Board</div></Nav.Link>
             <Nav.Link as={Link} to="/gallery"><div className = "red-box">Gallery</div></Nav.Link>
+            <Nav.Link as= {Link} to = "/archive"><div className = "red-box">Archive</div></Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

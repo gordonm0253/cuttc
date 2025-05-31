@@ -17,13 +17,13 @@ import hel29 from "./assets/headshots/hel29.jpg";
 import esl226 from "./assets/headshots/esl226.jpg";
 import nw274 from "./assets/headshots/nw274.jpg";
 
-import nats2024 from "./assets/gallery2.jpg";
+import nats2025_15 from "./assets/nats2025_15.jpg";
 
 export default function Board() {
     return (
         <>
             <div className = "headingDiv">
-                <img src = {nats2024} className = "headingImage"></img>
+                <img src = {nats2025_15} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
                 <h1 className = "headingTitle">2024-2025 E-Board</h1>
                 </div>

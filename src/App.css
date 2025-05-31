@@ -404,3 +404,19 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 .galleryDiv {
   margin: 5%;
 }
+
+.archiveDiv {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 2%;
+  padding-bottom: 1%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 2%;
+  margin-top: 2%;
+  border-radius: 12px;
+  border-width: 4px;
+  border-style: solid;
+  border-color : #d27272;
+  box-shadow: 10px 10px 5px #d27272;
+}
