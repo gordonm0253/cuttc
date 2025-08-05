@@ -159,7 +159,8 @@ function Footer() {
     <footer>
       <div className = "bottomContainer">
         <p>Any questions? Contact any <Link to = '/board' className='blacklink'>board member </Link>or email us at Cornelluniversityttc [at] gmail [dot] com.</p>
-        <p>Cornell University Table Tennis Club 2025.</p>
+        <p>This organization is a registered student organization of Cornell University.</p>
+        <p>With a founding principle of “... any person ... any study,” Cornell is an <a target = "_blank" href = "https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment" className="blacklink">equal opportunity employer</a>.</p>
       </div>
     </footer>
   );
