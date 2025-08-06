@@ -14,6 +14,7 @@ import Archive from "./archive.jsx";
 import { useEffect, useState} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -133,6 +134,7 @@ function Heading() {
     setPath(path);
   }, [location]);
   return (
+    
      <Navbar expand="lg" className="navbar-container">
       <Container>
         <Navbar.Brand as = {Link} to = "/">
