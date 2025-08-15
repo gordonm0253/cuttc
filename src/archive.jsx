@@ -12,7 +12,7 @@ export default function Archive() {
                 <h1 className = "headingTitle">Tournament Archive</h1>
                 </div>
             </div>
-            <div className = "archiveDiv loadingAnimate">
+            <div className = "redBorder archiveDiv loadingAnimate">
                 <div className = "titleWrapper">
                         <h1 className = "welcomeTitle">Fall 2024 Divisionals</h1>
                         <div className= "underline-bar"></div>

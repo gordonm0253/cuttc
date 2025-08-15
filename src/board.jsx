@@ -19,6 +19,21 @@ import nw274 from "./assets/headshots/nw274.jpg";
 
 import nats2025_15 from "./assets/nats2025_15.jpg";
 
+const boardMembers = [
+    { name: "Taran Tummala", position: "President", netid: "tt553", bioimage: tt553, major: ["Biology & Society"], year: "27" },
+    { name: "Gina Fu", position: "Vice President", netid: "cf546", bioimage: cf546, major: ["Economics", "Statistical Sciences"], year: "28" },
+    { name: "Khai Xin Kuan", position: "Secretary", netid: "kk996", bioimage: kk996, major: ["Information Science"], year: "27" },
+    { name: "Muskan Gupta", position: "Treasurer", netid: "mg2479", bioimage: mg2479, major: ["Computer Science"], year: "28" },
+    { name: "Anna Donahue", position: "Publicity Chair", netid: "acd244", bioimage: acd244, major: ["Industrial and Labor Relations"], year: "28" },
+    { name: "Gordon Mei", position: "Webmaster", netid: "gam278", bioimage: gam278, major: ["Computer Science", "Mathematics"], year: "28" },
+    { name: "Heidi Lim", position: "Social Chair", netid: "hel29", bioimage: hel29, major: ["Operations Research and Information Engineering"], year: "28" }  
+]
+
+const hofMembers = [
+    { name: "Emilie Lin", position: "President", bioimage: esl226,  major: ["Mechanical Engineering"], year: "24"}, 
+    { name: "Nathan Wu", position: "President", bioimage: nw274, major: ["Biological Sciences"], year: "25"}
+]
+
 export default function Board() {
     return (
         <>
@@ -28,112 +43,28 @@ export default function Board() {
                 <h1 className = "headingTitle">2024-2025 E-Board</h1>
                 </div>
             </div>
-            <Container className = "boardContainer" fluid="lg">
-                <Row>
-                    <Col>
-                        <Profile
-                            name = "Taran Tummala"
-                            position = "President"
-                            netid = "tt553"
-                            bioimage = {tt553}
-                            major = {["Biology & Society"]}
-                            year = "27"
-                        />
+            <Container fluid="lg" className="boardContainer">
+                <Row className="mb-4">
+                    {boardMembers.map(member => (
+                    <Col key={member.netid} xs={12} sm={6} md={4}>
+                        <Profile {...member} />
                     </Col>
-                    <Col>
-                        <Profile
-                            name = "Gina Fu"
-                            position = "Vice President"
-                            netid = "cf546"
-                            bioimage = {cf546}
-                            major = {["Economics", "Statistical Sciences"]}
-                            year = "28"
-                        />
-                    </Col>
-                    <Col>
-                        <Profile
-                            name = "Khai Xin Kuan"
-                            position = "Secretary"
-                            netid = "kk996"
-                            bioimage = {kk996}
-                            major = {["Information Science"]}
-                            year = "27"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Profile
-                            name = "Muskan Gupta"
-                            position = "Treasurer"
-                            netid = "mg2479"
-                            bioimage = {mg2479}
-                            major = {["Computer Science"]}
-                            year = "28"
-                        />
-                    </Col>
-                    <Col>
-                        <Profile
-                            name = "Anna Donahue"
-                            position = "Publicity Chair"
-                            netid = "acd244"
-                            bioimage = {acd244}
-                            major = {["Industrial and Labor Relations"]}
-                            year = "28"
-                        />
-                    </Col>
-                    <Col>
-                        <Profile
-                            name = "Gordon Mei"
-                            position = "Webmaster"
-                            netid = "gam278"
-                            bioimage = {gam278}
-                            major = {["Computer Science", "Mathematics"]}
-                            year = "28"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col></Col>
-                    <Col>
-                        <Profile
-                            name = "Heidi Lim"
-                            position = "Social Chair"
-                            netid = "hel29"
-                            bioimage={hel29}
-                            major={["Operations Research and Information Engineering"]}
-                            year = "28"
-                        />
-                    </Col>
-                    <Col></Col>
+                    ))}
                 </Row>
             </Container>
+
             <div className = "pageTitle">
                 <h1 className = "loadingAnimate">Hall of Fame</h1>
-                <Container className='boardContainer' fluid="lg">
-                    <Row>
-                        <Col>
-                            <Profile
-                                name = "Emilie Lin"
-                                position = "President"
-                                bioimage = {esl226}
-                                major = {["Mechanical Engineering"]}
-                                year = "24"
-                            />
-                        </Col>
-                        <Col>
-                            <Profile
-                                name = "Nathan Wu"
-                                position = "President"
-                                bioimage = {nw274}
-                                major = {["Biological Sciences"]}
-                                year = "25"
-                            />
-                        </Col>
-                        <Col></Col>
-                    </Row>
-                </Container>
             </div>
+            <Container fluid="lg" className="boardContainer">
+                <Row className="mb-4">
+                    {hofMembers.map(member => (
+                    <Col key={member.netid} xs={12} sm={6} md={4}>
+                        <Profile {...member} />
+                    </Col>
+                    ))}
+                </Row>
+            </Container>
         </>
         
     );
@@ -151,7 +82,7 @@ function Contact({netid}) {
 // eslint-disable-next-line react/prop-types
 function Profile({name, position, netid, bioimage, major, year}) {
     return (
-        <div className = "profileDiv loadingAnimate">
+        <div className = "redBorder profileDiv loadingAnimate">
             <img src = {bioimage} className = "bioImages"></img>
             <div className = "bioText">
                 <p>{name} &apos;{year}</p>

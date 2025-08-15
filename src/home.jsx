@@ -15,7 +15,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <center className = "contentDiv loadingAnimate">
+            <center className = "contentDiv redBorder loadingAnimate">
                 <div className = "LRContainer">
                     <div className = "text-container">
                         <div className = "titleWrapper">
@@ -36,7 +36,6 @@ export default function Home() {
                             <button className= "red-button">Learn More</button>
                         </Link>
                         
-
                     </div>
                     <div className = "image-container">
                         <img src = {nathan} className = "welcomeImage"></img>
@@ -44,7 +43,16 @@ export default function Home() {
                     
                 </div>
             </center>
-            <div className = "recentDiv loadingAnimate">
+            <div className = "recentDiv redBorder loadingAnimate">
+                <div className = "titleWrapper">
+                    <h1 className = "welcomeTitle">Tryouts</h1>
+                    <div className= "underline-bar"></div>
+                </div>
+                <p className = "contentP">
+                    We will hold tryouts to join the club team in September. More information coming soon!
+                </p>
+            </div>
+            <div className = "recentDiv redBorder loadingAnimate">
                 <div className = "titleWrapper">
                         <h1 className = "welcomeTitle">Recent News</h1>
                         <div className= "underline-bar"></div>

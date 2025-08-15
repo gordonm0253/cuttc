@@ -13,7 +13,7 @@ export default function About() {
                 </div>
             </div>
             
-            <center className = "practiceDiv loadingAnimate">
+            <center className = "contentDiv redBorder loadingAnimate">
                 <div className = "titleWrapper">
                         <h1 className = "welcomeTitle">Join us for open play!</h1>
                         <div className= "underline-bar-shorter"></div>
@@ -25,7 +25,7 @@ export default function About() {
                 </p>
             </center>
 
-            <div className= "recentDiv loadingAnimate">
+            <div className= "recentDiv redBorder loadingAnimate">
                 <center>
                     <div className = "titleWrapper">
                         <h1 className = "welcomeTitle">Club Team</h1>
@@ -34,10 +34,10 @@ export default function About() {
                 </center>
                 
                 <p>Cornell Table Tennis competes in the National Collegiate Table Tennis Association (NCTTA). We send our A (co-ed varsity), B (co-ed junior varsity), and women’s team to regional and national tournaments each year, where we are among the top schools in the upstate NY region. We compete in four tournaments each year, listed below.</p>                    <ul>
-                    <li>Fall Divisionals (11/2/24)</li>
-                    <li>Spring Divisionals (date TBD)</li>
-                    <li>Regionals (date TBD)</li>
-                    <li>Nationals (date TBD)</li>
+                    <li>Fall Divisionals</li>
+                    <li>Spring Divisionals</li>
+                    <li>Regionals</li>
+                    <li>Nationals</li>
                 </ul>
                 <div className = "image-container">
                     <img src = {nathantaran} />
