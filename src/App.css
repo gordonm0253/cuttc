@@ -337,7 +337,6 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 .teamCard {
   margin-left: 5%;
   margin-right: 5%;
-  margin-top: 2.5%;
 }
 
 .teamCard h1 {
@@ -345,17 +344,22 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   font-weight: bold;
   text-align: center;
   padding-top: 2%;
+  padding-bottom: 2%;
 }
 
 .memberCard {
-  border-radius: 12px;
-  padding-top: 5%;
-  margin: 2%;
+  padding: 5%;
   text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center; 
+  max-height: 300px;
+  
 }
 
 .memberCard p {
-  padding: 2%;
+  margin: 2%;
 }
 
 .memberImage {

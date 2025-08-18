@@ -62,18 +62,23 @@ function TeamCard({team}) {
         res.push(curr);
     }
     return (
-        <div className = "teamCard">
+        <div className="teamCard">
             <h1>{team.name}</h1>
             <Container>
-                {res.map((row) => (
-                    <Row key = {row}>
-                        {row.map((member) => (
-                            <Col key = {member}>
-                                <MemberCard name = {member} />
-                            </Col>
-                        ))}
-                    </Row>
+                <Row className="justify-content-center">
+                {team.members.map((member) => (
+                    <Col
+                    key={member}
+                    xs={6}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    className="d-flex justify-content-center mb-4"
+                    >
+                    <MemberCard name={member} />
+                    </Col>
                 ))}
+                </Row>
             </Container>
         </div>
     );
