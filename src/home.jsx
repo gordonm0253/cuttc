@@ -49,7 +49,7 @@ export default function Home() {
                     <div className= "underline-bar"></div>
                 </div>
                 <p className = "contentP">
-                    We will hold tryouts to join the club team in September. More information coming soon!
+                    We will hold club team tryouts in September. More information coming soon!
                 </p>
             </div>
             <div className = "recentDiv redBorder loadingAnimate">

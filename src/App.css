@@ -39,7 +39,7 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 .red-box {
   color: white;
   font-family: monospace;
-  font-size: 1.1rem;
+  font-size: clamp(16px, 1.2vw, 24px);
   padding-left: 7.5px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -50,16 +50,24 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 
 .site-title {
   font-family: monospace;
-  font-size: 1.6rem;
+  font-size: clamp(18px, 1.6vw, 24px);
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .site-title {
+    font-size: 18px;
+    text-align: center;
+  }
 }
 
 .red-box:hover {
   color: #d16464;
   background-color: white;
   cursor: pointer;
+  
 }
 
 
