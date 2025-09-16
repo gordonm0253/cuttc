@@ -19,7 +19,7 @@ export default function About() {
                         <div className= "underline-bar-shorter"></div>
                 </div>
                 <p>
-                    The club meets each week for open practice from <b>1-3 PM on Saturdays at Appel Commons 303ABC </b>
+                    The club meets each week for open practice from <b>4:00-6:00 PM on Saturdays at Appel Commons 303ABC </b>
                     (upstairs from North Star dining hall). We&apos;ll have tables set up, so bring a friend to play or meet 
                     some new people! We will provide paddles and balls (but feel free to bring your own equipment).
                 </p>
@@ -42,9 +42,6 @@ export default function About() {
                 <div className = "image-container">
                     <img src = {nathantaran} />
                 </div>
-                <p>
-                    We will host our next tryouts at the beginning of the fall 2025 semester. Stay tuned for more information!
-                </p>  
             </div>
         </>
     );

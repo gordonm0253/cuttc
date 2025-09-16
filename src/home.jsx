@@ -29,8 +29,8 @@ export default function Home() {
                             national tournaments each year.
                         </p>
                         <p>
-                            The club meets each week for open practice. Sign up on <a target = "_blank" href = "https://cornell.campusgroups.com/CTTC/club_signup" className="redlink">CampusGroups</a> and join us from 1-3 PM on Saturdays at Appel Commons!
-                            Check the <Link to = "/about" className = "redlink">About Us</Link> page for more information on practices.
+                            The club meets each week for open practice. Sign up on <a target = "_blank" href = "https://cornell.campusgroups.com/CTTC/club_signup" className="redlink">CampusGroups</a> and join us from 4:00-6:00 PM on Saturdays at Appel Commons!
+                            You can join our 25-26 GroupMe <a target = "_blank" href = "https://groupme.com/join_group/103997327/0gKV72gZ" className="redlink">here</a> for more updates! Check the <Link to = "/about" className = "redlink">About Us</Link> page for more information on practices.
                         </p>
                         <Link to = "/about">
                             <button className= "red-button">Learn More</button>
@@ -49,7 +49,11 @@ export default function Home() {
                     <div className= "underline-bar"></div>
                 </div>
                 <p className = "contentP">
-                    We will hold club team tryouts in September. More information coming soon!
+                    Tryouts will be held on September 20th (Saturday) from 7:15 to 9:15pm and September 21st (Sunday) from 5:15-7:15pm in Appel 303ABC, the top floor of Appel. You will only be trying out one on of these days, and there may be additional rounds based on the number of people trying out. 
+                    Please fill out the <a href = "https://docs.google.com/forms/d/e/1FAIpQLScThPIzVZwlrqmbqO2zzeW4lFH03HaO66GHqwl2Smox3DIIyQ/viewform" target = "_blank" className="redlink" >form</a> to register. You MUST fill out the form in order to tryout.
+                </p>
+                <p>
+                    You do not need to have a paddle or any equipment to tryout, but we have limited paddles so you will likely need to share if you do not bring your own. If you have any questions, feel free to reach out to Cornelluniversityttc [at] gmail [dot] com. We look forward to seeing everyone there!
                 </p>
             </div>
             <div className = "recentDiv redBorder loadingAnimate">
@@ -58,7 +62,7 @@ export default function Home() {
                         <div className= "underline-bar"></div>
                 </div>
                 <p>From April 3rd-6th, the Cornell A and women's team traveled UW Health Sports Factory in Rockford, Illinois to compete in the NCTTA National Championships against the best collegiate teams in the country. 
-                    Congratulations to our women's team, who finished 2nd in the nation! Our A team also finished 8th place. </p>
+                    A huge congratulations to our women's team, who finished 2nd in the nation! Our A team also finished 8th place. </p>
                 <ul>
                     <li>Cornell A: Nathan Wu, Taran Tummala, Gina Fu, Muskan Gupta, Janson Chan</li>
                     <li>Cornell Women's: Gina Fu, Muskan Gupta, Surabhi Shastry, Heidi Lim</li>
