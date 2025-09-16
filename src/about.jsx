@@ -13,7 +13,7 @@ export default function About() {
                 </div>
             </div>
             
-            <center className = "contentDiv redBorder loadingAnimate">
+            <center className = "recentDiv redBorder loadingAnimate">
                 <div className = "titleWrapper">
                         <h1 className = "welcomeTitle">Join us for open play!</h1>
                         <div className= "underline-bar-shorter"></div>
@@ -21,8 +21,29 @@ export default function About() {
                 <p>
                     The club meets each week for open practice from <b>4:00-6:00 PM on Saturdays at Appel Commons 303ABC </b>
                     (upstairs from North Star dining hall). We&apos;ll have tables set up, so bring a friend to play or meet 
-                    some new people! We will provide paddles and balls (but feel free to bring your own equipment).
+                    some new people! We will provide paddles and balls (but feel free to bring your own equipment). 
                 </p>
+                <p>
+                    Below is our open practice schedule for the fall 2025 semester! We hope to see you there!
+                </p>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: "1rem"
+                    }}
+                    >
+                    <iframe
+                        src="https://calendar.google.com/calendar/embed?src=c_f1d24418ff519a8279d96a072825552a0a1544dc0857adaca8efc5e835ebd6dc%40group.calendar.google.com&ctz=America%2FNew_York"
+                        style={{
+                        border: 0,
+                        width: "100%",
+                        maxWidth: "900px",
+                        height: "650px",
+                        }}
+                    />
+                </div>
             </center>
 
             <div className= "recentDiv redBorder loadingAnimate">
