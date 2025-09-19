@@ -50,7 +50,7 @@ export default function Home() {
                 </div>
                 <p className = "contentP">
                     Tryouts will be held on September 20th (Saturday) from 7:15 to 9:15pm and September 21st (Sunday) from 5:15-7:15pm in Appel 303ABC, the top floor of Appel. You will only be trying out one on of these days, and there may be additional rounds based on the number of people trying out. 
-                    Please fill out the <a href = "https://docs.google.com/forms/d/e/1FAIpQLScThPIzVZwlrqmbqO2zzeW4lFH03HaO66GHqwl2Smox3DIIyQ/viewform" target = "_blank" className="redlink" >form</a> to register. You MUST fill out the form in order to tryout.
+                    The tryout form is now CLOSED. Please email us if you didn't receive a time to signup!
                 </p>
                 <p>
                     You do not need to have a paddle or any equipment to tryout, but we have limited paddles so you will likely need to share if you do not bring your own. If you have any questions, feel free to reach out to Cornelluniversityttc [at] gmail [dot] com. We look forward to seeing everyone there!
