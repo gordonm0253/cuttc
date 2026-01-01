@@ -16,18 +16,18 @@ import nats2025_6 from './assets/nats2025_6.jpg';
 
 const a_team = {
     name : "A Team",
-    members : ["Taran Tummala", "Emilie Lin","Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren", "Chris Zhang", "Evan Shih"]
+    members : ["Taran Tummala", "Muskan Gupta", "Gina Fu"]
 }
 
 
 const b_team = {
     name : "B Team",
-    members : ["Max Levinson", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", "Elliot Chow", "Nico Ma", "Meris Goldfarb", "Oliver Wu"]
+    members : ["Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", "Meris Goldfarb", "Finn Woodman"]
 }
 
 const w_team = {
     name : "Women's Team",
-    members : ["Emilie Lin", "Muskan Gupta", "Gina Fu", "Surabhi Shastry", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Bea Buenaventura", "Judy Wang"]
+    members : ["Muskan Gupta", "Gina Fu", "Sophia Zhou", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Surabhi Shastry"]
 }
 
 

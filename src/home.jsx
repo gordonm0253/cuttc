@@ -49,11 +49,7 @@ export default function Home() {
                     <div className= "underline-bar"></div>
                 </div>
                 <p className = "contentP">
-                    Tryouts will be held on September 20th (Saturday) from 7:15 to 9:15pm and September 21st (Sunday) from 5:15-7:15pm in Appel 303ABC, the top floor of Appel. You will only be trying out one on of these days, and there may be additional rounds based on the number of people trying out. 
-                    The tryout form is now CLOSED. Please email us if you didn't receive a time to signup!
-                </p>
-                <p>
-                    You do not need to have a paddle or any equipment to tryout, but we have limited paddles so you will likely need to share if you do not bring your own. If you have any questions, feel free to reach out to Cornelluniversityttc [at] gmail [dot] com. We look forward to seeing everyone there!
+                    Thank you to everyone who came and tried out for our team this fall! We will not be holding tryouts for the spring semester, so our next tryouts will be held in the fall 2026 semester.
                 </p>
             </div>
             <div className = "recentDiv redBorder loadingAnimate">
@@ -61,11 +57,11 @@ export default function Home() {
                         <h1 className = "welcomeTitle">Recent News</h1>
                         <div className= "underline-bar"></div>
                 </div>
-                <p>From April 3rd-6th, the Cornell A and women's team traveled UW Health Sports Factory in Rockford, Illinois to compete in the NCTTA National Championships against the best collegiate teams in the country. 
-                    A huge congratulations to our women's team, who finished 2nd in the nation! Our A team also finished 8th place. </p>
+                <p>From April 3rd-6th, the Cornell A and women&apos;s team traveled UW Health Sports Factory in Rockford, Illinois to compete in the NCTTA National Championships against the best collegiate teams in the country. 
+                    A huge congratulations to our women&apos;s team, who finished 2nd in the nation! Our A team also finished 8th place. </p>
                 <ul>
                     <li>Cornell A: Nathan Wu, Taran Tummala, Gina Fu, Muskan Gupta, Janson Chan</li>
-                    <li>Cornell Women's: Gina Fu, Muskan Gupta, Surabhi Shastry, Heidi Lim</li>
+                    <li>Cornell Women&apos;s: Gina Fu, Muskan Gupta, Surabhi Shastry, Heidi Lim</li>
                 </ul>
                 <p>
                     Congratulations to our graduating seniors - Nathan Wu, Janson Chan, Maxwell Levinson, and Emilie Lin. We thank you all for your hard work and dedication to the club, and will certainly miss you next year. 
