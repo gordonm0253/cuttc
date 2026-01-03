@@ -14,22 +14,20 @@ import nats2025_6 from './assets/nats2025_6.jpg';
 // B members = {["Max Levinson", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", "Elliot Chow", "Nico Ma", "Meris Goldfarb", "Oliver Wu"]}
 // W members = {["Emilie Lin", "Muskan Gupta", "Gina Fu", "Surabhi Shastry", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Bea Buenaventura", "Judy Wang"]} 
 
-const a_team = {
-    name : "A Team",
-    members : ["Taran Tummala", "Muskan Gupta", "Gina Fu"]
-}
 
-
-const b_team = {
-    name : "B Team",
-    members : ["Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", "Meris Goldfarb", "Finn Woodman"]
+const ab_team = {
+    name : "A/B Team",
+    members : ["Taran Tummala", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", 
+                "Meris Goldfarb", "Finn Woodman", "Anmol Karan", "Joshua Cohen",
+                "Kevin Chow", "Jerry Mao", "Lawrence Liu", "Tianshi Zhou", "Yiguo Qin", "Diego Khayat"]
 }
 
 const w_team = {
     name : "Women's Team",
-    members : ["Muskan Gupta", "Gina Fu", "Sophia Zhou", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Surabhi Shastry"]
+    members : ["Muskan Gupta", "Gina Fu", "Sophia Zhou", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Surabhi Shastry", "Michelle Liang"]
 }
 
+// <TeamCard team = {a_team} />
 
 export default function Team() {
     return (
@@ -40,8 +38,8 @@ export default function Team() {
                     <h1 className = "headingTitle">Club Team</h1>
                 </div>
             </div>
-            <TeamCard team = {a_team} />
-            <TeamCard team = {b_team} />
+            
+            <TeamCard team = {ab_team} />
             <TeamCard team = {w_team} />
         </>
     );
