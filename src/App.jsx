@@ -11,9 +11,13 @@ import Team from "./team.jsx";
 import Board from "./board.jsx";
 import Gallery from "./gallery.jsx";
 import Archive from "./archive.jsx";
+import Profile from './profile.jsx';
 import { useEffect, useState} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-
+import { NavDropdown } from 'react-bootstrap';
+import AuthUserProvider from './auth/AuthUserProvider';
+import { signIn, signOut } from "./auth/auth.js";
+import { useAuth } from "./auth/AuthUserProvider";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -110,6 +114,19 @@ function AnimatedRoutes() {
             </motion.div>
           }
         />
+        <Route
+          path="/profile"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Profile />
+            </motion.div>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
@@ -117,11 +134,13 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <Router>
-      <Heading />
-      <AnimatedRoutes />
-      <Footer />
-    </Router>
+    <AuthUserProvider>
+      <Router>
+        <Heading />
+        <AnimatedRoutes />
+        <Footer />
+      </Router>
+    </AuthUserProvider>
   );
 }
 
@@ -129,10 +148,20 @@ export default function App() {
 function Heading() {
   const location = useLocation();
   const [path, setPath] = useState("");
+  const { user } = useAuth();
   useEffect(() => {
     const path = location.pathname;
     setPath(path);
   }, [location]);
+
+  const handleLogin = async () => {
+    await signIn();
+  }
+
+  const handleLogout = async () => {
+    await signOut();
+  }
+
   return (
     
      <Navbar expand="lg" className="navbar-container">
@@ -149,6 +178,14 @@ function Heading() {
             <Nav.Link as={Link} to="/board"><div className = "red-box">E-Board</div></Nav.Link>
             <Nav.Link as={Link} to="/gallery"><div className = "red-box">Gallery</div></Nav.Link>
             <Nav.Link as= {Link} to = "/archive"><div className = "red-box">Archive</div></Nav.Link>
+            {user ? 
+            (<NavDropdown title = {"Profile"} className = "red-dropdown">
+              <NavDropdown.Item as={Link} to= "/profile">About</NavDropdown.Item>
+              <NavDropdown.Divider/>
+              <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
+            </NavDropdown>) 
+            : 
+            (<Nav.Link><div className = "red-box" onClick={handleLogin}>Login</div></Nav.Link>)}
           </Nav>
         </Navbar.Collapse>
       </Container>

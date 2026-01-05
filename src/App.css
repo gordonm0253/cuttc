@@ -6,6 +6,7 @@ html {
 
 body {
   margin: 0;
+  background-color: black;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -23,6 +24,7 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 }
 
 
+
 .navbar-container {
   background-color: #d16464;
 }
@@ -34,9 +36,20 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   margin-bottom: 0;
 }
 
+.dropdown-toggle {
+  color: white !important;
+}
+
+.red-dropdown > .dropdown-toggle:hover {
+  color: #d16464 !important;
+  background-color: white;
+  cursor: pointer;
+}
+
 /* B31B1B */
 
 .red-box {
+  white-space: nowrap;
   color: white;
   font-family: monospace;
   font-size: clamp(16px, 1.2vw, 24px);
@@ -47,6 +60,20 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   border-radius: 12px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.red-dropdown > .dropdown-toggle {
+  white-space: nowrap;
+  color: white;
+  font-family: monospace;
+  font-size: clamp(16px, 1.2vw, 24px);
+  padding-left: 7.5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 7.5px;
+  border-radius: 12px !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 
 .site-title {
   font-family: monospace;
@@ -67,7 +94,6 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   color: #d16464;
   background-color: white;
   cursor: pointer;
-  
 }
 
 
@@ -456,4 +482,62 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+
+.profilePageDiv {
+  min-height: 100vh;
+  background-color: #faf8f5;
+  padding: 2rem;
+}
+
+.nameDiv {
+  background: linear-gradient(135deg, #d16464 0%, #a00 100%);
+  padding: 1.5rem 2rem;
+  color: white;
+  position: relative;
+  border-radius: 12px;
+}
+
+.eventCard {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid #f0f0f0;
+}
+
+.eventCardTop {
+  padding: 0.5rem 1rem;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.eventHeaderWrapper {
+  padding: 1.5rem;
+}
+
+.eventHeaderWrapper h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.eventGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.eventText {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.eventMarginBot {
+  margin-bottom: 1rem;
 }
