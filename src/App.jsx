@@ -10,8 +10,14 @@ import About from "./about.jsx";
 import Team from "./team.jsx";
 import Board from "./board.jsx";
 import Gallery from "./gallery.jsx";
+import Archive from "./archive.jsx";
+import Profile from './profile.jsx';
 import { useEffect, useState} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { NavDropdown } from 'react-bootstrap';
+import AuthUserProvider from './auth/AuthUserProvider';
+import { signIn, signOut } from "./auth/auth.js";
+import { useAuth } from "./auth/AuthUserProvider";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -95,6 +101,32 @@ function AnimatedRoutes() {
             </motion.div>
           }
         />
+        <Route
+          path="/archive"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Archive />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Profile />
+            </motion.div>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
@@ -102,11 +134,13 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <Router>
-      <Heading />
-      <AnimatedRoutes />
-      <Footer />
-    </Router>
+    <AuthUserProvider>
+      <Router>
+        <Heading />
+        <AnimatedRoutes />
+        <Footer />
+      </Router>
+    </AuthUserProvider>
   );
 }
 
@@ -114,11 +148,22 @@ export default function App() {
 function Heading() {
   const location = useLocation();
   const [path, setPath] = useState("");
+  const { user } = useAuth();
   useEffect(() => {
     const path = location.pathname;
     setPath(path);
   }, [location]);
+
+  const handleLogin = async () => {
+    await signIn();
+  }
+
+  const handleLogout = async () => {
+    await signOut();
+  }
+
   return (
+    
      <Navbar expand="lg" className="navbar-container">
       <Container>
         <Navbar.Brand as = {Link} to = "/">
@@ -132,6 +177,15 @@ function Heading() {
             <Nav.Link as={Link} to="/team"><div className = "red-box">Team</div></Nav.Link>
             <Nav.Link as={Link} to="/board"><div className = "red-box">E-Board</div></Nav.Link>
             <Nav.Link as={Link} to="/gallery"><div className = "red-box">Gallery</div></Nav.Link>
+            <Nav.Link as= {Link} to = "/archive"><div className = "red-box">Archive</div></Nav.Link>
+            {user ? 
+            (<NavDropdown title = {"Profile"} className = "red-dropdown">
+              <NavDropdown.Item as={Link} to= "/profile">About</NavDropdown.Item>
+              <NavDropdown.Divider/>
+              <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
+            </NavDropdown>) 
+            : 
+            (<Nav.Link><div className = "red-box" onClick={handleLogin}>Login</div></Nav.Link>)}
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -144,7 +198,8 @@ function Footer() {
     <footer>
       <div className = "bottomContainer">
         <p>Any questions? Contact any <Link to = '/board' className='blacklink'>board member </Link>or email us at Cornelluniversityttc [at] gmail [dot] com.</p>
-        <p>Cornell University Table Tennis Club 2025.</p>
+        <p>This organization is a registered student organization of Cornell University.</p>
+        <p>With a founding principle of “... any person ... any study,” Cornell is an <a target = "_blank" href = "https://hr.cornell.edu/about/workplace-rights/equal-education-and-employment" className="blacklink">equal opportunity employer</a>.</p>
       </div>
     </footer>
   );

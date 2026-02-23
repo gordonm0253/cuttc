@@ -7,41 +7,39 @@ import Col from 'react-bootstrap/Col';
 
 //import ateam from './assets/ateam.jpeg';
 import placeholder from './assets/big_red.png';
-import nats2024 from './assets/nats2024.jpg';
+import nats2025_6 from './assets/nats2025_6.jpg';
 //import bteam from './assets/bteam.jpg';
 
 // A members = {["Taran Tummala", "Emilie Lin","Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren", "Chris Zhang", "Evan Shih"]}
 // B members = {["Max Levinson", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", "Elliot Chow", "Nico Ma", "Meris Goldfarb", "Oliver Wu"]}
 // W members = {["Emilie Lin", "Muskan Gupta", "Gina Fu", "Surabhi Shastry", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Bea Buenaventura", "Judy Wang"]} 
 
-const a_team = {
-    name : "A Team",
-    members : ["Taran Tummala", "Emilie Lin","Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren", "Chris Zhang", "Evan Shih"]
-}
 
-
-const b_team = {
-    name : "B Team",
-    members : ["Max Levinson", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", "Elliot Chow", "Nico Ma", "Meris Goldfarb", "Oliver Wu"]
+const ab_team = {
+    name : "A/B Team",
+    members : ["Taran Tummala", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", 
+                "Meris Goldfarb", "Finn Woodman", "Anmol Karan", "Joshua Cohen",
+                "Kevin Chow", "Jerry Mao", "Lawrence Liu", "Tianshi Zhou", "Yiguo Qin", "Diego Khayat"]
 }
 
 const w_team = {
     name : "Women's Team",
-    members : ["Emilie Lin", "Muskan Gupta", "Gina Fu", "Surabhi Shastry", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Bea Buenaventura", "Judy Wang"]
+    members : ["Muskan Gupta", "Gina Fu", "Sophia Zhou", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Surabhi Shastry", "Michelle Liang"]
 }
 
+// <TeamCard team = {a_team} />
 
 export default function Team() {
     return (
         <>
             <div className = "headingDiv">
-                <img src = {nats2024} className = "headingImage"></img>
+                <img src = {nats2025_6} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
                     <h1 className = "headingTitle">Club Team</h1>
                 </div>
             </div>
-            <TeamCard team = {a_team} />
-            <TeamCard team = {b_team} />
+            
+            <TeamCard team = {ab_team} />
             <TeamCard team = {w_team} />
         </>
     );
@@ -62,18 +60,23 @@ function TeamCard({team}) {
         res.push(curr);
     }
     return (
-        <div className = "teamCard">
+        <div className="teamCard">
             <h1>{team.name}</h1>
             <Container>
-                {res.map((row) => (
-                    <Row key = {row}>
-                        {row.map((member) => (
-                            <Col key = {member}>
-                                <MemberCard name = {member} />
-                            </Col>
-                        ))}
-                    </Row>
+                <Row className="justify-content-center">
+                {team.members.map((member) => (
+                    <Col
+                    key={member}
+                    xs={6}
+                    sm={4}
+                    md={3}
+                    lg={2}
+                    className="d-flex justify-content-center mb-4"
+                    >
+                    <MemberCard name={member} />
+                    </Col>
                 ))}
+                </Row>
             </Container>
         </div>
     );
