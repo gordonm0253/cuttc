@@ -8,6 +8,22 @@ import Col from 'react-bootstrap/Col';
 //import ateam from './assets/ateam.jpeg';
 import placeholder from './assets/big_red.png';
 import nats2025_6 from './assets/nats2025_6.jpg';
+
+// headshot imports
+import anmol from "./assets/headshots/anmol_headshot.jpg"
+import finn from "./assets/headshots/finn_headshot.jpg"
+import heidi from "./assets/headshots/heidi_headshot.jpg"
+import jerry from "./assets/headshots/jerry_headshot.jpg"
+import josh from "./assets/headshots/josh_headshot.jpg"
+import kevin from "./assets/headshots/kevin_headshot.jpg"
+import lawrence from "./assets/headshots/lawrence_headshot.jpg"
+import muskan from "./assets/headshots/muskan_headshot.jpg"
+import omar from "./assets/headshots/omar_headshot.jpg"
+import sophia from "./assets/headshots/sophia_headshot.jpg"
+import taran from "./assets/headshots/taran_headshot.jpg"
+import tish from "./assets/headshots/tish_headshot.jpg"
+import victor from "./assets/headshots/victor_headshot.jpg"
+
 //import bteam from './assets/bteam.jpg';
 
 // A members = {["Taran Tummala", "Emilie Lin","Nathan Wu", "Janson Chan", "Muskan Gupta", "Gina Fu", "Omar Andújar", "Victor Ren", "Chris Zhang", "Evan Shih"]}
@@ -17,14 +33,31 @@ import nats2025_6 from './assets/nats2025_6.jpg';
 
 const ab_team = {
     name : "A/B Team",
-    members : ["Taran Tummala", "Justin Pan", "Henry Yoon", "Alan Liu", "Gordon Mei", 
+    members : ["Taran Tummala", "Justin Pan", "Victor Ren", "Omar Andujar","Henry Yoon", "Alan Liu", "Gordon Mei", 
                 "Meris Goldfarb", "Finn Woodman", "Anmol Karan", "Joshua Cohen",
-                "Kevin Chow", "Jerry Mao", "Lawrence Liu", "Tianshi Zhou", "Yiguo Qin", "Diego Khayat"]
+                "Kevin Chow", "Jerry Mao", "Lawrence Liu", "Tianshi Zhou", "Yiguo Qin", "Diego Khayat"],
+    images: {
+        "Taran Tummala": taran, 
+        "Finn Woodman": finn,
+        "Anmol Karan": anmol, 
+        "Joshua Cohen": josh,
+        "Kevin Chow": kevin,
+        "Jerry Mao": jerry,
+        "Lawrence Liu": lawrence,
+        "Tianshi Zhou": tish,
+        "Victor Ren": victor,
+        "Omar Andujar": omar,
+    }
 }
 
 const w_team = {
     name : "Women's Team",
-    members : ["Muskan Gupta", "Gina Fu", "Sophia Zhou", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Surabhi Shastry", "Michelle Liang"]
+    members : ["Muskan Gupta", "Gina Fu", "Sophia Zhou", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Surabhi Shastry", "Michelle Liang"],
+    images: {
+        "Muskan Gupta": muskan,
+        "Sophia Zhou": sophia, 
+        "Heidi Lim": heidi
+    }
 }
 
 // <TeamCard team = {a_team} />
@@ -73,7 +106,7 @@ function TeamCard({team}) {
                     lg={2}
                     className="d-flex justify-content-center mb-4"
                     >
-                    <MemberCard name={member} />
+                    <MemberCard name={member} image={team.images?.[member] ?? placeholder} />
                     </Col>
                 ))}
                 </Row>
@@ -83,7 +116,7 @@ function TeamCard({team}) {
 }
 
 
-function MemberCard({name}) {
+function MemberCard({name, image}) {
     if (name === "") {
         return (
             <div></div>
@@ -91,7 +124,7 @@ function MemberCard({name}) {
     }
     return (
         <div className = "memberCard">
-            <img src = {placeholder} className = "memberImage"></img>
+            <img src = {image} className = "memberImage"></img>
             <p>{name}</p>
         </div>
     );

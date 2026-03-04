@@ -23,7 +23,30 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   font-family: monospace;
 }
 
+.topBanner {
+    width: 100%;
+    background-color: #b31b1b; /* Cornell red */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
 
+.topBanner p {
+    margin: 0;
+}
+
+.bannerLink {
+    color: white;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.bannerLink:hover {
+    color: #f0c0c0;
+}
 
 .navbar-container {
   background-color: #d16464;
