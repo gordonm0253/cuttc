@@ -35,7 +35,7 @@ export default function About() {
                     }}
                     >
                     <iframe
-                        src="https://calendar.google.com/calendar/embed?src=c_f1d24418ff519a8279d96a072825552a0a1544dc0857adaca8efc5e835ebd6dc%40group.calendar.google.com&ctz=America%2FNew_York"
+                        src="https://calendar.google.com/calendar/embed?src=c_f1d24418ff519a8279d96a072825552a0a1544dc0857adaca8efc5e835ebd6dc%40group.calendar.google.com&ctz=America%2FNew_York&mode=AGENDA"
                         style={{
                         border: 0,
                         width: "100%",
