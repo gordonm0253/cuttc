@@ -190,13 +190,6 @@ function Heading() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    <div className="topBanner">
-        <p>🏓 Cornell Giving Day is now live! Support Cornell Table Tennis{" "}
-        <a href="https://givingday.cornell.edu/campaigns/cornell-table-tennis-club" 
-           target="_blank" rel="noreferrer" className="bannerLink">
-            here →
-        </a></p>
-    </div>
     </>
   );
 }
