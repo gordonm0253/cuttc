@@ -12,7 +12,7 @@ import Board from "./board.jsx";
 import Gallery from "./gallery.jsx";
 import Archive from "./archive.jsx";
 import Profile from './profile.jsx';
-import { useEffect, useState} from 'react';
+import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { NavDropdown } from 'react-bootstrap';
 import AuthUserProvider from './auth/AuthUserProvider';
@@ -146,13 +146,7 @@ export default function App() {
 
 
 function Heading() {
-  const location = useLocation();
-  const [path, setPath] = useState("");
   const { user } = useAuth();
-  useEffect(() => {
-    const path = location.pathname;
-    setPath(path);
-  }, [location]);
 
   const handleLogin = async () => {
     await signIn();
