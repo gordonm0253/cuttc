@@ -109,7 +109,7 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 @media (max-width: 768px) {
   .site-title {
     font-size: 18px;
-    text-align: center;
+    text-align: left;
   }
 }
 

@@ -159,7 +159,7 @@ function Heading() {
   return (
     <>
      <Navbar expand="lg" className="navbar-container">
-      <Container>
+      <Container fluid>
         <Navbar.Brand as = {Link} to = "/">
           <div className="site-title">Cornell University Table Tennis</div>
         </Navbar.Brand>
