@@ -5,6 +5,7 @@ import { getMe, setRankingsOptIn as setRankingsOptInApi } from '../api/me';
 export function useIsAdmin() {
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [playerId, setPlayerId] = useState(null);
   const [rankingsOptIn, setRankingsOptIn] = useState(false);
   const [hasRankingsAccess, setHasRankingsAccess] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -12,6 +13,7 @@ export function useIsAdmin() {
   useEffect(() => {
     if (!user) {
       setIsAdmin(false);
+      setPlayerId(null);
       setRankingsOptIn(false);
       setHasRankingsAccess(false);
       setLoading(false);
@@ -21,11 +23,13 @@ export function useIsAdmin() {
     getMe()
       .then((data) => {
         setIsAdmin(!!data.isAdmin);
+        setPlayerId(data.playerId || null);
         setRankingsOptIn(!!data.rankingsOptIn);
         setHasRankingsAccess(!!data.hasRankingsAccess);
       })
       .catch(() => {
         setIsAdmin(false);
+        setPlayerId(null);
         setRankingsOptIn(false);
         setHasRankingsAccess(false);
       })
@@ -38,5 +42,5 @@ export function useIsAdmin() {
     return result.rankingsOptIn;
   }, []);
 
-  return { isAdmin, rankingsOptIn, hasRankingsAccess, toggleRankingsOptIn, loading };
+  return { isAdmin, playerId, rankingsOptIn, hasRankingsAccess, toggleRankingsOptIn, loading };
 }

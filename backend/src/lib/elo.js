@@ -22,9 +22,12 @@ export function determineWinnerAndValidate(sets) {
   let aWins = 0;
   let bWins = 0;
 
-  for (const set of sets) {
+  sets.forEach((set, index) => {
     if (!set || typeof set.a !== 'number' || typeof set.b !== 'number') {
       throw new Error('Each set must have numeric scores for both players');
+    }
+    if (aWins >= 3 || bWins >= 3) {
+      throw new Error(`Match was already decided before set ${index + 1}: no further sets should be played`);
     }
     const { a, b } = set;
     if (!Number.isInteger(a) || !Number.isInteger(b) || a < 0 || b < 0) {
@@ -36,13 +39,10 @@ export function determineWinnerAndValidate(sets) {
       throw new Error(`Invalid set score ${a}-${b}: must reach at least 11 with a 2-point lead`);
     }
     if (a > b) aWins++; else bWins++;
-  }
+  });
 
   if (aWins < 3 && bWins < 3) {
     throw new Error('Match sets do not resolve to a best-of-5 winner (need 3 set wins)');
-  }
-  if (aWins >= 3 && bWins >= 3) {
-    throw new Error('Match sets are invalid: both players cannot win 3 or more sets');
   }
 
   return aWins > bWins ? 'A' : 'B';

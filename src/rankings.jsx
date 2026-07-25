@@ -4,12 +4,10 @@ import { useAuth } from './auth/AuthUserProvider';
 import { useIsAdmin } from './hooks/useIsAdmin';
 import { getRankings } from './api/rankings';
 import RankingsTable from './components/RankingsTable';
-import RankingsViewersPanel from './components/RankingsViewersPanel';
 
 function Rankings() {
     const { user } = useAuth();
     const {
-        isAdmin,
         rankingsOptIn,
         hasRankingsAccess,
         toggleRankingsOptIn,
@@ -80,7 +78,7 @@ function Rankings() {
                         Club Rankings
                     </h1>
                     <div style={{ width: '10rem', height: '4px', background: 'linear-gradient(to right, #D02F2F, #a00)', margin: '1rem auto', borderRadius: '2px' }} />
-                    <p style={{ fontSize: '1.1rem', color: '#666' }}>Live Elo ratings, updated after every logged match.</p>
+                    <p style={{ fontSize: '1.1rem', color: '#666' }}>Live ratings, updated after every logged match.</p>
                 </div>
 
                 <div className="rankingsOptInBox">
@@ -93,7 +91,7 @@ function Rankings() {
                         onChange={handleToggleOptIn}
                     />
                     <p className="eventText rankingsOptInHint">
-                        You&apos;re opted out by default. Turn this on if you want your name and Elo visible to other members here.
+                        You&apos;re opted out by default. Turn this on if you want your name and rating visible to other members here.
                     </p>
                     {optInError && <p className="eventFormError">{optInError}</p>}
                 </div>
@@ -101,8 +99,6 @@ function Rankings() {
                 {loading && <p className="eventText">Loading rankings...</p>}
                 {error && <p className="eventFormError">{error}</p>}
                 {!loading && !error && <RankingsTable players={players} />}
-
-                {isAdmin && <RankingsViewersPanel />}
             </div>
         </div>
     );

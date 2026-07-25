@@ -46,7 +46,7 @@ function PlayerPicker({ label, players, value, onChange }) {
             <Form.Label>{label}</Form.Label>
             {selectedPlayer ? (
                 <div className="playerPickerSelected">
-                    <span>{selectedPlayer.displayName} ({selectedPlayer.email}) &mdash; Elo {selectedPlayer.elo}</span>
+                    <span>{selectedPlayer.displayName} ({selectedPlayer.email}) &mdash; Rating {selectedPlayer.elo}</span>
                     <Button variant="link" size="sm" onClick={() => onChange({ id: null, displayName: '', email: '' })}>
                         Change
                     </Button>

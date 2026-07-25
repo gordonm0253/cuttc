@@ -12,7 +12,7 @@ function RankingsTable({ players }) {
                 <tr>
                     <th>Rank</th>
                     <th>Player</th>
-                    <th>Elo</th>
+                    <th>Rating</th>
                     <th>Wins</th>
                     <th>Losses</th>
                 </tr>

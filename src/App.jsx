@@ -15,12 +15,14 @@ import Profile from './profile.jsx';
 import Events from './events.jsx';
 import Matches from './matches.jsx';
 import Rankings from './rankings.jsx';
+import AdminAccess from './adminAccess.jsx';
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { NavDropdown } from 'react-bootstrap';
 import AuthUserProvider from './auth/AuthUserProvider';
 import { signIn, signOut } from "./auth/auth.js";
 import { useAuth } from "./auth/AuthUserProvider";
+import { useIsAdmin } from './hooks/useIsAdmin';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -169,6 +171,19 @@ function AnimatedRoutes() {
             </motion.div>
           }
         />
+        <Route
+          path="/profile/admin-access"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <AdminAccess />
+            </motion.div>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
@@ -189,6 +204,7 @@ export default function App() {
 
 function Heading() {
   const { user } = useAuth();
+  const { isAdmin } = useIsAdmin();
 
   const handleLogin = async () => {
     await signIn();
@@ -220,6 +236,7 @@ function Heading() {
               <NavDropdown.Item as={Link} to= "/profile/events">Events</NavDropdown.Item>
               <NavDropdown.Item as={Link} to= "/profile/matches">Matches</NavDropdown.Item>
               <NavDropdown.Item as={Link} to= "/profile/rankings">Rankings</NavDropdown.Item>
+              {isAdmin && <NavDropdown.Item as={Link} to= "/profile/admin-access">Admin</NavDropdown.Item>}
               <NavDropdown.Divider/>
               <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
             </NavDropdown>)

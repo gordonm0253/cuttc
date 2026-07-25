@@ -59,6 +59,7 @@ function Profile() {
                 <>
                     <div className="nameDiv">
                         <h1 className="profileH1">Hello, {user.displayName}!</h1>
+                        <p>{user.email}</p>
                         <p>Member since: {new Date(user.metadata.creationTime).toLocaleDateString("en-US", {
                             year: 'numeric',
                             month: 'long',

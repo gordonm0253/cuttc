@@ -12,6 +12,7 @@ export async function getMe(req, res, next) {
     res.json({
       email: req.firebaseUser.email,
       isAdmin,
+      playerId: player.id,
       rankingsOptIn: player.rankingsOptIn,
       hasRankingsAccess: isAdmin || !!viewer,
     });

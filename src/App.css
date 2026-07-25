@@ -521,6 +521,14 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   border-radius: 12px;
 }
 
+.nameDiv .profileH1 {
+  margin: 0;
+}
+
+.nameDiv p {
+  margin: 0.25rem 0 0;
+}
+
 .eventCard {
   background-color: white;
   border-radius: 12px;
@@ -608,16 +616,38 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   margin-bottom: 1rem;
 }
 
+.eventTimeRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.eventTimeRow .form-select {
+  width: auto;
+}
+
+.matchList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .matchCard {
   background-color: white;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border: 2px solid #f0f0f0;
+  width: 100%;
 }
 
 .matchCardTop {
-  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1.5rem;
   color: white;
   font-size: 0.85rem;
   font-weight: bold;
@@ -625,16 +655,279 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   background: linear-gradient(to right, #D02F2F, #a00);
 }
 
-.setScores {
-  flex-wrap: wrap;
+.matchCardTopMeta {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  letter-spacing: 1px;
 }
 
-.setScoreBadge {
-  background-color: #f0f0f0;
-  border-radius: 6px;
-  padding: 0.2rem 0.6rem;
+.scorecardHeader {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.75rem 1.5rem 1.5rem;
+}
+
+.scorecardPlayer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.scorecardPlayer-right {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.scorecardAvatar {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  border: 2px solid #f0f0f0;
+  color: #999;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.scorecardAvatarWinner {
+  background: #fdecec;
+  border-color: #f5c6c6;
+  color: #a00;
+}
+
+.scorecardPlayerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.scorecardPlayer-right .scorecardPlayerInfo {
+  align-items: flex-end;
+}
+
+.scorecardPlayerLabel {
+  font-size: 0.7rem;
   font-weight: bold;
-  font-size: 0.9rem;
+  letter-spacing: 1px;
+  color: #bbb;
+}
+
+.scorecardPlayerLabelWinner {
+  color: #a00;
+}
+
+.scorecardPlayerName {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #777;
+  line-height: 1.15;
+}
+
+.scorecardPlayer:has(.scorecardPlayerLabelWinner) .scorecardPlayerName {
+  color: #333;
+}
+
+.scorecardPlayerNameMe {
+  text-decoration: underline;
+  text-decoration-color: #D02F2F;
+  text-underline-offset: 3px;
+}
+
+.scorecardEloRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+}
+
+.scorecardEloBefore {
+  color: #aaa;
+}
+
+.scorecardEloAfter {
+  font-weight: bold;
+  color: #333;
+}
+
+.scorecardEloDelta {
+  border-radius: 6px;
+  padding: 0.15rem 0.45rem;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.scorecardEloDelta.ratingDeltaUp {
+  background: #eaf6ec;
+  color: #1e7a35;
+}
+
+.scorecardEloDelta.ratingDeltaDown {
+  background: #fdecec;
+  color: #a00;
+}
+
+.scorecardEloDelta.ratingDeltaEven {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.scorecardSetTotals {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.scorecardSetTotal {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #c9c9c9;
+  line-height: 1;
+}
+
+.scorecardSetTotalWinner {
+  color: #333;
+}
+
+.scorecardSetTotalDash {
+  font-size: 1.75rem;
+  color: #e5e5e5;
+}
+
+.scorecardSetTotalMobile {
+  display: none;
+}
+
+.scorecardSetGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: #f0f0f0;
+  border-top: 2px solid #f0f0f0;
+}
+
+.scorecardSetCell {
+  background: #fff;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.scorecardSetLabel {
+  font-size: 0.65rem;
+  color: #bbb;
+  letter-spacing: 1px;
+}
+
+.scorecardSetLabelDeuce {
+  color: #a00;
+  font-weight: bold;
+}
+
+.scorecardSetScoreLine {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.scorecardSetScoreWon {
+  color: #333;
+}
+
+.scorecardSetScoreLost {
+  color: #999;
+}
+
+.scorecardSetScoreDash {
+  color: #ddd;
+  margin: 0 0.1rem;
+}
+
+.scorecardSetDeuceTag {
+  font-size: 0.6rem;
+  color: #a00;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+@media (max-width: 640px) {
+  .scorecardHeader {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    padding: 1.1rem 1.1rem 0.9rem;
+  }
+
+  .scorecardPlayer,
+  .scorecardPlayer-right {
+    flex-direction: row;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .scorecardPlayer-right .scorecardPlayerInfo {
+    align-items: flex-start;
+  }
+
+  .scorecardPlayer + .scorecardPlayer {
+    padding-top: 0.9rem;
+    border-top: 1px solid #f2f2f2;
+  }
+
+  .scorecardAvatar {
+    width: 44px;
+    height: 44px;
+    font-size: 0.9rem;
+  }
+
+  .scorecardPlayerName {
+    font-size: 1.05rem;
+  }
+
+  .scorecardPlayerInfo {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .scorecardSetTotals {
+    display: none;
+  }
+
+  .scorecardSetTotalMobile {
+    display: block;
+    flex-shrink: 0;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .scorecardSetTotalMobile:not(.scorecardSetTotalWinner) {
+    color: #c9c9c9;
+    line-height: 1;
+  }
+
+  .scorecardSetGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .scorecardSetCell {
+    padding: 0.7rem 0.25rem 0.8rem;
+  }
+
+  .scorecardSetLabel {
+    font-size: 0.55rem;
+  }
+
+  .scorecardSetScoreLine {
+    font-size: 0.95rem;
+  }
 }
 
 .matchLogFormWrapper {
