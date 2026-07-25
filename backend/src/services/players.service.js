@@ -2,10 +2,16 @@ import prisma from '../lib/prisma.js';
 import { STARTING_ELO } from '../lib/elo.js';
 
 export async function listPlayers() {
-  return prisma.player.findMany({
-    orderBy: { displayName: 'asc' },
-    select: { id: true, displayName: true, email: true, elo: true },
-  });
+  const [viewers, players] = await Promise.all([
+    prisma.rankingsViewer.findMany({ select: { email: true } }),
+    prisma.player.findMany({
+      orderBy: { displayName: 'asc' },
+      select: { id: true, displayName: true, email: true, elo: true },
+    }),
+  ]);
+
+  const allowedEmails = new Set(viewers.map((v) => v.email.toLowerCase()));
+  return players.filter((p) => allowedEmails.has(p.email.toLowerCase()));
 }
 
 export async function ensurePlayerForUser({ email, name }) {

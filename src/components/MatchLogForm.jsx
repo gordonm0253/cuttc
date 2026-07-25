@@ -27,9 +27,11 @@ function validateSetScore(a, b, index) {
         return `Set ${index + 1}: scores must be non-negative whole numbers.`;
     }
     const max = Math.max(numA, numB);
-    const diff = Math.abs(numA - numB);
-    if (max < 11 || diff < 2) {
-        return `Set ${index + 1} (${numA}-${numB}): a set is played to 11, win by 2.`;
+    const min = Math.min(numA, numB);
+    const diff = max - min;
+    const isValid = (max === 11 && min <= 9) || (min >= 10 && diff === 2);
+    if (!isValid) {
+        return `Set ${index + 1} (${numA}-${numB}): a set is won at 11 points, or by 2 if tied at 10-10 or later.`;
     }
     return null;
 }

@@ -34,9 +34,11 @@ export function determineWinnerAndValidate(sets) {
       throw new Error('Set scores must be non-negative integers');
     }
     const max = Math.max(a, b);
-    const diff = Math.abs(a - b);
-    if (max < 11 || diff < 2) {
-      throw new Error(`Invalid set score ${a}-${b}: must reach at least 11 with a 2-point lead`);
+    const min = Math.min(a, b);
+    const diff = max - min;
+    const isValid = (max === 11 && min <= 9) || (min >= 10 && diff === 2);
+    if (!isValid) {
+      throw new Error(`Invalid set score ${a}-${b}: a set is won at 11 points, or by 2 points if tied at 10-10 or later`);
     }
     if (a > b) aWins++; else bWins++;
   });
