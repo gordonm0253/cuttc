@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  displayName   String
+  elo           Int      @default(1200)
+  rankingsOptIn Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  matchesAsA Match[] @relation("PlayerA")
+  matchesAsB Match[] @relation("PlayerB")
+  matchesWon Match[] @relation("Winner")
+
+  @@index([elo])
+}
+
+enum EventType {
+  practice
+  tournament
+  social
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  time        String?
+  location    String
+  type        EventType
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model RankingsViewer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Match {
+  id              String   @id @default(cuid())
+  playedAt        DateTime
+  playerAId       String
+  playerBId       String
+  winnerId        String
+  playerAElo      Int
+  playerBElo      Int
+  playerAEloAfter Int
+  playerBEloAfter Int
+  sets            Json
+  createdAt       DateTime @default(now())
+
+  playerA Player @relation("PlayerA", fields: [playerAId], references: [id])
+  playerB Player @relation("PlayerB", fields: [playerBId], references: [id])
+  winner  Player @relation("Winner", fields: [winnerId], references: [id])
+
+  @@index([playedAt])
+}

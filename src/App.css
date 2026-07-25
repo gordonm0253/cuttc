@@ -564,3 +564,184 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 .eventMarginBot {
   margin-bottom: 1rem;
 }
+
+.profileNavCards {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.profileNavCard {
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+  padding: 1.25rem;
+  background-color: white;
+  border-radius: 12px;
+  border: 2px solid #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profileNavCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: #a00;
+}
+
+.eventAdminActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.eventFormError {
+  color: #a00;
+  background-color: #fdecec;
+  border: 1px solid #f0b4b4;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.matchCard {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 2px solid #f0f0f0;
+}
+
+.matchCardTop {
+  padding: 0.5rem 1rem;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  background: linear-gradient(to right, #D02F2F, #a00);
+}
+
+.setScores {
+  flex-wrap: wrap;
+}
+
+.setScoreBadge {
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  padding: 0.2rem 0.6rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.matchLogFormWrapper {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  background-color: white;
+  border-radius: 12px;
+  border: 2px solid #f0f0f0;
+  padding: 1.5rem;
+}
+
+.setScoreRow {
+  margin-bottom: 0.5rem;
+}
+
+.rankingsTable {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rankingsRow td {
+  vertical-align: middle;
+}
+
+.playerPickerResults {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.playerPickerResult {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+}
+
+.playerPickerResult:last-child {
+  border-bottom: none;
+}
+
+.playerPickerResult:hover {
+  background-color: #faf0f0;
+}
+
+.playerPickerEmail {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.playerPickerSelected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background-color: #faf0f0;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+.rankingsOptInBox {
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  background-color: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+
+.rankingsOptInHint {
+  justify-content: center;
+  color: #888;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+.rankingsViewersPanel {
+  max-width: 500px;
+  margin: 2rem auto 0;
+  background-color: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.rankingsViewerForm {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.rankingsViewerForm .form-control {
+  flex: 1;
+}
+
+.rankingsViewerItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}

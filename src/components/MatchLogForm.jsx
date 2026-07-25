@@ -1,0 +1,137 @@
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { getPlayers } from '../api/players';
+import PlayerPicker from './PlayerPicker';
+
+const EMPTY_SETS = [
+    { a: '', b: '' },
+    { a: '', b: '' },
+    { a: '', b: '' },
+];
+
+const EMPTY_PLAYER = { id: null, displayName: '', email: '' };
+
+function toPlayerRef(player) {
+    return player.id ? { id: player.id } : { displayName: player.displayName, email: player.email };
+}
+
+function MatchLogForm({ onSubmit, onClose }) {
+    const [playedAt, setPlayedAt] = useState(new Date().toISOString().slice(0, 10));
+    const [players, setPlayers] = useState([]);
+    const [playerA, setPlayerA] = useState(EMPTY_PLAYER);
+    const [playerB, setPlayerB] = useState(EMPTY_PLAYER);
+    const [sets, setSets] = useState(EMPTY_SETS);
+    const [error, setError] = useState('');
+    const [submitting, setSubmitting] = useState(false);
+
+    useEffect(() => {
+        getPlayers().then(setPlayers).catch(() => setPlayers([]));
+    }, []);
+
+    const updateSet = (index, side, value) => {
+        setSets((prev) => prev.map((s, i) => (i === index ? { ...s, [side]: value } : s)));
+    };
+
+    const addSet = () => setSets((prev) => (prev.length < 5 ? [...prev, { a: '', b: '' }] : prev));
+    const removeSet = (index) => setSets((prev) => (prev.length > 3 ? prev.filter((_, i) => i !== index) : prev));
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        const parsedSets = sets
+            .filter((s) => s.a !== '' && s.b !== '')
+            .map((s) => ({ a: Number(s.a), b: Number(s.b) }));
+
+        if (parsedSets.length < 3) {
+            setError('Enter scores for at least 3 sets.');
+            return;
+        }
+        if (!playerA.id && !(playerA.displayName && playerA.email)) {
+            setError('Select or enter Player A.');
+            return;
+        }
+        if (!playerB.id && !(playerB.displayName && playerB.email)) {
+            setError('Select or enter Player B.');
+            return;
+        }
+
+        setSubmitting(true);
+        try {
+            await onSubmit({
+                playedAt,
+                playerA: toPlayerRef(playerA),
+                playerB: toPlayerRef(playerB),
+                sets: parsedSets,
+            });
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    return (
+        <Form onSubmit={handleSubmit} className="matchLogForm">
+            {error && <div className="eventFormError">{error}</div>}
+            <Form.Group className="mb-3">
+                <Form.Label>Date played</Form.Label>
+                <Form.Control type="date" value={playedAt} onChange={(e) => setPlayedAt(e.target.value)} required />
+            </Form.Group>
+
+            <PlayerPicker label="Player A" players={players} value={playerA} onChange={setPlayerA} />
+            <PlayerPicker label="Player B" players={players} value={playerB} onChange={setPlayerB} />
+
+            <Form.Label>Set scores (first to 11, win by 2, best of 5)</Form.Label>
+            {sets.map((set, index) => (
+                <Row key={index} className="g-2 mb-2 align-items-center setScoreRow">
+                    <Col xs="auto">Set {index + 1}</Col>
+                    <Col>
+                        <Form.Control
+                            type="number"
+                            min="0"
+                            placeholder="A"
+                            value={set.a}
+                            onChange={(e) => updateSet(index, 'a', e.target.value)}
+                        />
+                    </Col>
+                    <Col>
+                        <Form.Control
+                            type="number"
+                            min="0"
+                            placeholder="B"
+                            value={set.b}
+                            onChange={(e) => updateSet(index, 'b', e.target.value)}
+                        />
+                    </Col>
+                    <Col xs="auto">
+                        <Button variant="outline-secondary" size="sm" onClick={() => removeSet(index)} disabled={sets.length <= 3}>
+                            Remove
+                        </Button>
+                    </Col>
+                </Row>
+            ))}
+            {sets.length < 5 && (
+                <Button variant="outline-secondary" size="sm" className="mb-3" onClick={addSet}>
+                    Add set
+                </Button>
+            )}
+
+            <div className="d-flex justify-content-end gap-2 mt-3">
+                <Button variant="secondary" onClick={onClose} disabled={submitting}>Cancel</Button>
+                <Button variant="danger" type="submit" disabled={submitting}>Log Match</Button>
+            </div>
+        </Form>
+    );
+}
+
+MatchLogForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+};
+
+export default MatchLogForm;
