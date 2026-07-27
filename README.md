@@ -14,6 +14,6 @@ Official website for Cornell Table Tennis Club, a registered student organizatio
 
 ## Tech Stack
 
-- **Frontend:** React, HTML, TailwindCSS
+- **Frontend:** React, HTML/CSS
 - **Backend:** Node.js, Express, Prisma, PostgreSQL
 - **Auth:** Firebase Authentication
