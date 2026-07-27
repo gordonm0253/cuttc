@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import { useAuth } from './auth/AuthUserProvider';
 import { useIsAdmin } from './hooks/useIsAdmin';
-import { getMatches, createMatch } from './api/matches';
+import { getMatches, createMatch, deleteMatch } from './api/matches';
 import MatchLogForm from './components/MatchLogForm';
 
 function initials(name) {
@@ -62,7 +62,7 @@ ScorecardPlayer.propTypes = {
     setsWon: PropTypes.number.isRequired,
 };
 
-function MatchCard({ match, currentPlayerId }) {
+function MatchCard({ match, currentPlayerId, isAdmin, onDelete }) {
     const setsWonA = match.sets.filter((set) => set.a > set.b).length;
     const setsWonB = match.sets.filter((set) => set.b > set.a).length;
     const aIsWinner = match.winner.id === match.playerA.id;
@@ -71,11 +71,24 @@ function MatchCard({ match, currentPlayerId }) {
         <div className="matchCard">
             <div className="matchCardTop">
                 <span>
-                    {new Date(match.playedAt).toLocaleDateString('en-US', {
-                        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
-                    })}
+                    <span>
+                        {new Date(match.playedAt).toLocaleDateString('en-US', {
+                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+                        })}
+                    </span>
+                    {' '}
+                    <span className="matchCardTopMeta">CLUB LADDER</span>
                 </span>
-                <span className="matchCardTopMeta">CLUB LADDER</span>
+                {isAdmin && (
+                    <Button
+                        variant="light"
+                        size="sm"
+                        className="matchCardDeleteBtn"
+                        onClick={() => onDelete(match.id)}
+                    >
+                        Delete
+                    </Button>
+                )}
             </div>
 
             <div className="scorecardHeader">
@@ -131,6 +144,8 @@ function MatchCard({ match, currentPlayerId }) {
 MatchCard.propTypes = {
     match: PropTypes.object.isRequired,
     currentPlayerId: PropTypes.string,
+    isAdmin: PropTypes.bool.isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 
 function Matches() {
@@ -160,6 +175,12 @@ function Matches() {
     const handleLogMatch = async (data) => {
         await createMatch(data);
         setShowForm(false);
+        loadMatches();
+    };
+
+    const handleDeleteMatch = async (id) => {
+        if (!window.confirm('Delete this match? Player ratings will be recalculated.')) return;
+        await deleteMatch(id);
         loadMatches();
     };
 
@@ -208,7 +229,13 @@ function Matches() {
 
                 <div className="matchList">
                     {matches.map((match) => (
-                        <MatchCard key={match.id} match={match} currentPlayerId={playerId} />
+                        <MatchCard
+                            key={match.id}
+                            match={match}
+                            currentPlayerId={playerId}
+                            isAdmin={isAdmin}
+                            onDelete={handleDeleteMatch}
+                        />
                     ))}
                 </div>
             </div>

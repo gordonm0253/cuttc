@@ -20,3 +20,12 @@ export async function createMatch(req, res, next) {
     next(err);
   }
 }
+
+export async function deleteMatch(req, res, next) {
+  try {
+    await matchesService.deleteMatch(req.params.id);
+    res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+}

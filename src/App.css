@@ -661,6 +661,18 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   letter-spacing: 1px;
 }
 
+.matchCardDeleteBtn {
+  color: #a00;
+  font-weight: bold;
+  border: none;
+}
+
+.matchCardDeleteBtn:hover,
+.matchCardDeleteBtn:focus {
+  background-color: #a00;
+  color: white;
+}
+
 .scorecardHeader {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -932,6 +944,15 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 
 .setScoreRow {
   margin-bottom: 0.5rem;
+}
+
+/* The Modal.Header/Body/Footer are wrapped in a <Form>, which breaks the flex column
+   layout .modal-content relies on for `scrollable` to bound .modal-body's height. */
+.matchLogForm {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .rankingsTable {

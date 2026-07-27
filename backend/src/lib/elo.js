@@ -13,6 +13,39 @@ export function updateElo(ratingA, ratingB, scoreA) {
   return { newRatingA, newRatingB };
 }
 
+// Replays a full match history (ordered by playedAt ascending) from scratch, recomputing each
+// match's before/after Elo snapshots and each player's final rating. Ratings are interdependent
+// across the whole ledger (not just per-player), so this must run over every remaining match
+// globally, not per-player in isolation.
+// matches: array of { id, playerAId, playerBId, winnerId }, ordered by playedAt ascending.
+// Returns { snapshots: Map<matchId, { playerAElo, playerBElo, playerAEloAfter, playerBEloAfter }>,
+//           finalRatings: Map<playerId, number> }.
+export function replayMatches(matches) {
+  const ratings = new Map();
+  const getRating = (playerId) => ratings.get(playerId) ?? STARTING_ELO;
+
+  const snapshots = new Map();
+  for (const match of matches) {
+    const { id, playerAId, playerBId, winnerId } = match;
+    const ratingA = getRating(playerAId);
+    const ratingB = getRating(playerBId);
+    const scoreA = winnerId === playerAId ? 1 : 0;
+    const { newRatingA, newRatingB } = updateElo(ratingA, ratingB, scoreA);
+
+    snapshots.set(id, {
+      playerAElo: ratingA,
+      playerBElo: ratingB,
+      playerAEloAfter: newRatingA,
+      playerBEloAfter: newRatingB,
+    });
+
+    ratings.set(playerAId, newRatingA);
+    ratings.set(playerBId, newRatingB);
+  }
+
+  return { snapshots, finalRatings: ratings };
+}
+
 // Validates a best-of-5, first-to-11-win-by-2 match and returns the winning side.
 export function determineWinnerAndValidate(sets) {
   if (!Array.isArray(sets) || sets.length < 3 || sets.length > 5) {

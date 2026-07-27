@@ -1,5 +1,5 @@
 import prisma from '../lib/prisma.js';
-import { determineWinnerAndValidate, updateElo, STARTING_ELO } from '../lib/elo.js';
+import { determineWinnerAndValidate, updateElo, STARTING_ELO, replayMatches } from '../lib/elo.js';
 
 function validatePlayerRef(player, label) {
   if (!player || typeof player !== 'object') {
@@ -104,5 +104,41 @@ export async function createMatch({ playedAt, playerA, playerB, sets }) {
     await tx.player.update({ where: { id: resolvedB.id }, data: { elo: newRatingB } });
 
     return match;
+  });
+}
+
+export async function deleteMatch(id) {
+  await prisma.$transaction(async (tx) => {
+    const match = await tx.match.findUnique({ where: { id } });
+    if (!match) {
+      const err = new Error('Match not found');
+      err.status = 404;
+      throw err;
+    }
+
+    await tx.match.delete({ where: { id } });
+
+    // Ratings are interdependent across the whole match ledger, so removing one match
+    // requires replaying every remaining match in chronological order to get correct
+    // before/after snapshots and current player ratings.
+    const remainingMatches = await tx.match.findMany({
+      orderBy: { playedAt: 'asc' },
+      select: { id: true, playerAId: true, playerBId: true, winnerId: true },
+    });
+
+    const { snapshots, finalRatings } = replayMatches(remainingMatches);
+
+    await Promise.all(
+      remainingMatches.map((m) => {
+        const snapshot = snapshots.get(m.id);
+        return tx.match.update({ where: { id: m.id }, data: snapshot });
+      })
+    );
+
+    await Promise.all(
+      Array.from(finalRatings.entries()).map(([playerId, elo]) =>
+        tx.player.update({ where: { id: playerId }, data: { elo } })
+      )
+    );
   });
 }
