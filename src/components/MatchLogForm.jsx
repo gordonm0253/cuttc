@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { getPlayers } from '../api/players';
 import PlayerPicker from './PlayerPicker';
 
 const EMPTY_SETS = [
@@ -13,7 +13,7 @@ const EMPTY_SETS = [
     { a: '', b: '' },
 ];
 
-const EMPTY_PLAYER = { id: null, displayName: '', email: '' };
+const EMPTY_PLAYER = { id: null, displayName: '', email: '', elo: null };
 
 function toPlayerRef(player) {
     return player.id ? { id: player.id } : { displayName: player.displayName, email: player.email };
@@ -77,18 +77,13 @@ function parseAndValidateSets(sets) {
     return { sets: parsed };
 }
 
-function MatchLogForm({ onSubmit, onClose }) {
+function MatchLogForm({ show, onSubmit, onClose }) {
     const [playedAt, setPlayedAt] = useState(new Date().toISOString().slice(0, 10));
-    const [players, setPlayers] = useState([]);
     const [playerA, setPlayerA] = useState(EMPTY_PLAYER);
     const [playerB, setPlayerB] = useState(EMPTY_PLAYER);
     const [sets, setSets] = useState(EMPTY_SETS);
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
-
-    useEffect(() => {
-        getPlayers().then(setPlayers).catch(() => setPlayers([]));
-    }, []);
 
     const updateSet = (index, side, value) => {
         setSets((prev) => prev.map((s, i) => (i === index ? { ...s, [side]: value } : s)));
@@ -131,60 +126,67 @@ function MatchLogForm({ onSubmit, onClose }) {
     };
 
     return (
-        <Form onSubmit={handleSubmit} className="matchLogForm">
-            {error && <div className="eventFormError">{error}</div>}
-            <Form.Group className="mb-3">
-                <Form.Label>Date played</Form.Label>
-                <Form.Control type="date" value={playedAt} onChange={(e) => setPlayedAt(e.target.value)} required />
-            </Form.Group>
+        <Modal show={show} onHide={onClose} centered scrollable>
+            <Form onSubmit={handleSubmit} className="matchLogForm">
+                <Modal.Header closeButton>
+                    <Modal.Title>Log Match</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {error && <div className="eventFormError">{error}</div>}
+                    <Form.Group className="mb-3">
+                        <Form.Label>Date played</Form.Label>
+                        <Form.Control type="date" value={playedAt} onChange={(e) => setPlayedAt(e.target.value)} required />
+                    </Form.Group>
 
-            <PlayerPicker label="Player A" players={players} value={playerA} onChange={setPlayerA} />
-            <PlayerPicker label="Player B" players={players} value={playerB} onChange={setPlayerB} />
+                    <PlayerPicker label="Player A" value={playerA} onChange={setPlayerA} />
+                    <PlayerPicker label="Player B" value={playerB} onChange={setPlayerB} />
 
-            <Form.Label>Set scores (first to 11, win by 2, best of 5)</Form.Label>
-            {sets.map((set, index) => (
-                <Row key={index} className="g-2 mb-2 align-items-center setScoreRow">
-                    <Col xs="auto">Set {index + 1}</Col>
-                    <Col>
-                        <Form.Control
-                            type="number"
-                            min="0"
-                            placeholder="A"
-                            value={set.a}
-                            onChange={(e) => updateSet(index, 'a', e.target.value)}
-                        />
-                    </Col>
-                    <Col>
-                        <Form.Control
-                            type="number"
-                            min="0"
-                            placeholder="B"
-                            value={set.b}
-                            onChange={(e) => updateSet(index, 'b', e.target.value)}
-                        />
-                    </Col>
-                    <Col xs="auto">
-                        <Button variant="outline-secondary" size="sm" onClick={() => removeSet(index)} disabled={sets.length <= 3}>
-                            Remove
+                    <Form.Label>Set scores (first to 11, win by 2, best of 5)</Form.Label>
+                    {sets.map((set, index) => (
+                        <Row key={index} className="g-2 mb-2 align-items-center setScoreRow">
+                            <Col xs="auto">Set {index + 1}</Col>
+                            <Col>
+                                <Form.Control
+                                    type="number"
+                                    min="0"
+                                    placeholder="A"
+                                    value={set.a}
+                                    onChange={(e) => updateSet(index, 'a', e.target.value)}
+                                />
+                            </Col>
+                            <Col>
+                                <Form.Control
+                                    type="number"
+                                    min="0"
+                                    placeholder="B"
+                                    value={set.b}
+                                    onChange={(e) => updateSet(index, 'b', e.target.value)}
+                                />
+                            </Col>
+                            <Col xs="auto">
+                                <Button variant="outline-secondary" size="sm" onClick={() => removeSet(index)} disabled={sets.length <= 3}>
+                                    Remove
+                                </Button>
+                            </Col>
+                        </Row>
+                    ))}
+                    {sets.length < 5 && (
+                        <Button variant="outline-secondary" size="sm" className="mb-3" onClick={addSet}>
+                            Add set
                         </Button>
-                    </Col>
-                </Row>
-            ))}
-            {sets.length < 5 && (
-                <Button variant="outline-secondary" size="sm" className="mb-3" onClick={addSet}>
-                    Add set
-                </Button>
-            )}
-
-            <div className="d-flex justify-content-end gap-2 mt-3">
-                <Button variant="secondary" onClick={onClose} disabled={submitting}>Cancel</Button>
-                <Button variant="danger" type="submit" disabled={submitting}>Log Match</Button>
-            </div>
-        </Form>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={onClose} disabled={submitting}>Cancel</Button>
+                    <Button variant="danger" type="submit" disabled={submitting}>Log Match</Button>
+                </Modal.Footer>
+            </Form>
+        </Modal>
     );
 }
 
 MatchLogForm.propTypes = {
+    show: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
 };

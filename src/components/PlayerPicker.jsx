@@ -1,19 +1,47 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { getPlayers } from '../api/players';
 
-function PlayerPicker({ label, players, value, onChange }) {
+const SEARCH_DEBOUNCE_MS = 250;
+
+function PlayerPicker({ label, value, onChange }) {
     const [query, setQuery] = useState('');
+    const [matches, setMatches] = useState([]);
+    const [searching, setSearching] = useState(false);
     const [creatingNew, setCreatingNew] = useState(false);
+    const latestRequestId = useRef(0);
 
-    const matches = useMemo(() => {
-        const q = query.trim().toLowerCase();
-        if (!q) return players;
-        return players.filter((p) => `${p.displayName} ${p.email}`.toLowerCase().includes(q));
-    }, [players, query]);
+    useEffect(() => {
+        const q = query.trim();
+        // Clear immediately so stale results from a previous query never linger on screen.
+        setMatches([]);
 
-    const selectedPlayer = value.id ? players.find((p) => p.id === value.id) : null;
+        if (!q) {
+            setSearching(false);
+            return;
+        }
+
+        setSearching(true);
+        const requestId = ++latestRequestId.current;
+        const timer = setTimeout(() => {
+            getPlayers(q)
+                .then((results) => {
+                    if (latestRequestId.current === requestId) setMatches(results);
+                })
+                .catch(() => {
+                    if (latestRequestId.current === requestId) setMatches([]);
+                })
+                .finally(() => {
+                    if (latestRequestId.current === requestId) setSearching(false);
+                });
+        }, SEARCH_DEBOUNCE_MS);
+
+        return () => clearTimeout(timer);
+    }, [query]);
+
+    const selectedPlayer = value.id ? { displayName: value.displayName, email: value.email, elo: value.elo } : null;
 
     if (creatingNew) {
         return (
@@ -47,7 +75,7 @@ function PlayerPicker({ label, players, value, onChange }) {
             {selectedPlayer ? (
                 <div className="playerPickerSelected">
                     <span>{selectedPlayer.displayName} ({selectedPlayer.email}) &mdash; Rating {selectedPlayer.elo}</span>
-                    <Button variant="link" size="sm" onClick={() => onChange({ id: null, displayName: '', email: '' })}>
+                    <Button variant="link" size="sm" onClick={() => onChange({ id: null, displayName: '', email: '', elo: null })}>
                         Change
                     </Button>
                 </div>
@@ -58,21 +86,24 @@ function PlayerPicker({ label, players, value, onChange }) {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                     />
-                    <div className="playerPickerResults">
-                        {matches.slice(0, 8).map((p) => (
-                            <button
-                                type="button"
-                                key={p.id}
-                                className="playerPickerResult"
-                                onClick={() => { onChange({ id: p.id, displayName: p.displayName, email: p.email }); setQuery(''); }}
-                            >
-                                {p.displayName} <span className="playerPickerEmail">({p.email})</span>
-                            </button>
-                        ))}
-                        {matches.length === 0 && (
-                            <p className="eventText">No matching players.</p>
-                        )}
-                    </div>
+                    {query.trim() && (
+                        <div className="playerPickerResults">
+                            {searching && <p className="eventText">Searching...</p>}
+                            {!searching && matches.map((p) => (
+                                <button
+                                    type="button"
+                                    key={p.id}
+                                    className="playerPickerResult"
+                                    onClick={() => { onChange({ id: p.id, displayName: p.displayName, email: p.email, elo: p.elo }); setQuery(''); }}
+                                >
+                                    {p.displayName} <span className="playerPickerEmail">({p.email})</span>
+                                </button>
+                            ))}
+                            {!searching && matches.length === 0 && (
+                                <p className="eventText">No matching players.</p>
+                            )}
+                        </div>
+                    )}
                     <Button variant="link" size="sm" className="p-0" onClick={() => setCreatingNew(true)}>
                         Player not listed? Add a new one
                     </Button>
@@ -84,16 +115,11 @@ function PlayerPicker({ label, players, value, onChange }) {
 
 PlayerPicker.propTypes = {
     label: PropTypes.string.isRequired,
-    players: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        displayName: PropTypes.string,
-        email: PropTypes.string,
-        elo: PropTypes.number,
-    })).isRequired,
     value: PropTypes.shape({
         id: PropTypes.string,
         displayName: PropTypes.string,
         email: PropTypes.string,
+        elo: PropTypes.number,
     }).isRequired,
     onChange: PropTypes.func.isRequired,
 };

@@ -930,15 +930,6 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   }
 }
 
-.matchLogFormWrapper {
-  max-width: 600px;
-  margin: 0 auto 2rem;
-  background-color: white;
-  border-radius: 12px;
-  border: 2px solid #f0f0f0;
-  padding: 1.5rem;
-}
-
 .setScoreRow {
   margin-bottom: 0.5rem;
 }
@@ -1032,11 +1023,11 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   flex: 1;
 }
 
-.rankingsViewerItem {
+.list-group-item.rankingsViewerItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }

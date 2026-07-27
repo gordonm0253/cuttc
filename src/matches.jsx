@@ -193,16 +193,14 @@ function Matches() {
                     </h1>
                     <div style={{ width: '10rem', height: '4px', background: 'linear-gradient(to right, #D02F2F, #a00)', margin: '1rem auto', borderRadius: '2px' }} />
                     {isAdmin && (
-                        <Button variant="danger" onClick={() => setShowForm((s) => !s)}>
-                            {showForm ? 'Cancel' : 'Log Match'}
+                        <Button variant="danger" onClick={() => setShowForm(true)}>
+                            Log Match
                         </Button>
                     )}
                 </div>
 
                 {isAdmin && showForm && (
-                    <div className="matchLogFormWrapper">
-                        <MatchLogForm onSubmit={handleLogMatch} onClose={() => setShowForm(false)} />
-                    </div>
+                    <MatchLogForm show={showForm} onSubmit={handleLogMatch} onClose={() => setShowForm(false)} />
                 )}
 
                 {loading && <p className="eventText">Loading matches...</p>}

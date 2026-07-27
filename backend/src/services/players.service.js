@@ -1,17 +1,31 @@
 import prisma from '../lib/prisma.js';
 import { STARTING_ELO } from '../lib/elo.js';
 
-export async function listPlayers() {
+const SEARCH_RESULT_LIMIT = 8;
+
+export async function listPlayers({ q } = {}) {
+  const query = q?.trim();
+
   const [viewers, players] = await Promise.all([
     prisma.rankingsViewer.findMany({ select: { email: true } }),
     prisma.player.findMany({
+      where: query
+        ? {
+            OR: [
+              { displayName: { contains: query, mode: 'insensitive' } },
+              { email: { contains: query, mode: 'insensitive' } },
+            ],
+          }
+        : undefined,
       orderBy: { displayName: 'asc' },
       select: { id: true, displayName: true, email: true, elo: true },
+      take: query ? SEARCH_RESULT_LIMIT * 4 : undefined,
     }),
   ]);
 
   const allowedEmails = new Set(viewers.map((v) => v.email.toLowerCase()));
-  return players.filter((p) => allowedEmails.has(p.email.toLowerCase()));
+  const filtered = players.filter((p) => allowedEmails.has(p.email.toLowerCase()));
+  return query ? filtered.slice(0, SEARCH_RESULT_LIMIT) : filtered;
 }
 
 export async function ensurePlayerForUser({ email, name }) {
