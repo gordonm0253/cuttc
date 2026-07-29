@@ -3,7 +3,7 @@ import nats2024 from './assets/nats2024.jpg';
 import nats2025_1 from './assets/nats2025_1.jpg';
 import nats2025_19 from './assets/nats2025_19.jpg';
 import nathan from './assets/gallery1.jpg'; 
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 export default function Home() {
     return (

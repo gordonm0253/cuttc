@@ -15,7 +15,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           // Separate React and related libraries
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'react-vendor': ['react', 'react-dom', 'react-router'],
           
           // Separate react-image-gallery if it's large
           'gallery-vendor': ['react-image-gallery'],
@@ -31,6 +31,6 @@ export default defineConfig({
   
   // Optimize dependencies
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'react-image-gallery']
+    include: ['react', 'react-dom', 'react-router', 'react-image-gallery']
   }
 })

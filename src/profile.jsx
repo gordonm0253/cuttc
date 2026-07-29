@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useAuth } from "./auth/AuthUserProvider";
 import { getEvents } from './api/events';
 
