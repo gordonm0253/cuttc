@@ -54,7 +54,7 @@ export default function Home() {
             </div>
             <div className = "recentDiv redBorder loadingAnimate">
                 <div className = "titleWrapper">
-                        <h1 className = "welcomeTitle">Recent News</h1>
+                        <h1 className = "welcomeTitle">(Not So) Recent News</h1>
                         <div className= "underline-bar"></div>
                 </div>
                 <p>From April 3rd-6th, the Cornell A and women&apos;s team traveled UW Health Sports Factory in Rockford, Illinois to compete in the NCTTA National Championships against the best collegiate teams in the country. 

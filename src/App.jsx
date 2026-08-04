@@ -16,6 +16,7 @@ import Events from './events.jsx';
 import Matches from './matches.jsx';
 import Rankings from './rankings.jsx';
 import Tournaments from './tournaments.jsx';
+import TournamentCreate from './tournamentCreate.jsx';
 import TournamentDetail from './tournamentDetail.jsx';
 import AdminAccess from './adminAccess.jsx';
 import { useEffect } from 'react';
@@ -183,6 +184,19 @@ function AnimatedRoutes() {
               transition={{ duration: 0.15 }}
             >
               <Tournaments />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/profile/tournaments/new"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <TournamentCreate />
             </motion.div>
           }
         />

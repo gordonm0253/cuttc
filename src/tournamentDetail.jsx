@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
 import { useIsAdmin } from './hooks/useIsAdmin';
 import { getTournament, deleteTournament, reportTournamentMatchResult } from './api/tournaments';
 import BracketView from './components/BracketView';
+import RoundRobinView from './components/RoundRobinView';
 import TournamentMatchModal from './components/TournamentMatchModal';
 
 const FORMAT_LABELS = {
@@ -15,93 +14,145 @@ const FORMAT_LABELS = {
 };
 
 const STATUS_LABELS = {
-    draft: 'Draft',
-    seeded: 'Seeded',
-    in_progress: 'In Progress',
-    completed: 'Completed',
+    draft: 'DRAFT',
+    seeded: 'UPCOMING',
+    in_progress: 'IN PROGRESS',
+    completed: 'COMPLETED',
 };
 
-function StandingsTable({ tournament }) {
-    const entrantById = new Map(tournament.entrants.map((e) => [e.id, e]));
-    return (
-        <Table striped bordered hover responsive className="standingsTable">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Player</th>
-                    <th>W</th>
-                    <th>L</th>
-                    <th>Set diff</th>
-                    <th>Point diff</th>
-                </tr>
-            </thead>
-            <tbody>
-                {tournament.standings.map((s, i) => {
-                    const entrant = entrantById.get(s.entrantId);
-                    return (
-                        <tr key={s.entrantId}>
-                            <td>{i + 1}</td>
-                            <td>{entrant?.player?.displayName || 'Unknown'}</td>
-                            <td>{s.wins}</td>
-                            <td>{s.losses}</td>
-                            <td>{s.setsWon - s.setsLost}</td>
-                            <td>{s.pointsWon - s.pointsLost}</td>
-                        </tr>
-                    );
-                })}
-            </tbody>
-        </Table>
-    );
-}
-
-StandingsTable.propTypes = {
-    tournament: PropTypes.object.isRequired,
+const STATUS_BADGE = {
+    draft: { bg: '#f2eded', fg: '#a89b9b' },
+    seeded: { bg: '#faf0f0', fg: '#8f5a5a' },
+    in_progress: { bg: '#fdecec', fg: '#a00' },
+    completed: { bg: '#f2eded', fg: '#7d7373' },
 };
 
-function RoundRobinMatchList({ tournament, isAdmin, onReport }) {
-    const rounds = [...new Set(tournament.matches.map((m) => m.round))].sort((a, b) => a - b);
+const TABS = [
+    { key: 'bracket', label: 'Bracket' },
+    { key: 'entrants', label: 'Entrants' },
+    { key: 'results', label: 'Results' },
+    { key: 'elo', label: 'Elo impact' },
+];
+
+const formatDateTime = (isoDate) => new Date(isoDate).toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+});
+
+function EntrantsTab({ tournament }) {
     return (
-        <div>
-            {rounds.map((round) => (
-                <div key={round} className="roundRobinRound">
-                    <h4>Round {round}</h4>
-                    {tournament.matches
-                        .filter((m) => m.round === round)
-                        .map((m) => (
-                            <div key={m.id} className="roundRobinMatchRow">
-                                <span>
-                                    {m.entrantA?.player?.displayName} vs {m.entrantB?.player?.displayName}
-                                </span>
-                                {m.match ? (
-                                    <span className="roundRobinScore">
-                                        {m.match.sets.filter((s) => s.a > s.b).length} – {m.match.sets.filter((s) => s.b > s.a).length}
-                                    </span>
-                                ) : isAdmin ? (
-                                    <Button size="sm" variant="outline-danger" onClick={() => onReport(m)}>Report</Button>
-                                ) : (
-                                    <span className="eventText">Not played</span>
-                                )}
-                            </div>
-                        ))}
+        <div className="tournamentEntrantsList">
+            {tournament.entrants.map((e) => (
+                <div key={e.id} className="tournamentEntrantRow">
+                    <span className="tournamentEntrantSeed">#{e.seed}</span>
+                    <span className="tournamentEntrantName">{e.player.displayName}</span>
+                    <span className="tournamentEntrantElo">Seeded at {e.eloAtSeed}</span>
                 </div>
             ))}
         </div>
     );
 }
 
-RoundRobinMatchList.propTypes = {
+EntrantsTab.propTypes = {
     tournament: PropTypes.object.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
-    onReport: PropTypes.func.isRequired,
+};
+
+function ResultsTab({ tournament }) {
+    const played = tournament.matches
+        .filter((m) => m.match)
+        .sort((a, b) => new Date(b.match.playedAt) - new Date(a.match.playedAt));
+
+    if (played.length === 0) {
+        return <p className="eventText">No results reported yet.</p>;
+    }
+
+    return (
+        <div className="tournamentResultsList">
+            {played.map((m) => {
+                const setsWonA = m.match.sets.filter((s) => s.a > s.b).length;
+                const setsWonB = m.match.sets.filter((s) => s.b > s.a).length;
+                const aWon = m.winnerEntrantId === m.entrantAId;
+                return (
+                    <div key={m.id} className="tournamentResultRow">
+                        <div className="tournamentResultDate">{formatDateTime(m.match.playedAt)}</div>
+                        <div className="tournamentResultNames">
+                            <span className={aWon ? 'tournamentResultWinner' : ''}>{m.entrantA?.player?.displayName}</span>
+                            <span className="tournamentResultVs">vs</span>
+                            <span className={!aWon ? 'tournamentResultWinner' : ''}>{m.entrantB?.player?.displayName}</span>
+                        </div>
+                        <div className="tournamentResultScore">{setsWonA} – {setsWonB}</div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+ResultsTab.propTypes = {
+    tournament: PropTypes.object.isRequired,
+};
+
+function EloImpactTab({ tournament }) {
+    const played = tournament.matches
+        .filter((m) => m.match)
+        .sort((a, b) => new Date(b.match.playedAt) - new Date(a.match.playedAt));
+
+    if (played.length === 0) {
+        return <p className="eventText">No Elo changes yet.</p>;
+    }
+
+    return (
+        <div className="tournamentEloList">
+            {tournament.status !== 'completed' && (
+                <p className="eventText tournamentEloPendingNote">
+                    Ratings for this tournament are applied once it&apos;s complete, in the order matches were played &mdash; deltas below will fill in then.
+                </p>
+            )}
+            {played.map((m) => {
+                const { match } = m;
+                const deltaA = match.playerAEloAfter - match.playerAElo;
+                const deltaB = match.playerBEloAfter - match.playerBElo;
+                return (
+                    <div key={m.id} className="tournamentEloRow">
+                        <div className="tournamentEloDate">{formatDateTime(match.playedAt)}</div>
+                        <div className="tournamentEloPlayer">
+                            <span>{m.entrantA?.player?.displayName}</span>
+                            <span className="tournamentEloValues">
+                                {match.playerAElo} &rarr; {match.playerAEloAfter}
+                                <span className={deltaA >= 0 ? 'tournamentEloDeltaUp' : 'tournamentEloDeltaDown'}>
+                                    {deltaA >= 0 ? `+${deltaA}` : deltaA}
+                                </span>
+                            </span>
+                        </div>
+                        <div className="tournamentEloPlayer">
+                            <span>{m.entrantB?.player?.displayName}</span>
+                            <span className="tournamentEloValues">
+                                {match.playerBElo} &rarr; {match.playerBEloAfter}
+                                <span className={deltaB >= 0 ? 'tournamentEloDeltaUp' : 'tournamentEloDeltaDown'}>
+                                    {deltaB >= 0 ? `+${deltaB}` : deltaB}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+EloImpactTab.propTypes = {
+    tournament: PropTypes.object.isRequired,
 };
 
 function TournamentDetail() {
     const { id } = useParams();
-    const { isAdmin } = useIsAdmin();
+    const { isAdmin, playerId } = useIsAdmin();
     const [tournament, setTournament] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [reportingNode, setReportingNode] = useState(null);
+    const [activeTab, setActiveTab] = useState('bracket');
 
     const load = () => {
         setLoading(true);
@@ -132,31 +183,75 @@ function TournamentDetail() {
     if (error) return <div className="profilePageDiv"><div className="contentDiv"><p className="eventFormError">{error}</p></div></div>;
     if (!tournament) return null;
 
+    const reportable = tournament.matches.filter((m) => !m.isBye && !m.skipped);
+    const reportedCount = reportable.filter((m) => !!m.matchId).length;
+    const pct = reportable.length ? Math.round((reportedCount / reportable.length) * 100) : 0;
+    const badge = STATUS_BADGE[tournament.status] || STATUS_BADGE.draft;
+
     return (
         <div className="profilePageDiv">
             <div className="contentDiv">
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#333', marginBottom: '0.5rem' }}>
-                        {tournament.name}
-                    </h1>
-                    <p className="eventText">
-                        {FORMAT_LABELS[tournament.format]} &middot; {STATUS_LABELS[tournament.status]}
-                    </p>
-                    {isAdmin && (
-                        <Button variant="outline-danger" size="sm" onClick={handleDelete}>
-                            Delete Tournament
-                        </Button>
-                    )}
+                <div className="tournamentDetailHeaderCard">
+                    <div className="tournamentDetailTopBar">
+                        <div className="tournamentDetailFormatLine">
+                            {FORMAT_LABELS[tournament.format]?.toUpperCase()} · {tournament._count?.entrants ?? tournament.entrants.length} ENTRANTS
+                        </div>
+                        <div className="tournamentDetailDateLine">{formatDateTime(tournament.createdAt)}</div>
+                    </div>
+                    <div className="tournamentDetailMainRow">
+                        <div className="tournamentDetailNameBlock">
+                            <div className="tournamentDetailName">{tournament.name}</div>
+                            <div className="tournamentDetailMetaRow">
+                                <span className="tournamentDetailBadge" style={{ background: badge.bg, color: badge.fg }}>
+                                    {STATUS_LABELS[tournament.status]}
+                                </span>
+                                {tournament.format !== 'round_robin' && (
+                                    <>
+                                        <span>{reportedCount} of {reportable.length} matches played</span>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                        {tournament.format !== 'round_robin' && (
+                            <div className="tournamentDetailProgressBlock">
+                                <div className="tournamentDetailProgressTrack">
+                                    <div className="tournamentDetailProgressFill" style={{ width: `${pct}%` }} />
+                                </div>
+                                <div className="tournamentDetailProgressLabel">{pct}% COMPLETE</div>
+                            </div>
+                        )}
+                        {isAdmin && (
+                            <button type="button" className="tournamentDetailDeleteBtn" onClick={handleDelete}>
+                                Delete Tournament
+                            </button>
+                        )}
+                    </div>
+                    <div className="tournamentDetailTabBar">
+                        {TABS.map((tab) => (
+                            <button
+                                key={tab.key}
+                                type="button"
+                                className={`tournamentDetailTab${activeTab === tab.key ? ' tournamentDetailTabActive' : ''}`}
+                                onClick={() => setActiveTab(tab.key)}
+                            >
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
-                {tournament.format === 'round_robin' ? (
-                    <>
-                        <StandingsTable tournament={tournament} />
-                        <RoundRobinMatchList tournament={tournament} isAdmin={isAdmin} onReport={setReportingNode} />
-                    </>
-                ) : (
-                    <BracketView tournament={tournament} isAdmin={isAdmin} onReport={setReportingNode} />
-                )}
+                <div className="tournamentDetailBody">
+                    {activeTab === 'bracket' && (
+                        tournament.format === 'round_robin' ? (
+                            <RoundRobinView tournament={tournament} isAdmin={isAdmin} onReport={setReportingNode} />
+                        ) : (
+                            <BracketView tournament={tournament} isAdmin={isAdmin} onReport={setReportingNode} myPlayerId={playerId} />
+                        )
+                    )}
+                    {activeTab === 'entrants' && <EntrantsTab tournament={tournament} />}
+                    {activeTab === 'results' && <ResultsTab tournament={tournament} />}
+                    {activeTab === 'elo' && <EloImpactTab tournament={tournament} />}
+                </div>
 
                 {reportingNode && (
                     <TournamentMatchModal

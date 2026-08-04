@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router';
 import { useIsAdmin } from './hooks/useIsAdmin';
-import { getTournaments, createTournament } from './api/tournaments';
-import TournamentCreateForm from './components/TournamentCreateForm';
+import { getTournaments } from './api/tournaments';
 
 const FORMAT_LABELS = {
     single_elimination: 'Single Elimination',
@@ -13,26 +11,88 @@ const FORMAT_LABELS = {
 };
 
 const STATUS_LABELS = {
-    draft: 'Draft',
-    seeded: 'Seeded',
-    in_progress: 'In Progress',
-    completed: 'Completed',
+    draft: 'DRAFT',
+    seeded: 'UPCOMING',
+    in_progress: 'IN PROGRESS',
+    completed: 'COMPLETED',
 };
 
+const STATUS_STYLE = {
+    draft: { stripe: '#e6dede', badgeBg: '#f2eded', badgeFg: '#a89b9b' },
+    seeded: { stripe: '#d16464', badgeBg: '#faf0f0', badgeFg: '#8f5a5a' },
+    in_progress: { stripe: 'linear-gradient(to right, #D02F2F, #a00)', badgeBg: '#fdecec', badgeFg: '#a00' },
+    completed: { stripe: '#d9b3b3', badgeBg: '#f2eded', badgeFg: '#7d7373' },
+};
+
+const TABS = [
+    { key: 'in_progress', label: 'In progress' },
+    { key: 'seeded', label: 'Upcoming' },
+    { key: 'completed', label: 'Completed' },
+    { key: 'draft', label: 'Drafts' },
+];
+
+const formatDate = (isoDate) => new Date(isoDate).toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+});
+
+function footNote(tournament) {
+    const { status } = tournament;
+    const { reportableCount, reportedCount } = tournament.progress;
+    if (status === 'draft') return 'Not started yet';
+    if (status === 'seeded') return 'Seeded — waiting to start';
+    if (status === 'completed') return 'Elo applied';
+    const remaining = reportableCount - reportedCount;
+    return remaining > 0 ? `${remaining} match${remaining === 1 ? '' : 'es'} left` : 'All matches played';
+}
+
+function actionLabel(status) {
+    if (status === 'draft') return 'Finish setup';
+    if (status === 'seeded') return 'Open';
+    if (status === 'completed') return 'Results';
+    return 'Run it';
+}
+
 function TournamentCard({ tournament }) {
+    const style = STATUS_STYLE[tournament.status] || STATUS_STYLE.draft;
+    const progressLabel = tournament.status === 'seeded'
+        ? 'SEEDED'
+        : (tournament.progress.currentRoundLabel || tournament.status).toString().toUpperCase();
+
     return (
         <Link to={`/profile/tournaments/${tournament.id}`} className="tournamentCardLink">
             <div className="tournamentCard">
-                <div className="eventCardTop" style={{ backgroundColor: '#d16464' }}>
-                    {FORMAT_LABELS[tournament.format] || tournament.format}
-                </div>
-                <div className="eventHeaderWrapper">
-                    <h3>{tournament.name}</h3>
-                    <div className="eventText">
-                        <span>{STATUS_LABELS[tournament.status] || tournament.status}</span>
+                <div className="tournamentCardStripe" style={{ background: style.stripe }} />
+                <div className="tournamentCardBody">
+                    <div className="tournamentCardTopRow">
+                        <div className="tournamentCardFormat">{FORMAT_LABELS[tournament.format] || tournament.format}</div>
+                        <div className="tournamentCardBadge" style={{ background: style.badgeBg, color: style.badgeFg }}>
+                            {STATUS_LABELS[tournament.status] || tournament.status}
+                        </div>
                     </div>
-                    <div className="eventText">
+                    <div className="tournamentCardName">{tournament.name}</div>
+                    <div className="tournamentCardMeta">
+                        <span>{formatDate(tournament.createdAt)}</span>
+                        <span className="tournamentCardMetaDivider">|</span>
                         <span>{tournament._count?.entrants ?? 0} entrants</span>
+                    </div>
+                    <div className="tournamentCardSpacer" />
+                    <div>
+                        <div className="tournamentCardProgressRow">
+                            <span>{progressLabel}</span>
+                            <span>{tournament.progress.pct}%</span>
+                        </div>
+                        <div className="tournamentCardProgressTrack">
+                            <div
+                                className="tournamentCardProgressFill"
+                                style={{ width: `${tournament.progress.pct}%`, background: style.stripe }}
+                            />
+                        </div>
+                    </div>
+                    <div className="tournamentCardFooter">
+                        <span className="tournamentCardFootNote">{footNote(tournament)}</span>
+                        <span className="tournamentCardAction">{actionLabel(tournament.status)} &rarr;</span>
                     </div>
                 </div>
             </div>
@@ -49,51 +109,74 @@ function Tournaments() {
     const [tournaments, setTournaments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [showForm, setShowForm] = useState(false);
+    const [activeTab, setActiveTab] = useState('in_progress');
+    const [search, setSearch] = useState('');
 
-    const loadTournaments = () => {
+    useEffect(() => {
         setLoading(true);
         getTournaments()
             .then(setTournaments)
             .catch((err) => setError(err.message))
             .finally(() => setLoading(false));
-    };
-
-    useEffect(() => {
-        loadTournaments();
     }, []);
 
-    const handleCreate = async (data) => {
-        await createTournament(data);
-        setShowForm(false);
-        loadTournaments();
-    };
+    const counts = useMemo(() => {
+        const c = { draft: 0, seeded: 0, in_progress: 0, completed: 0 };
+        tournaments.forEach((t) => { c[t.status] = (c[t.status] || 0) + 1; });
+        return c;
+    }, [tournaments]);
+
+    const visible = useMemo(() => {
+        const q = search.trim().toLowerCase();
+        return tournaments
+            .filter((t) => t.status === activeTab)
+            .filter((t) => !q || t.name.toLowerCase().includes(q));
+    }, [tournaments, activeTab, search]);
 
     return (
         <div className="profilePageDiv">
             <div className="contentDiv">
-                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#333', marginBottom: '0.5rem' }}>
-                        Tournaments
-                    </h1>
-                    <div style={{ width: '10rem', height: '4px', background: 'linear-gradient(to right, #D02F2F, #a00)', margin: '1rem auto', borderRadius: '2px' }} />
+                <div className="tournamentsHeaderRow">
+                    <div>
+                        <div className="tournamentsEyebrow">PROFILE / TOURNAMENTS</div>
+                        <h1 className="tournamentsTitle">Tournaments</h1>
+                        <div className="tournamentsTitleRule" />
+                    </div>
                     {isAdmin && (
-                        <Button variant="danger" onClick={() => setShowForm(true)}>
-                            Create Tournament
-                        </Button>
+                        <div className="tournamentsHeaderActions">
+                            <Link to="/profile/tournaments/new" className="tournamentsNewBtn">+ New tournament</Link>
+                        </div>
                     )}
                 </div>
 
-                {isAdmin && showForm && (
-                    <TournamentCreateForm show={showForm} onSubmit={handleCreate} onClose={() => setShowForm(false)} />
-                )}
+                <div className="tournamentsTabBar">
+                    {TABS.map((tab) => (
+                        <button
+                            key={tab.key}
+                            type="button"
+                            className={`tournamentsTab${activeTab === tab.key ? ' tournamentsTabActive' : ''}`}
+                            onClick={() => setActiveTab(tab.key)}
+                        >
+                            {tab.label} <span className="tournamentsTabCount">{counts[tab.key] || 0}</span>
+                        </button>
+                    ))}
+                    <div className="tournamentsTabSpacer" />
+                    <input
+                        className="tournamentsSearchInput"
+                        placeholder="Search tournaments…"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                </div>
 
                 {loading && <p className="eventText">Loading tournaments...</p>}
                 {error && <p className="eventFormError">{error}</p>}
-                {!loading && tournaments.length === 0 && <p className="eventText">No tournaments yet.</p>}
+                {!loading && !error && visible.length === 0 && (
+                    <p className="eventText">No tournaments in this category.</p>
+                )}
 
-                <div className="eventGrid">
-                    {tournaments.map((tournament) => (
+                <div className="tournamentsCardGrid">
+                    {visible.map((tournament) => (
                         <TournamentCard key={tournament.id} tournament={tournament} />
                     ))}
                 </div>

@@ -131,6 +131,18 @@ export function generateSingleElimination(entrantIds, { bracketSide = null } = {
 // losers bracket built round-by-round in lockstep with the winners bracket, and
 // a grand final with a pre-created conditional bracket-reset match.
 //
+// LB round sizing is driven by the WB's fixed round *skeleton* (one LB drop-in
+// slot per WB match that round, real or bye) rather than by how many of those
+// WB matches happen to be real. That distinction matters for non-power-of-two
+// entrant counts: round 1 byes shrink the number of *real* droppers well below
+// later rounds' real-match counts, and sizing LB rounds off real-dropper counts
+// (as an earlier version of this function did) leaves later rounds' droppers
+// with no LB round waiting to receive them — those players get eliminated
+// after a single loss instead of the second life double elimination promises.
+// Building every round at full skeleton size and marking a slot a "bye" when
+// only one of its two feeds is real (mirroring generateSingleElimination's own
+// bye convention) keeps every real loser wired to a real second-life match.
+//
 // Slot convention (fixed at generation time, avoids any runtime inference later):
 // grand final slot A is always the winners-bracket champion, slot B is always the
 // losers-bracket champion. If slot B wins game 1, the reset match is needed.
@@ -139,146 +151,116 @@ export function generateDoubleElimination(entrantIds) {
   const wb = generateSingleElimination(entrantIds, { bracketSide: 'winners' });
   const { totalRounds: wbRounds, size } = wb;
 
+  const wbNodesByRound = (r) => wb.nodes.filter((n) => n.round === r).sort((a, b) => a.position - b.position);
+  const wbHasRealDrop = (m) => !m.isBye;
+
   const lbNodes = [];
   let lbRoundCounter = 0;
+  // Slots of the most-recently-built LB round, in position order. Each entry is
+  // { isReal, node } — `node` is null when neither of its own two feeds was real
+  // (a "phantom" slot: nothing to advance, consumed purely to keep the skeleton's
+  // positions aligned with the WB round it will next pair against).
+  let prevRoundSlots = null;
 
-  const wbNodesByRound = (r) => wb.nodes.filter((n) => n.round === r);
+  // Creates one LB slot from up to two feeds. Each feed is either null (no real
+  // input) or a callback that, given the created node and the slot ('A' or 'B')
+  // it was assigned, records the winner-forward wiring for that upstream source.
+  // A slot with zero real feeds doesn't get a node at all (phantom, kept only to
+  // preserve position alignment); one real feed makes an auto-advancing bye
+  // (always assigned slot A, matching generateSingleElimination's own bye
+  // convention); two real feeds make a normal match.
+  function buildSlot(round, position, feedA, feedB) {
+    const realCount = (feedA ? 1 : 0) + (feedB ? 1 : 0);
+    if (realCount === 0) return { isReal: false, node: null };
+    const node = {
+      round,
+      position,
+      bracketSide: 'losers',
+      entrantAId: null,
+      entrantBId: null,
+      isBye: realCount === 1,
+      nextRef: null,
+    };
+    lbNodes.push(node);
+    if (feedA) feedA(node, 'A');
+    if (feedB) feedB(node, realCount === 1 ? 'A' : 'B');
+    return { isReal: true, node };
+  }
 
-  // For each WB round 1..wbRounds-1, its losers drop into the LB (WB final's loser
-  // goes straight to the grand final as the last LB contribution handled separately
-  // below via the LB final).
-  let previousLbFinalRound = null; // round number of the last LB round created, or null
-  let previousLbSurvivorCount = 0;
+  // A feed from a WB match's loser: records the drop link once the LB node exists.
+  const dropFeed = (wbMatch) => (node, slot) => {
+    wbMatch.loserNextRef = { round: node.round, position: node.position, slot, side: 'losers' };
+  };
+  // A feed from a previous LB round's survivor: records the advancement link.
+  const survivorFeed = (lbSlot) => (node, slot) => {
+    lbSlot.node.nextRef = { round: node.round, position: node.position, slot };
+  };
 
   for (let wbRound = 1; wbRound <= wbRounds; wbRound++) {
     const wbMatches = wbNodesByRound(wbRound);
-    // Byes never produce a loser to drop — only real (non-bye) matches contribute
-    // a dropper. Indices below refer to positions within this filtered list, not
-    // the raw WB round's match positions.
-    const droppers = wbMatches.filter((m) => !m.isBye);
-    if (droppers.length === 0) continue;
 
-    if (previousLbFinalRound === null) {
-      // First drop: nothing waiting yet, so this WB round's losers play each other,
-      // seed-adjacent (mirrors WB pairing order — adjacent WB match losers meet).
+    if (wbRound === 1) {
+      // First drop: this WB round's losers play each other, seed-adjacent
+      // (mirrors WB pairing order — adjacent WB match losers meet).
       lbRoundCounter += 1;
-      const count = Math.ceil(droppers.length / 2);
+      const round = lbRoundCounter;
+      const count = Math.ceil(wbMatches.length / 2);
+      const roundSlots = [];
       for (let p = 0; p < count; p++) {
-        const dropA = droppers[2 * p];
-        const dropB = droppers[2 * p + 1];
-        const node = {
-          round: lbRoundCounter,
-          position: p,
-          bracketSide: 'losers',
-          entrantAId: null, // filled from wbRound losers once known (via loserNextRef wiring)
-          entrantBId: null,
-          isBye: !dropB,
-          nextRef: null, // wired below once the next LB round exists
-          _dropSourceA: { round: dropA.round, position: dropA.position, side: 'winners' },
-          _dropSourceB: dropB ? { round: dropB.round, position: dropB.position, side: 'winners' } : null,
-        };
-        lbNodes.push(node);
+        const dropA = wbMatches[2 * p];
+        const dropB = wbMatches[2 * p + 1];
+        roundSlots.push(buildSlot(
+          round, p,
+          dropA && wbHasRealDrop(dropA) ? dropFeed(dropA) : null,
+          dropB && wbHasRealDrop(dropB) ? dropFeed(dropB) : null,
+        ));
       }
-      previousLbFinalRound = lbRoundCounter;
-      previousLbSurvivorCount = count;
+      prevRoundSlots = roundSlots;
     } else {
-      // "vs dropped" round: pair each waiting LB survivor against one freshly
-      // dropped WB-round loser, mirrored (survivor i vs drop at mirrored index)
-      // so the same two players who just met don't immediately meet again.
+      // "vs dropped" round: pair each waiting LB survivor slot against the
+      // matching fresh WB-round dropper, mirrored (survivor i vs drop at
+      // mirrored index) so the same two players who just met don't
+      // immediately meet again. One slot per WB match this round, so the
+      // survivor and dropper skeletons always stay the same size.
       lbRoundCounter += 1;
-      const survivorCount = previousLbSurvivorCount;
-      const dropCount = droppers.length;
-      const pairCount = Math.min(survivorCount, dropCount);
-      for (let p = 0; p < pairCount; p++) {
-        const mirroredDropIndex = dropCount - 1 - p;
-        const drop = droppers[mirroredDropIndex];
-        const node = {
-          round: lbRoundCounter,
-          position: p,
-          bracketSide: 'losers',
-          entrantAId: null,
-          entrantBId: null,
-          isBye: false,
-          nextRef: null,
-          _survivorFromRound: previousLbFinalRound,
-          _survivorFromPosition: p,
-          _dropSourceB: { round: drop.round, position: drop.position, side: 'winners' },
-        };
-        lbNodes.push(node);
+      const round = lbRoundCounter;
+      const dropCount = wbMatches.length;
+      const roundSlots = [];
+      for (let p = 0; p < dropCount; p++) {
+        const survivor = prevRoundSlots[p];
+        const drop = wbMatches[dropCount - 1 - p];
+        roundSlots.push(buildSlot(
+          round, p,
+          survivor.isReal ? survivorFeed(survivor) : null,
+          drop && wbHasRealDrop(drop) ? dropFeed(drop) : null,
+        ));
       }
-      previousLbFinalRound = lbRoundCounter;
-      previousLbSurvivorCount = pairCount;
+      prevRoundSlots = roundSlots;
 
-      // If more than one pair remains and this wasn't the terminal WB round,
-      // add a consolidation "vs each other" round to halve back down before the
-      // next WB round's drop arrives.
-      if (pairCount > 1 && wbRound < wbRounds) {
+      // Consolidation round: if more than one real survivor slot remains and
+      // this wasn't the terminal WB round, halve the field back down (playing
+      // survivors against each other) before the next WB round's drop arrives.
+      const realSlotCount = roundSlots.filter((s) => s.isReal).length;
+      if (realSlotCount > 1 && wbRound < wbRounds) {
         lbRoundCounter += 1;
-        const nextCount = Math.ceil(pairCount / 2);
+        const consRound = lbRoundCounter;
+        const nextCount = Math.ceil(roundSlots.length / 2);
+        const consolidationSlots = [];
         for (let p = 0; p < nextCount; p++) {
-          const node = {
-            round: lbRoundCounter,
-            position: p,
-            bracketSide: 'losers',
-            entrantAId: null,
-            entrantBId: null,
-            isBye: pairCount % 2 === 1 && p === nextCount - 1,
-            nextRef: null,
-            _survivorFromRound: previousLbFinalRound,
-            _survivorFromPositionA: 2 * p,
-            _survivorFromPositionB: 2 * p + 1 < pairCount ? 2 * p + 1 : null,
-          };
-          lbNodes.push(node);
+          const srcA = roundSlots[2 * p];
+          const srcB = roundSlots[2 * p + 1];
+          consolidationSlots.push(buildSlot(
+            consRound, p,
+            srcA && srcA.isReal ? survivorFeed(srcA) : null,
+            srcB && srcB.isReal ? survivorFeed(srcB) : null,
+          ));
         }
-        previousLbFinalRound = lbRoundCounter;
-        previousLbSurvivorCount = nextCount;
+        prevRoundSlots = consolidationSlots;
       }
     }
   }
 
-  // Wire nextRef forward for every LB node based on its round/position and the
-  // following round's survivor-source annotations.
-  const lbByRound = new Map();
-  for (const n of lbNodes) {
-    if (!lbByRound.has(n.round)) lbByRound.set(n.round, []);
-    lbByRound.get(n.round).push(n);
-  }
-  const maxLbRound = lbRoundCounter;
-  for (let r = 1; r < maxLbRound; r++) {
-    const thisRound = lbByRound.get(r) || [];
-    const nextRound = lbByRound.get(r + 1) || [];
-    for (const target of nextRound) {
-      if (target._survivorFromRound === r) {
-        if (target._survivorFromPosition !== undefined) {
-          const src = thisRound[target._survivorFromPosition];
-          if (src) src.nextRef = { round: r + 1, position: target.position, slot: 'A' };
-        }
-        if (target._survivorFromPositionA !== undefined) {
-          const srcA = thisRound[target._survivorFromPositionA];
-          if (srcA) srcA.nextRef = { round: r + 1, position: target.position, slot: 'A' };
-          if (target._survivorFromPositionB !== null && target._survivorFromPositionB !== undefined) {
-            const srcB = thisRound[target._survivorFromPositionB];
-            if (srcB) srcB.nextRef = { round: r + 1, position: target.position, slot: 'B' };
-          }
-        }
-      }
-    }
-  }
-
-  // Wire WB -> LB drop links (loserNextRef) using the _dropSourceA/_dropSourceB
-  // annotations recorded above, and attach the correct slot on each LB node.
-  for (const lbNode of lbNodes) {
-    if (lbNode._dropSourceA) {
-      const wbSrc = wb.nodes.find((n) => n.round === lbNode._dropSourceA.round && n.position === lbNode._dropSourceA.position);
-      if (wbSrc) wbSrc.loserNextRef = { round: lbNode.round, position: lbNode.position, slot: 'A', side: 'losers' };
-    }
-    if (lbNode._dropSourceB) {
-      const wbSrc = wb.nodes.find((n) => n.round === lbNode._dropSourceB.round && n.position === lbNode._dropSourceB.position);
-      if (wbSrc) wbSrc.loserNextRef = { round: lbNode.round, position: lbNode.position, slot: 'B', side: 'losers' };
-    }
-  }
-
-  const lbFinal = lbByRound.get(maxLbRound)[0];
+  const lbFinal = prevRoundSlots.find((s) => s.isReal).node;
 
   // Grand final: slot A = WB champion, slot B = LB champion (fixed convention).
   const wbFinal = wb.nodes.find((n) => n.round === wbRounds);
@@ -306,16 +288,6 @@ export function generateDoubleElimination(entrantIds) {
     skipped: true,
     nextRef: null,
   };
-
-  // Clean up internal bookkeeping fields before returning.
-  for (const n of [...wb.nodes, ...lbNodes]) {
-    delete n._dropSourceA;
-    delete n._dropSourceB;
-    delete n._survivorFromRound;
-    delete n._survivorFromPosition;
-    delete n._survivorFromPositionA;
-    delete n._survivorFromPositionB;
-  }
 
   return {
     winnersNodes: wb.nodes,

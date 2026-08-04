@@ -1,6 +1,12 @@
 import prisma from '../lib/prisma.js';
 import { determineWinnerAndValidate, STARTING_ELO } from '../lib/elo.js';
-import { resolvePlayer, writeMatchAndUpdateElo, deleteMatchAndReplay, deleteMatchesAndReplay } from '../lib/matchLedger.js';
+import {
+  resolvePlayer,
+  writeTournamentMatch,
+  deleteMatchAndReplay,
+  deleteMatchesAndReplay,
+  applyLedgerForTournamentStatusChange,
+} from '../lib/matchLedger.js';
 import {
   generateSingleElimination,
   generateDoubleElimination,
@@ -108,10 +114,15 @@ function buildDoubleEliminationNodeGroups(entrantIds) {
 }
 
 // Persists a set of in-memory bracket nodes (each carrying a `nextRef`/`loserNextRef`
-// pointer keyed by {round, position, side}) as real TournamentMatch rows. Because
-// nextMatchId/loserNextMatchId are self-referencing FKs that need the *target* row's
-// real id, rows are created in reverse round order per side (final first, working
-// back to round 1) so every forward reference already points at a persisted row.
+// pointer keyed by {round, position, side}) as real TournamentMatch rows.
+// nextMatchId/loserNextMatchId are self-referencing FKs that need the *target*
+// row's real id, but a target can be on either side of the bracket and at any
+// round — e.g. a winners-bracket round's loserNextRef can point at a
+// losers-bracket round number higher than its own, since the losers bracket
+// accumulates extra "consolidation" rounds the winners bracket doesn't have.
+// No single creation order satisfies every edge, so this runs in two passes
+// instead of trying to order around it: create every row first (FKs null),
+// then update each row's FK columns once every row's real id is known.
 async function persistBracketGraph(tx, tournamentId, nodeGroups) {
   // key: `${side}:${round}:${position}` -> persisted row id
   const idByKey = new Map();
@@ -126,23 +137,7 @@ async function persistBracketGraph(tx, tournamentId, nodeGroups) {
     }
   }
 
-  // Sort so higher rounds are created first within each side (nextRef always
-  // points forward to a higher round or into grand_final, which is handled by
-  // creating grand_final round 2 then round 1 then winners/losers descending).
-  const sideOrder = { grand_final: 0, winners: 1, losers: 1 };
-  allNodes.sort((a, b) => {
-    const sideDiff = (sideOrder[a._side] ?? 1) - (sideOrder[b._side] ?? 1);
-    if (sideDiff !== 0) return sideDiff;
-    if (a._side === 'grand_final') return b.round - a.round; // round2 (reset) before round1
-    return b.round - a.round; // descending rounds within winners/losers
-  });
-
   for (const node of allNodes) {
-    const nextMatchId = node.nextRef ? idByKey.get(key(node.nextRef.side ?? node._side, node.nextRef.round, node.nextRef.position)) : null;
-    const loserNextMatchId = node.loserNextRef
-      ? idByKey.get(key(node.loserNextRef.side, node.loserNextRef.round, node.loserNextRef.position))
-      : null;
-
     const row = await tx.tournamentMatch.create({
       data: {
         tournamentId,
@@ -155,14 +150,27 @@ async function persistBracketGraph(tx, tournamentId, nodeGroups) {
         conditional: !!node.conditional,
         skipped: !!node.skipped,
         winnerEntrantId: node.winnerEntrantId ?? null,
+      },
+    });
+    idByKey.set(key(node._side, node.round, node.position), row.id);
+  }
+
+  for (const node of allNodes) {
+    if (!node.nextRef && !node.loserNextRef) continue;
+    const nextMatchId = node.nextRef ? idByKey.get(key(node.nextRef.side ?? node._side, node.nextRef.round, node.nextRef.position)) : null;
+    const loserNextMatchId = node.loserNextRef
+      ? idByKey.get(key(node.loserNextRef.side, node.loserNextRef.round, node.loserNextRef.position))
+      : null;
+
+    await tx.tournamentMatch.update({
+      where: { id: idByKey.get(key(node._side, node.round, node.position)) },
+      data: {
         nextMatchId: nextMatchId ?? null,
         nextMatchSlot: node.nextRef ? node.nextRef.slot : null,
         loserNextMatchId: loserNextMatchId ?? null,
         loserNextMatchSlot: node.loserNextRef ? node.loserNextRef.slot : null,
       },
     });
-
-    idByKey.set(key(node._side, node.round, node.position), row.id);
   }
 }
 
@@ -198,11 +206,83 @@ export async function getTournament(id) {
   return getTournamentTx(prisma, id);
 }
 
+// Human label for "where things are" in an in-progress bracket, based on how
+// many rounds remain on the side with the most rounds left. Mirrors the
+// Round of N / Quarterfinals / Semifinals / Final naming used in the bracket
+// view itself, but computed from round counts alone (no node graph needed).
+function currentRoundLabel(matches) {
+  const reportable = matches.filter((m) => !m.isBye && !m.skipped);
+  const unplayed = reportable.filter((m) => !m.matchId);
+  if (unplayed.length === 0) return null;
+
+  const rounds = unplayed.map((m) => m.round);
+  const currentRound = Math.min(...rounds);
+  const totalRounds = Math.max(...matches.map((m) => m.round));
+  const fromEnd = totalRounds - currentRound;
+  if (fromEnd === 0) return 'Final';
+  if (fromEnd === 1) return 'Semifinals';
+  if (fromEnd === 2) return 'Quarterfinals';
+  return `Round ${currentRound}`;
+}
+
 export async function listTournaments() {
-  return prisma.tournament.findMany({
+  const tournaments = await prisma.tournament.findMany({
     orderBy: { createdAt: 'desc' },
-    include: { _count: { select: { entrants: true } } },
+    include: {
+      _count: { select: { entrants: true } },
+      matches: { select: { isBye: true, skipped: true, matchId: true, round: true, bracketSide: true } },
+    },
   });
+
+  return tournaments.map(({ matches, ...tournament }) => {
+    const reportable = matches.filter((m) => !m.isBye && !m.skipped);
+    const reportedCount = reportable.filter((m) => !!m.matchId).length;
+    const reportableCount = reportable.length;
+    return {
+      ...tournament,
+      progress: {
+        reportedCount,
+        reportableCount,
+        pct: reportableCount ? Math.round((reportedCount / reportableCount) * 100) : 0,
+        currentRoundLabel: currentRoundLabel(matches),
+      },
+    };
+  });
+}
+
+// Resolves and forward-propagates any bye match that has become playable-by-
+// default since the last write: a losers-bracket bye only gets its single real
+// entrant once an earlier match's loser drops into it (generation-time bye
+// resolution only covers byes visible from the start, e.g. round-1 byes for
+// non-power-of-two entrant counts). Without this, a player who loses, drops
+// into a bye second-life match, and has no opponent there gets stuck forever
+// with an unplayable, unreportable match blocking the rest of their run.
+// Idempotent and safe to call after any write that might have populated a
+// bye's entrant slot; walks the whole cascade (a resolved bye can itself feed
+// straight into another bye) until nothing changes.
+async function resolveAutoAdvances(tx, tournamentId) {
+  let changed = true;
+  while (changed) {
+    changed = false;
+    const matches = await tx.tournamentMatch.findMany({ where: { tournamentId } });
+    for (const m of matches) {
+      if (!m.isBye || m.winnerEntrantId) continue;
+      const winnerEntrantId = m.entrantAId || m.entrantBId;
+      if (!winnerEntrantId) continue; // still waiting on both a real entrant AND its bye slot
+
+      await tx.tournamentMatch.update({ where: { id: m.id }, data: { winnerEntrantId } });
+
+      if (m.nextMatchId) {
+        await tx.tournamentMatch.update({
+          where: { id: m.nextMatchId },
+          data: m.nextMatchSlot === 'A' ? { entrantAId: winnerEntrantId } : { entrantBId: winnerEntrantId },
+        });
+      }
+      // A bye match has no real loser (its "opponent" was never a real entrant),
+      // so unlike reportTournamentMatchResult there is no loserNextMatchId hop here.
+      changed = true;
+    }
+  }
 }
 
 export async function reportTournamentMatchResult(tournamentMatchId, { playedAt, sets }) {
@@ -248,7 +328,10 @@ export async function reportTournamentMatchResult(tournamentMatchId, { playedAt,
     const playerA = node.entrantA.player;
     const playerB = node.entrantB.player;
 
-    const match = await writeMatchAndUpdateElo(tx, {
+    // Doesn't touch Elo yet — tournament results only count toward ratings
+    // once the whole tournament is complete (see resolveAutoAdvances' sibling
+    // finalization step below and writeTournamentMatch's own comment).
+    const match = await writeTournamentMatch(tx, {
       playedAt,
       playerAId: playerA.id,
       playerBId: playerB.id,
@@ -299,6 +382,10 @@ export async function reportTournamentMatchResult(tournamentMatchId, { playedAt,
       }
     }
 
+    if (node.tournament.format === 'double_elimination') {
+      await resolveAutoAdvances(tx, node.tournamentId);
+    }
+
     await updateTournamentStatus(tx, node.tournamentId);
 
     return getTournamentTx(tx, node.tournamentId);
@@ -310,16 +397,65 @@ async function updateTournamentStatus(tx, tournamentId) {
   const matches = await tx.tournamentMatch.findMany({ where: { tournamentId } });
 
   const anyPlayed = matches.some((m) => m.matchId || (m.isBye && m.winnerEntrantId));
-  if (!anyPlayed) {
-    await tx.tournament.update({ where: { id: tournamentId }, data: { status: 'seeded' } });
-    return;
-  }
+  const status = !anyPlayed
+    ? 'seeded'
+    : matches.filter((m) => !m.isBye && !m.skipped).every((m) => !!m.matchId)
+      ? 'completed'
+      : 'in_progress';
 
-  const reportable = matches.filter((m) => !m.isBye && !m.skipped);
-  const allReported = reportable.every((m) => !!m.matchId);
-  const status = allReported ? 'completed' : 'in_progress';
-  if (tournament.status !== status) {
-    await tx.tournament.update({ where: { id: tournamentId }, data: { status } });
+  if (tournament.status === status) return;
+
+  await tx.tournament.update({ where: { id: tournamentId }, data: { status } });
+
+  // This tournament's matches just became visible to (status -> 'completed')
+  // or just dropped out of (status was 'completed', e.g. a result got deleted
+  // and reopened it) the club Elo ledger — see writeTournamentMatch's comment.
+  // Either direction needs a replay so every player's live rating reflects
+  // exactly the matches that currently count, in playedAt order.
+  if (status === 'completed' || tournament.status === 'completed') {
+    const entrants = await tx.tournamentEntrant.findMany({ where: { tournamentId }, select: { playerId: true } });
+    await applyLedgerForTournamentStatusChange(tx, entrants.map((e) => e.playerId));
+  }
+}
+
+// Walks forward from a match's winner-advancement slot through any chain of
+// auto-resolved bye matches (a bye can itself feed straight into another bye)
+// and returns the first real, non-bye match found along that chain — the one
+// whose reported result (if any) actually blocks deleting the upstream
+// result, since byes have no result of their own to worry about.
+async function firstRealDownstream(tx, matchId, slotField) {
+  let current = matchId ? await tx.tournamentMatch.findUnique({ where: { id: matchId } }) : null;
+  while (current && current.isBye) {
+    current = current[slotField] ? await tx.tournamentMatch.findUnique({ where: { id: current[slotField] } }) : null;
+  }
+  return current;
+}
+
+// Reverses resolveAutoAdvances after an upstream result was deleted: any bye
+// match whose winnerEntrantId no longer matches one of its current entrant
+// slots was only resolved because of the just-cleared result, so its own
+// winner (and whatever it had advanced) needs clearing too. Repeats to a
+// fixed point the same way resolution does, since clearing one bye can make
+// the next one downstream stale in turn.
+async function unresolveDownstreamByes(tx, tournamentId) {
+  let changed = true;
+  while (changed) {
+    changed = false;
+    const matches = await tx.tournamentMatch.findMany({ where: { tournamentId } });
+    for (const m of matches) {
+      if (!m.isBye || !m.winnerEntrantId) continue;
+      if (m.winnerEntrantId === m.entrantAId || m.winnerEntrantId === m.entrantBId) continue;
+
+      await tx.tournamentMatch.update({ where: { id: m.id }, data: { winnerEntrantId: null } });
+
+      if (m.nextMatchId) {
+        await tx.tournamentMatch.update({
+          where: { id: m.nextMatchId },
+          data: m.nextMatchSlot === 'A' ? { entrantAId: null } : { entrantBId: null },
+        });
+      }
+      changed = true;
+    }
   }
 }
 
@@ -339,7 +475,17 @@ export async function deleteTournamentMatchResult(tournamentMatchId) {
       err.status = 400;
       throw err;
     }
-    if (node.nextMatch?.matchId || node.loserNextMatch?.matchId) {
+
+    // A bye match auto-resolves with no result of its own, so a bye sitting
+    // directly downstream isn't itself a blocker — what matters is whether a
+    // real match further down that bye chain already has a reported result.
+    const nextReal = node.nextMatch?.isBye
+      ? await firstRealDownstream(tx, node.nextMatch.nextMatchId, 'nextMatchId')
+      : node.nextMatch;
+    const loserNextReal = node.loserNextMatch?.isBye
+      ? await firstRealDownstream(tx, node.loserNextMatch.nextMatchId, 'nextMatchId')
+      : node.loserNextMatch;
+    if (nextReal?.matchId || loserNextReal?.matchId) {
       const err = new Error('Cannot edit this result — a later match already depends on it. Delete the later match result(s) first.');
       err.status = 400;
       throw err;
@@ -364,6 +510,12 @@ export async function deleteTournamentMatchResult(tournamentMatchId) {
         data: node.loserNextMatchSlot === 'A' ? { entrantAId: null } : { entrantBId: null },
       });
     }
+
+    // Unwind any bye matches whose sole entrant came from this now-deleted
+    // result, cascading forward the same way resolveAutoAdvances propagates
+    // forward — a bye with its winner cleared must also clear whatever it had
+    // advanced, and so on down the chain.
+    await unresolveDownstreamByes(tx, node.tournamentId);
 
     // Unwind a bracket-reset trigger if this was the decisive grand-final game.
     if (node.bracketSide === 'grand_final' && node.round === 1) {
