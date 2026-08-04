@@ -1044,6 +1044,150 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   flex: 1;
 }
 
+.tournamentCardLink {
+  text-decoration: none;
+  display: block;
+}
+
+.tournamentCard {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid #f0f0f0;
+}
+
+.tournamentCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.seedPreviewList {
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.bracketSectionTitle {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 1.5rem 0 0.75rem;
+}
+
+.bracketGrid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(200px, 1fr);
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.bracketRoundColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.bracketRoundLabel {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  margin-bottom: 0.75rem;
+}
+
+.bracketRoundMatches {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.bracketMatchCardWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.bracketMatchCard {
+  width: 100%;
+  background-color: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.bracketMatchRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.15rem 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.bracketMatchRowWinner {
+  font-weight: bold;
+  color: #D02F2F;
+}
+
+.bracketMatchEntrant {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bracketMatchScore {
+  text-align: right;
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+.bracketReportBtn {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.doubleElimLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bracketGrandFinalColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 260px;
+}
+
+.standingsTable {
+  margin: 1.5rem 0;
+}
+
+.roundRobinRound {
+  margin-bottom: 1.5rem;
+}
+
+.roundRobinMatchRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background-color: white;
+  border: 2px solid #f0f0f0;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.roundRobinScore {
+  font-weight: bold;
+  color: #D02F2F;
+}
+
 .list-group-item.rankingsViewerItem {
   display: flex;
   align-items: center;

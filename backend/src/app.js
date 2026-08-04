@@ -5,6 +5,7 @@ import matchesRouter from './routes/matches.routes.js';
 import rankingsRouter from './routes/rankings.routes.js';
 import meRouter from './routes/me.routes.js';
 import playersRouter from './routes/players.routes.js';
+import tournamentsRouter from './routes/tournaments.routes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -18,6 +19,7 @@ app.use('/api/matches', matchesRouter);
 app.use('/api/rankings', rankingsRouter);
 app.use('/api/me', meRouter);
 app.use('/api/players', playersRouter);
+app.use('/api/tournaments', tournamentsRouter);
 
 app.use(errorHandler);
 

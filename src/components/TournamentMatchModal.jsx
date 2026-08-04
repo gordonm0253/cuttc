@@ -5,19 +5,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import PlayerPicker from './PlayerPicker';
 import { EMPTY_SETS, parseAndValidateSets } from '../lib/setValidation';
 
-const EMPTY_PLAYER = { id: null, displayName: '', email: '', elo: null };
-
-function toPlayerRef(player) {
-    return player.id ? { id: player.id } : { displayName: player.displayName, email: player.email };
-}
-
-function MatchLogForm({ show, onSubmit, onClose }) {
+function TournamentMatchModal({ show, entrantA, entrantB, onSubmit, onClose }) {
     const [playedAt, setPlayedAt] = useState(new Date().toISOString().slice(0, 10));
-    const [playerA, setPlayerA] = useState(EMPTY_PLAYER);
-    const [playerB, setPlayerB] = useState(EMPTY_PLAYER);
     const [sets, setSets] = useState(EMPTY_SETS);
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
@@ -38,23 +29,10 @@ function MatchLogForm({ show, onSubmit, onClose }) {
             setError(setsError);
             return;
         }
-        if (!playerA.id && !(playerA.displayName && playerA.email)) {
-            setError('Select or enter Player A.');
-            return;
-        }
-        if (!playerB.id && !(playerB.displayName && playerB.email)) {
-            setError('Select or enter Player B.');
-            return;
-        }
 
         setSubmitting(true);
         try {
-            await onSubmit({
-                playedAt,
-                playerA: toPlayerRef(playerA),
-                playerB: toPlayerRef(playerB),
-                sets: parsedSets,
-            });
+            await onSubmit({ playedAt, sets: parsedSets });
         } catch (err) {
             setError(err.message);
         } finally {
@@ -66,17 +44,22 @@ function MatchLogForm({ show, onSubmit, onClose }) {
         <Modal show={show} onHide={onClose} centered scrollable>
             <Form onSubmit={handleSubmit} className="matchLogForm">
                 <Modal.Header closeButton>
-                    <Modal.Title>Log Match</Modal.Title>
+                    <Modal.Title>Report Result</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {error && <div className="eventFormError">{error}</div>}
+
+                    <p className="eventText">
+                        {entrantA?.player?.displayName || 'TBD'} vs {entrantB?.player?.displayName || 'TBD'}
+                    </p>
+
                     <Form.Group className="mb-3">
                         <Form.Label>Date played</Form.Label>
                         <Form.Control type="date" value={playedAt} onChange={(e) => setPlayedAt(e.target.value)} required />
                     </Form.Group>
-
-                    <PlayerPicker label="Player A" value={playerA} onChange={setPlayerA} />
-                    <PlayerPicker label="Player B" value={playerB} onChange={setPlayerB} />
+                    <p className="eventText">
+                        Elo is calculated in date-played order across all club matches, not the order results are entered.
+                    </p>
 
                     <Form.Label>Set scores (first to 11, win by 2, best of 5)</Form.Label>
                     {sets.map((set, index) => (
@@ -86,7 +69,7 @@ function MatchLogForm({ show, onSubmit, onClose }) {
                                 <Form.Control
                                     type="number"
                                     min="0"
-                                    placeholder="A"
+                                    placeholder={entrantA?.player?.displayName || 'A'}
                                     value={set.a}
                                     onChange={(e) => updateSet(index, 'a', e.target.value)}
                                 />
@@ -95,7 +78,7 @@ function MatchLogForm({ show, onSubmit, onClose }) {
                                 <Form.Control
                                     type="number"
                                     min="0"
-                                    placeholder="B"
+                                    placeholder={entrantB?.player?.displayName || 'B'}
                                     value={set.b}
                                     onChange={(e) => updateSet(index, 'b', e.target.value)}
                                 />
@@ -115,17 +98,19 @@ function MatchLogForm({ show, onSubmit, onClose }) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={onClose} disabled={submitting}>Cancel</Button>
-                    <Button variant="danger" type="submit" disabled={submitting}>Log Match</Button>
+                    <Button variant="danger" type="submit" disabled={submitting}>Report Result</Button>
                 </Modal.Footer>
             </Form>
         </Modal>
     );
 }
 
-MatchLogForm.propTypes = {
+TournamentMatchModal.propTypes = {
     show: PropTypes.bool.isRequired,
+    entrantA: PropTypes.object,
+    entrantB: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
 };
 
-export default MatchLogForm;
+export default TournamentMatchModal;

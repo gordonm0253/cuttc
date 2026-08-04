@@ -15,6 +15,8 @@ import Profile from './profile.jsx';
 import Events from './events.jsx';
 import Matches from './matches.jsx';
 import Rankings from './rankings.jsx';
+import Tournaments from './tournaments.jsx';
+import TournamentDetail from './tournamentDetail.jsx';
 import AdminAccess from './adminAccess.jsx';
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -172,6 +174,32 @@ function AnimatedRoutes() {
           }
         />
         <Route
+          path="/profile/tournaments"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Tournaments />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/profile/tournaments/:id"
+          element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <TournamentDetail />
+            </motion.div>
+          }
+        />
+        <Route
           path="/profile/admin-access"
           element={
             <motion.div
@@ -236,6 +264,7 @@ function Heading() {
               <NavDropdown.Item as={Link} to= "/profile/events">Events</NavDropdown.Item>
               <NavDropdown.Item as={Link} to= "/profile/matches">Matches</NavDropdown.Item>
               <NavDropdown.Item as={Link} to= "/profile/rankings">Rankings</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to= "/profile/tournaments">Tournaments</NavDropdown.Item>
               {isAdmin && <NavDropdown.Item as={Link} to= "/profile/admin-access">Admin</NavDropdown.Item>}
               <NavDropdown.Divider/>
               <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
