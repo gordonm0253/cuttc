@@ -47,7 +47,7 @@ export default function Board() {
                 </div>
             </div>
             <Container fluid="lg" className="boardContainer">
-                <Row className="mb-4">
+                <Row className="mb-4 g-4">
                     {boardMembers.map(member => (
                     <Col key={member.netid} xs={12} sm={6} md={4}>
                         <Profile {...member} />
@@ -60,7 +60,7 @@ export default function Board() {
                 <h1 className = "loadingAnimate">Hall of Fame</h1>
             </div>
             <Container fluid="lg" className="boardContainer">
-                <Row className="mb-4">
+                <Row className="mb-4 g-4">
                     {hofMembers.map(member => (
                     <Col key={member.netid} xs={12} sm={6} md={4}>
                         <Profile {...member} />
