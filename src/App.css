@@ -97,6 +97,24 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.red-dropdown .dropdown-menu {
+  max-width: calc(100vw - 2rem);
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 991.98px) {
+  /* Bootstrap's expand="lg" collapses the navbar below this width, so the
+     dropdown menu renders inline in the collapsed nav instead of as a
+     floating popover. Let it size to the nav column instead of Bootstrap's
+     default min-width so its items can't get clipped by the viewport edge. */
+  .red-dropdown .dropdown-menu {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+}
+
 
 .site-title {
   font-family: monospace;
@@ -233,19 +251,46 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
 
 .text-container {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-width: 0;
 }
 
 .image-container {
   display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
   padding: 2%;
+  min-width: 0;
+}
+
+.text-left {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.text-left p,
+.text-left ul {
+  text-align: left;
+}
+
+@media (max-width: 1150px) {
+  .text-left {
+    align-items: center;
+    text-align: center;
+  }
+
+  .text-left p,
+  .text-left ul {
+    text-align: center;
+  }
 }
 
 .image-container img {
+  width: 100%;
   max-width: 100%;
   height: auto;
 }

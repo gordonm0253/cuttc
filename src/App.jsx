@@ -4,13 +4,12 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router';
+import { BrowserRouter as Router, Routes, Route, useLocation, Link, Navigate } from 'react-router';
 import Home from "./home.jsx";
 import About from "./about.jsx";
 import Team from "./team.jsx";
 import Board from "./board.jsx";
 import Gallery from "./gallery.jsx";
-import Archive from "./archive.jsx";
 import Profile from './profile.jsx';
 import Events from './events.jsx';
 import Matches from './matches.jsx';
@@ -109,19 +108,7 @@ function AnimatedRoutes() {
             </motion.div>
           }
         />
-        <Route
-          path="/archive"
-          element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <Archive />
-            </motion.div>
-          }
-        />
+        <Route path="/archive" element={<Navigate to="/gallery" replace />} />
         <Route
           path="/profile"
           element={
@@ -271,9 +258,8 @@ function Heading() {
             <Nav.Link as={Link} to="/team"><div className = "red-box">Team</div></Nav.Link>
             <Nav.Link as={Link} to="/board"><div className = "red-box">E-Board</div></Nav.Link>
             <Nav.Link as={Link} to="/gallery"><div className = "red-box">Gallery</div></Nav.Link>
-            <Nav.Link as= {Link} to = "/archive"><div className = "red-box">Archive</div></Nav.Link>
             {user ?
-            (<NavDropdown title = {"Profile"} className = "red-dropdown">
+            (<NavDropdown title = {"Profile"} className = "red-dropdown" align = "end">
               <NavDropdown.Item as={Link} to= "/profile">About</NavDropdown.Item>
               <NavDropdown.Item as={Link} to= "/profile/events">Events</NavDropdown.Item>
               <NavDropdown.Item as={Link} to= "/profile/matches">Matches</NavDropdown.Item>
