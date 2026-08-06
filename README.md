@@ -5,8 +5,8 @@ Official website for Cornell Table Tennis Club, a registered student organizatio
 ## Features
 
 - **Club info pages** — About, team roster, and e-board sections
-- **Photo gallery** — Highlights from tournaments and club events
-- **Events calendar** — Upcoming practices, tournaments, and socials, with admin-managed create/edit/delete
+- **Photo gallery, Archive** — Highlights from tournaments and club events
+- **Events calendar** — Upcoming practices, tournaments, and socials
 - **Match logging** — Members record match results and set scores
 - **Internal club rating system** — Automatically computed player ratings based on match history
 - **Member profiles** — Google sign-in via Firebase Auth
