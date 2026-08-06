@@ -2559,3 +2559,89 @@ div, h1, h2, h3, h4, h5, h6, p, ul, li {
   width: auto;
   margin-top: 0;
 }
+
+/* ---------------------------------------------------------------------- */
+/* Tournament winners list (top 3 finishers, once complete)               */
+/* ---------------------------------------------------------------------- */
+
+.tournamentWinners {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 1rem 1.25rem;
+}
+
+.tournamentWinnersRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tournamentWinnersMedal {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: white;
+  border: 2px solid white;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+
+.tournamentWinnersMedal-1 {
+  background: linear-gradient(to bottom right, #f0c94a, #c9971a);
+}
+
+.tournamentWinnersMedal-2 {
+  background: linear-gradient(to bottom right, #cfd5db, #9aa2ab);
+}
+
+.tournamentWinnersMedal-3 {
+  background: linear-gradient(to bottom right, #d79a67, #a8663b);
+}
+
+.tournamentWinnersPlace {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #a89b9b;
+  width: 2.25rem;
+  flex-shrink: 0;
+}
+
+.tournamentWinnersRow-1 .tournamentWinnersPlace {
+  color: #b8860b;
+}
+
+.tournamentWinnersNames {
+  font-weight: 700;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.tournamentWinnersRow-1 .tournamentWinnersNames {
+  font-size: 1.05rem;
+}
+
+.tournamentWinnersCompact {
+  padding: 0.25rem 0;
+  gap: 4px;
+}
+
+.tournamentWinnersCompact .tournamentWinnersNames {
+  font-size: 0.85rem;
+}
+
+.tournamentWinnersCompact .tournamentWinnersRow-1 .tournamentWinnersNames {
+  font-size: 0.9rem;
+}
+
+.tournamentWinnersCompact .tournamentWinnersMedal {
+  width: 20px;
+  height: 20px;
+  font-size: 0.65rem;
+}

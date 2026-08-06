@@ -386,3 +386,64 @@ export function computeRoundRobinStandings(matches, entrants) {
 
   return ranked.map(({ beat, ...rest }) => rest);
 }
+
+// Derives the top-3 finishers (by entrantId) once a tournament is complete,
+// for the podium graphic. Shape is the same across formats: an array of
+// { place: 1|2|3, entrantIds: [...] } — `entrantIds` has 2 entries only for a
+// tied 3rd in an elimination bracket (no bronze match is ever played, so both
+// semifinal-round losers share 3rd; round robin has a fully ordered standings
+// list already, so its "tie" only has more than one entrant if points are
+// truly identical, which computeRoundRobinStandings doesn't itself dedupe).
+// Returns [] if the bracket doesn't have enough resolved rounds yet to know —
+// callers should only show a podium once the tournament's status is 'completed'.
+export function computePodium(format, matches, entrants) {
+  if (format === 'round_robin') {
+    const standings = computeRoundRobinStandings(matches, entrants);
+    return standings.slice(0, 3).map((s, i) => ({ place: i + 1, entrantIds: [s.entrantId] }));
+  }
+
+  if (format === 'single_elimination') {
+    const finalRound = Math.max(...matches.map((m) => m.round));
+    const final = matches.find((m) => m.round === finalRound && m.bracketSide === null);
+    if (!final || !final.winnerEntrantId) return [];
+
+    const runnerUpId = final.winnerEntrantId === final.entrantAId ? final.entrantBId : final.entrantAId;
+    const semifinalLosers = matches
+      .filter((m) => m.round === finalRound - 1 && m.bracketSide === null && m.winnerEntrantId)
+      .map((m) => (m.winnerEntrantId === m.entrantAId ? m.entrantBId : m.entrantAId))
+      .filter(Boolean);
+
+    return [
+      { place: 1, entrantIds: [final.winnerEntrantId] },
+      { place: 2, entrantIds: [runnerUpId].filter(Boolean) },
+      ...(semifinalLosers.length ? [{ place: 3, entrantIds: semifinalLosers }] : []),
+    ];
+  }
+
+  if (format === 'double_elimination') {
+    const grandFinalMatches = matches.filter((m) => m.bracketSide === 'grand_final');
+    // The reset match (round 2) only actually gets played if the LB champion
+    // won game 1; otherwise it's `skipped` and round 1 stands as the decider.
+    const decider = grandFinalMatches.find((m) => m.round === 2 && !m.skipped && m.winnerEntrantId)
+      || grandFinalMatches.find((m) => m.round === 1 && m.winnerEntrantId);
+    if (!decider) return [];
+
+    const championId = decider.winnerEntrantId;
+    const runnerUpId = championId === decider.entrantAId ? decider.entrantBId : decider.entrantAId;
+
+    const lbRounds = matches.filter((m) => m.bracketSide === 'losers').map((m) => m.round);
+    const lbFinalRound = lbRounds.length ? Math.max(...lbRounds) : null;
+    const lbFinal = lbFinalRound !== null
+      ? matches.find((m) => m.bracketSide === 'losers' && m.round === lbFinalRound && m.winnerEntrantId)
+      : null;
+    const thirdId = lbFinal ? (lbFinal.winnerEntrantId === lbFinal.entrantAId ? lbFinal.entrantBId : lbFinal.entrantAId) : null;
+
+    return [
+      { place: 1, entrantIds: [championId].filter(Boolean) },
+      { place: 2, entrantIds: [runnerUpId].filter(Boolean) },
+      ...(thirdId ? [{ place: 3, entrantIds: [thirdId] }] : []),
+    ];
+  }
+
+  return [];
+}

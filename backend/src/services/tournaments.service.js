@@ -12,6 +12,7 @@ import {
   generateDoubleElimination,
   generateRoundRobin,
   computeRoundRobinStandings,
+  computePodium,
 } from '../lib/bracket.js';
 
 const VALID_FORMATS = ['single_elimination', 'double_elimination', 'round_robin'];
@@ -20,7 +21,13 @@ const MATCH_INCLUDE = {
   entrantA: { include: { player: { select: { id: true, displayName: true, elo: true } } } },
   entrantB: { include: { player: { select: { id: true, displayName: true, elo: true } } } },
   winnerEntrant: true,
-  match: true,
+  match: {
+    include: {
+      playerA: { select: { id: true, displayName: true } },
+      playerB: { select: { id: true, displayName: true } },
+      winner: { select: { id: true, displayName: true } },
+    },
+  },
 };
 
 function validateCreateInput({ name, format, entrants }) {
@@ -199,7 +206,27 @@ async function getTournamentTx(tx, id) {
     tournament.standings = computeRoundRobinStandings(tournament.matches, tournament.entrants);
   }
 
+  // Podium is only meaningful once every result that could still change it has
+  // been played, i.e. once the whole tournament is complete — same gate the
+  // frontend uses to reveal results and Elo impact at all.
+  tournament.podium = tournament.status === 'completed'
+    ? resolvePodium(computePodium(tournament.format, tournament.matches, tournament.entrants), tournament.entrants)
+    : [];
+
   return tournament;
+}
+
+// Turns computePodium's entrantId-only rows into display-ready rows carrying
+// each finisher's player info, for direct rendering by the podium graphic.
+function resolvePodium(podium, entrants) {
+  const byId = new Map(entrants.map((e) => [e.id, e]));
+  return podium.map(({ place, entrantIds }) => ({
+    place,
+    entrants: entrantIds
+      .map((id) => byId.get(id)?.player)
+      .filter(Boolean)
+      .map((p) => ({ id: p.id, displayName: p.displayName })),
+  }));
 }
 
 export async function getTournament(id) {
@@ -230,16 +257,29 @@ export async function listTournaments() {
     orderBy: { createdAt: 'desc' },
     include: {
       _count: { select: { entrants: true } },
-      matches: { select: { isBye: true, skipped: true, matchId: true, round: true, bracketSide: true } },
+      entrants: { include: { player: { select: { id: true, displayName: true, elo: true } } } },
+      matches: {
+        select: {
+          isBye: true, skipped: true, matchId: true, round: true, bracketSide: true,
+          entrantAId: true, entrantBId: true, winnerEntrantId: true,
+          match: { select: { sets: true } },
+        },
+      },
     },
   });
 
-  return tournaments.map(({ matches, ...tournament }) => {
+  return tournaments.map(({ matches, entrants, ...tournament }) => {
     const reportable = matches.filter((m) => !m.isBye && !m.skipped);
     const reportedCount = reportable.filter((m) => !!m.matchId).length;
     const reportableCount = reportable.length;
+    // Podium only means anything once results can no longer change, i.e. once
+    // the tournament is complete — same gate used everywhere else it's shown.
+    const podium = tournament.status === 'completed'
+      ? resolvePodium(computePodium(tournament.format, matches, entrants), entrants)
+      : [];
     return {
       ...tournament,
+      podium,
       progress: {
         reportedCount,
         reportableCount,

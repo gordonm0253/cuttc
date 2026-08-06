@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { useIsAdmin } from './hooks/useIsAdmin';
 import { getTournaments } from './api/tournaments';
+import TournamentWinners from './components/TournamentWinners';
 
 const FORMAT_LABELS = {
     single_elimination: 'Single Elimination',
@@ -78,18 +79,22 @@ function TournamentCard({ tournament }) {
                         <span>{tournament._count?.entrants ?? 0} entrants</span>
                     </div>
                     <div className="tournamentCardSpacer" />
-                    <div>
-                        <div className="tournamentCardProgressRow">
-                            <span>{progressLabel}</span>
-                            <span>{tournament.progress.pct}%</span>
+                    {tournament.status === 'completed' && tournament.podium?.length > 0 ? (
+                        <TournamentWinners podium={tournament.podium} compact />
+                    ) : (
+                        <div>
+                            <div className="tournamentCardProgressRow">
+                                <span>{progressLabel}</span>
+                                <span>{tournament.progress.pct}%</span>
+                            </div>
+                            <div className="tournamentCardProgressTrack">
+                                <div
+                                    className="tournamentCardProgressFill"
+                                    style={{ width: `${tournament.progress.pct}%`, background: style.stripe }}
+                                />
+                            </div>
                         </div>
-                        <div className="tournamentCardProgressTrack">
-                            <div
-                                className="tournamentCardProgressFill"
-                                style={{ width: `${tournament.progress.pct}%`, background: style.stripe }}
-                            />
-                        </div>
-                    </div>
+                    )}
                     <div className="tournamentCardFooter">
                         <span className="tournamentCardFootNote">{footNote(tournament)}</span>
                         <span className="tournamentCardAction">{actionLabel(tournament.status)} &rarr;</span>

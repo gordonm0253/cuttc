@@ -1,6 +1,11 @@
 import prisma from '../lib/prisma.js';
 import { determineWinnerAndValidate, STARTING_ELO } from '../lib/elo.js';
-import { resolvePlayer, writeMatchAndUpdateElo, deleteMatchAndReplay } from '../lib/matchLedger.js';
+import {
+  resolvePlayer,
+  writeMatchAndUpdateElo,
+  deleteMatchAndReplay,
+  LEDGER_VISIBLE_MATCH_WHERE,
+} from '../lib/matchLedger.js';
 
 function validatePlayerRef(player, label) {
   if (!player || typeof player !== 'object') {
@@ -17,8 +22,13 @@ function validatePlayerRef(player, label) {
 
 export async function listMatches({ page = 1, pageSize = 20 } = {}) {
   const skip = (page - 1) * pageSize;
+  // A tournament's matches are only listed once the tournament is complete —
+  // same moment they become visible to the Elo ledger (see
+  // LEDGER_VISIBLE_MATCH_WHERE) — so a match never appears before its rating
+  // change does.
   const [matches, total] = await Promise.all([
     prisma.match.findMany({
+      where: LEDGER_VISIBLE_MATCH_WHERE,
       orderBy: { playedAt: 'desc' },
       skip,
       take: pageSize,
@@ -26,9 +36,10 @@ export async function listMatches({ page = 1, pageSize = 20 } = {}) {
         playerA: { select: { id: true, displayName: true } },
         playerB: { select: { id: true, displayName: true } },
         winner: { select: { id: true, displayName: true } },
+        tournamentMatch: { include: { tournament: { select: { id: true, name: true } } } },
       },
     }),
-    prisma.match.count(),
+    prisma.match.count({ where: LEDGER_VISIBLE_MATCH_WHERE }),
   ]);
 
   return { matches, total, page, pageSize };

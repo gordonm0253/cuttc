@@ -6,6 +6,8 @@ import { getTournament, deleteTournament, reportTournamentMatchResult } from './
 import BracketView from './components/BracketView';
 import RoundRobinView from './components/RoundRobinView';
 import TournamentMatchModal from './components/TournamentMatchModal';
+import MatchCard from './components/MatchCard';
+import TournamentWinners from './components/TournamentWinners';
 
 const FORMAT_LABELS = {
     single_elimination: 'Single Elimination',
@@ -58,7 +60,15 @@ EntrantsTab.propTypes = {
     tournament: PropTypes.object.isRequired,
 };
 
-function ResultsTab({ tournament }) {
+function ResultsTab({ tournament, playerId }) {
+    // Match results (and the rating shifts they cause) only go live once the
+    // whole tournament is complete, so they stay hidden here until then too
+    // — otherwise a result would be visible before the Elo change explaining
+    // it exists.
+    if (tournament.status !== 'completed') {
+        return <p className="eventText">Results will be posted once the tournament is complete.</p>;
+    }
+
     const played = tournament.matches
         .filter((m) => m.match)
         .sort((a, b) => new Date(b.match.playedAt) - new Date(a.match.playedAt));
@@ -68,32 +78,36 @@ function ResultsTab({ tournament }) {
     }
 
     return (
-        <div className="tournamentResultsList">
-            {played.map((m) => {
-                const setsWonA = m.match.sets.filter((s) => s.a > s.b).length;
-                const setsWonB = m.match.sets.filter((s) => s.b > s.a).length;
-                const aWon = m.winnerEntrantId === m.entrantAId;
-                return (
-                    <div key={m.id} className="tournamentResultRow">
-                        <div className="tournamentResultDate">{formatDateTime(m.match.playedAt)}</div>
-                        <div className="tournamentResultNames">
-                            <span className={aWon ? 'tournamentResultWinner' : ''}>{m.entrantA?.player?.displayName}</span>
-                            <span className="tournamentResultVs">vs</span>
-                            <span className={!aWon ? 'tournamentResultWinner' : ''}>{m.entrantB?.player?.displayName}</span>
-                        </div>
-                        <div className="tournamentResultScore">{setsWonA} – {setsWonB}</div>
-                    </div>
-                );
-            })}
+        <div className="matchList">
+            {played.map((m) => (
+                <MatchCard
+                    key={m.id}
+                    match={m.match}
+                    currentPlayerId={playerId}
+                    tournamentLabel={tournament.name}
+                />
+            ))}
         </div>
     );
 }
 
 ResultsTab.propTypes = {
     tournament: PropTypes.object.isRequired,
+    playerId: PropTypes.string,
 };
 
 function EloImpactTab({ tournament }) {
+    // Deltas are just before-equals-after placeholders until the tournament
+    // completes (see writeTournamentMatch), so there's nothing real to show
+    // yet — keep this tab empty rather than displaying meaningless +0 rows.
+    if (tournament.status !== 'completed') {
+        return (
+            <p className="eventText tournamentEloPendingNote">
+                Ratings for this tournament are applied once it&apos;s complete, in the order matches were played &mdash; Elo changes will appear here then.
+            </p>
+        );
+    }
+
     const played = tournament.matches
         .filter((m) => m.match)
         .sort((a, b) => new Date(b.match.playedAt) - new Date(a.match.playedAt));
@@ -104,11 +118,6 @@ function EloImpactTab({ tournament }) {
 
     return (
         <div className="tournamentEloList">
-            {tournament.status !== 'completed' && (
-                <p className="eventText tournamentEloPendingNote">
-                    Ratings for this tournament are applied once it&apos;s complete, in the order matches were played &mdash; deltas below will fill in then.
-                </p>
-            )}
             {played.map((m) => {
                 const { match } = m;
                 const deltaA = match.playerAEloAfter - match.playerAElo;
@@ -226,6 +235,9 @@ function TournamentDetail() {
                             </button>
                         )}
                     </div>
+                    {tournament.status === 'completed' && (
+                        <TournamentWinners podium={tournament.podium} />
+                    )}
                     <div className="tournamentDetailTabBar">
                         {TABS.map((tab) => (
                             <button
@@ -249,7 +261,7 @@ function TournamentDetail() {
                         )
                     )}
                     {activeTab === 'entrants' && <EntrantsTab tournament={tournament} />}
-                    {activeTab === 'results' && <ResultsTab tournament={tournament} />}
+                    {activeTab === 'results' && <ResultsTab tournament={tournament} playerId={playerId} />}
                     {activeTab === 'elo' && <EloImpactTab tournament={tournament} />}
                 </div>
 

@@ -125,7 +125,13 @@ export async function deleteMatchesAndReplay(tx, matchIds) {
 // tournament's matches stay invisible to the ledger (and thus to everyone's
 // live rating) for its whole duration, in playedAt order once they do count.
 // See writeTournamentMatch's comment for why.
-const LEDGER_VISIBLE_MATCH_WHERE = {
+//
+// Also exported for the Matches page listing: a tournament's results should
+// stay hidden there until the same moment they start counting toward Elo, so
+// a player's rating never seems to shift without a visible match explaining
+// it, and results can't be spoiled mid-tournament before the bracket page
+// itself would reveal them.
+export const LEDGER_VISIBLE_MATCH_WHERE = {
   OR: [{ tournamentMatch: null }, { tournamentMatch: { tournament: { status: 'completed' } } }],
 };
 
