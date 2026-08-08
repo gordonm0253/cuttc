@@ -1,0 +1,210 @@
+/* People pages — Board + Team
+   Hero stays on the existing .headingDiv/.headingImage/.headingTitleDiv rules in App.css.
+   This file covers everything below the hero: section headers, board grid, hall of fame, rosters. */
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+.peoplePage {
+  --red: #b31b1b;
+  --redSoft: #d27272;
+  --redShadow: #eccfcf;
+  --paper: #faf7f4;
+  --ink: #211c19;
+  --muted: #8b827b;
+  --rule: #e6d9d1;
+  background: var(--paper);
+  font-family: Lato, sans-serif;
+}
+
+/* ---------- section header ---------- */
+.peopleSectionHead {
+  padding: 56px 52px 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.peopleSectionHead h2 {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -.6px;
+  color: var(--ink);
+  margin: 8px 0 0;
+}
+.peopleSectionNum {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.peopleSectionNote {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: #7a736c;
+  max-width: 320px;
+  text-align: right;
+  text-wrap: pretty;
+}
+.peopleRule {
+  height: 2px;
+  background: var(--rule);
+  margin: 0 52px 34px;
+}
+
+/* ---------- board grid ---------- */
+.boardGrid {
+  padding: 0 52px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px 24px;
+}
+.boardCard {
+  background: #fff;
+  border: 2px solid var(--redSoft);
+  border-radius: 14px;
+  box-shadow: 9px 9px 0 var(--redShadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.boardCard:hover {
+  box-shadow: 3px 3px 0 var(--redSoft);
+  transform: translate(5px, 5px);
+}
+.boardPortrait {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background-color: #efe7e2;
+  background-size: cover;
+  background-position: 50% 22%;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+.boardReveal {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(24,14,13,.55), rgba(24,14,13,.94));
+  opacity: 0;
+  transition: opacity .2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 24px;
+}
+.boardCard:hover .boardReveal,
+.boardCard:focus-within .boardReveal { opacity: 1; }
+.boardRevealLabel {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #f0b9b9;
+  margin: 0;
+}
+.boardRevealValue {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  margin: 0;
+}
+.boardRevealEmail {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  color: #fff;
+  word-break: break-all;
+  margin: 0;
+}
+.boardRevealEmail a { color: #fff; text-decoration: none; }
+.boardRevealEmail a:hover { text-decoration: underline; }
+.boardRevealDivider {
+  height: 1px;
+  background: rgba(255,255,255,.25);
+  margin: 2px 0;
+}
+.boardMeta { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px; }
+.boardName {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -.4px;
+  color: var(--ink);
+  line-height: 1.15;
+  margin: 0;
+}
+.boardPosition {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin: 0;
+}
+
+/* ---------- team rosters ---------- */
+.rosterBlock {
+  padding: 0 52px 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.rosterHead { display: flex; align-items: center; gap: 14px; }
+.rosterHead h3 { font-size: 22px; font-weight: 900; color: var(--ink); margin: 0; }
+.rosterCount {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  background: #f1e7e1;
+  padding: 4px 9px;
+  border-radius: 4px;
+}
+.rosterHead .rosterLine { flex: 1; height: 1px; background: #eadfd8; }
+.rosterGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 22px 18px;
+}
+.rosterMember { display: flex; flex-direction: column; gap: 9px; }
+.rosterPortrait {
+  aspect-ratio: 3 / 4;
+  background-color: #efe7e2;
+  background-position: 50% 22%;
+  background-repeat: no-repeat;
+  border: 2px solid var(--redSoft);
+  border-radius: 10px;
+  box-shadow: 5px 5px 0 var(--redShadow);
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.rosterPortrait.hasPhoto { background-size: cover; }
+.rosterPortrait.noPhoto { background-size: 62%; background-position: center; }
+.rosterMember:hover .rosterPortrait {
+  box-shadow: 1px 1px 0 var(--redSoft);
+  transform: translate(3px, 3px);
+}
+.rosterName {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  text-wrap: pretty;
+  margin: 0;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px) {
+  .boardGrid { grid-template-columns: repeat(3, 1fr); }
+  .rosterGrid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 900px) {
+  .boardGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .peopleSectionHead { padding: 36px 24px 16px; flex-direction: column; align-items: flex-start; }
+  .peopleSectionNote { text-align: left; }
+  .peopleRule { margin: 0 24px 24px; }
+  .boardGrid { grid-template-columns: 1fr; padding-left: 24px; padding-right: 24px; }
+  .rosterBlock { padding: 0 24px 32px; }
+  .rosterGrid { grid-template-columns: repeat(2, 1fr); }
+}
