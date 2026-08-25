@@ -29,8 +29,8 @@ export default function Home() {
                             national tournaments each year.
                         </p>
                         <p>
-                            The club meets each week for open practice. Sign up on <a target = "_blank" href = "https://cornell.campusgroups.com/CTTC/club_signup" className="redlink">CampusGroups</a> and join us from 4:00-6:00 PM on Saturdays at Appel Commons!
-                            You can join our 25-26 GroupMe <a target = "_blank" href = "https://groupme.com/join_group/103997327/0gKV72gZ" className="redlink">here</a> for more updates! Check the <Link to = "/about" className = "redlink">About Us</Link> page for more information on practices.
+                            The club meets each week for open practice. Sign up on <a target = "_blank" href = "https://cornell.campusgroups.com/CTTC/club_signup" className="redlink">CampusGroups</a> and join us from 3:30-5:30 PM on Saturdays at Appel Commons!
+                            You can join our GroupMe <a target = "_blank" href = "https://groupme.com/join_group/103997327/0gKV72gZ" className="redlink">here</a> for more updates! Check the <Link to = "/about" className = "redlink">About Us</Link> page for more information on practices.
                         </p>
                         <Link to = "/about">
                             <button className= "red-button">Learn More</button>
