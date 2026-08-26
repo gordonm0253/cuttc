@@ -20,7 +20,7 @@ export default function About() {
                 </div>
                 <p>
                     The club meets each week for open practice from <b>3:30-5:30 PM on Saturdays at Appel Commons 303ABC </b>
-                    (upstairs from North Star dining hall). We&apos;ll have tables set up, so bring a friend to play or meet 
+                    (upstairs from North Star dining hall) starting on October 3rd for the fall 2026 semester. We&apos;ll have tables set up, so bring a friend to play or meet 
                     some new people! We will provide paddles and balls (but feel free to bring your own equipment). 
                 </p>
                 <p>
