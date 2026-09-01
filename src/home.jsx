@@ -8,6 +8,12 @@ import { Link } from "react-router";
 export default function Home() {
     return (
         <>
+            <div className = "topBanner">
+                <p>
+                    📣 We&apos;ll be tabling at ClubFest on Saturday, September 5th, 12:00-1:30 PM! Come say hi and learn more about the club!
+                </p>
+            </div>
+
             <div className = "headingDiv">
                 <img src = {nats2024} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
@@ -49,7 +55,7 @@ export default function Home() {
                     <div className= "underline-bar"></div>
                 </div>
                 <p className = "contentP">
-                    We will be holding tryouts this year on September 26, from 3:30-5:30 PM. More information will be released soon!
+                    We will be holding tryouts this year on Saturday, September 19th, from 1:00-6:30 PM. More information will be released soon!
                 </p>
             </div>
             <div className = "recentDiv redBorder loadingAnimate">
