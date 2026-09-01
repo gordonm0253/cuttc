@@ -55,7 +55,7 @@ export default function Home() {
                     <div className= "underline-bar"></div>
                 </div>
                 <p className = "contentP">
-                    We will be holding tryouts this year on Saturday, September 19th, from 1:00-6:30 PM. More information will be released soon!
+                    We will be holding tryouts this semester (fall 2026). More information on the specific date and time will be released soon!
                 </p>
             </div>
             <div className = "recentDiv redBorder loadingAnimate">
