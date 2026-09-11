@@ -35,7 +35,7 @@ export default function Home() {
                             national tournaments each year.
                         </p>
                         <p>
-                            The club meets each week for open practice starting on October 3rd. Sign up on <a target = "_blank" href = "https://cornell.campusgroups.com/CTTC/club_signup" className="redlink">CampusGroups</a> and join us from 3:30-5:30 PM on Saturdays at Appel Commons!
+                            The club meets each week for open practice starting on September 26th. Sign up on <a target = "_blank" href = "https://cornell.campusgroups.com/CTTC/club_signup" className="redlink">CampusGroups</a> and join us from 3:30-5:30 PM on Saturdays at Appel Commons!
                             You can join our GroupMe <a target = "_blank" href = "https://groupme.com/join_group/103997327/0gKV72gZ" className="redlink">here</a> for more updates! Check the <Link to = "/about" className = "redlink">About Us</Link> page for more information on practices.
                         </p>
                         <Link to = "/about">
@@ -55,7 +55,7 @@ export default function Home() {
                     <div className= "underline-bar"></div>
                 </div>
                 <p className = "contentP">
-                    We will be holding tryouts this semester (fall 2026). More information on the specific date and time will be released soon!
+                    We will be holding tryouts this semester (fall 2026). The tryout form is now closed, and we'll be emailing everyone with more info about times soon!
                 </p>
             </div>
             <div className = "recentDiv redBorder loadingAnimate">
