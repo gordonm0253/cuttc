@@ -36,6 +36,7 @@
     "vite": "^6.4.3"
   },
   "resolutions": {
+    "browserslist": ">=4.28.7",
     "rollup": "^4.59.0",
     "protobufjs": "^7.6.3",
     "@grpc/grpc-js": ">=1.9.16",
