@@ -8,12 +8,6 @@ import { Link } from "react-router";
 export default function Home() {
     return (
         <>
-            <div className = "topBanner">
-                <p>
-                    📣 We&apos;ll be tabling at ClubFest on Saturday, September 5th, 12:00-1:30 PM! Come say hi and learn more about the club!
-                </p>
-            </div>
-
             <div className = "headingDiv">
                 <img src = {nats2024} className = "headingImage"></img>
                 <div className = "headingTitleDiv">
@@ -55,7 +49,7 @@ export default function Home() {
                     <div className= "underline-bar"></div>
                 </div>
                 <p className = "contentP">
-                    We will be holding tryouts this semester (fall 2026). The tryout form is now closed, and we'll be emailing everyone with more info about times soon!
+                    Thank you for everyone who came out for tryouts! We will NOT be holding tryouts in the spring, so the next round of tryouts will happen at the beginning of the fall 2027 semester.
                 </p>
             </div>
             <div className = "recentDiv redBorder loadingAnimate">

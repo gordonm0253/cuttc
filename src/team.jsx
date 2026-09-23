@@ -24,9 +24,9 @@ import victor from "./assets/headshots/victor_headshot.jpg";
 
 const ab_team = {
     name: "A/B Team",
-    members: ["Taran Tummala", "Justin Pan", "Victor Ren", "Omar Andujar", "Henry Yoon", "Alan Liu", "Gordon Mei",
-        "Meris Goldfarb", "Finn Woodman", "Anmol Karan", "Joshua Cohen",
-        "Kevin Chow", "Jerry Mao", "Lawrence Liu", "Tianshi Zhou", "Yiguo Qin", "Diego Khayat"],
+    members: ["Taran Tummala", "Muskan Gupta", "Gina Fu", "Justin Pan", "Victor Ren", "Omar Andujar", "Henry Yoon", "Alan Liu", "Gordon Mei",
+        "Meris Goldfarb", "Finn Woodman", "Anmol Karan", "Joshua Cohen", "Kevin Chow", "Jerry Mao", "Lawrence Liu", "Tianshi Zhou", "Yiguo Qin", "Diego Khayat",
+        "Evan Ko", "Mihir Joshi", "Saahil Joshi", "Sixinyang Tian", "Lexiang Sun"],
     images: {
         "Taran Tummala": taran,
         "Finn Woodman": finn,
@@ -38,12 +38,13 @@ const ab_team = {
         "Tianshi Zhou": tish,
         "Victor Ren": victor,
         "Omar Andujar": omar,
+        "Muskan Gupta": muskan,
     }
 };
 
 const w_team = {
     name: "Women's Team",
-    members: ["Muskan Gupta", "Gina Fu", "Sophia Zhou", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Surabhi Shastry", "Michelle Liang"],
+    members: ["Muskan Gupta", "Gina Fu", "Sophia Zhou", "Heidi Lim", "Anna Donahue", "Khai Xin Kuan", "Surabhi Shastry", "Michelle Liang", "Veronica Zuluaga", "Anano Mghebrishvili"],
     images: {
         "Muskan Gupta": muskan,
         "Sophia Zhou": sophia,
