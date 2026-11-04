@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "test:security": "node --test scripts/minimatch.test.cjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -39,9 +40,10 @@
     "browserslist": ">=4.28.7",
     "rollup": "^4.59.0",
     "protobufjs": "^7.6.3",
-    "@grpc/grpc-js": ">=1.9.16",
+    "@grpc/grpc-js": "^1.14.5",
     "websocket-driver": ">=0.7.5",
-    "js-yaml": ">=5.4.1"
+    "js-yaml": ">=5.4.1",
+    "minimatch": "patch:minimatch@npm%3A11.0.1#~/.yarn/patches/minimatch-npm-11.0.1-eb20b95c63.patch"
   },
   "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538"
 }
