@@ -22,7 +22,7 @@ import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { NavDropdown } from 'react-bootstrap';
 import AuthUserProvider from './auth/AuthUserProvider';
-import { signIn, signOut } from "./auth/auth.js";
+import { signOut } from "./auth/auth.js";
 import { useAuth } from "./auth/AuthUserProvider";
 import { useIsAdmin } from './hooks/useIsAdmin';
 
@@ -235,10 +235,6 @@ function Heading() {
   const { user } = useAuth();
   const { isAdmin } = useIsAdmin();
 
-  const handleLogin = async () => {
-    await signIn();
-  }
-
   const handleLogout = async () => {
     await signOut();
   }
@@ -258,7 +254,7 @@ function Heading() {
             <Nav.Link as={Link} to="/team"><div className = "red-box">Team</div></Nav.Link>
             <Nav.Link as={Link} to="/board"><div className = "red-box">E-Board</div></Nav.Link>
             <Nav.Link as={Link} to="/gallery"><div className = "red-box">Gallery</div></Nav.Link>
-            {user ?
+            {user &&
             (<NavDropdown title = {"Profile"} className = "red-dropdown" align = "end">
               <NavDropdown.Item as={Link} to= "/profile">About</NavDropdown.Item>
               <NavDropdown.Item as={Link} to= "/profile/events">Events</NavDropdown.Item>
@@ -268,9 +264,7 @@ function Heading() {
               {isAdmin && <NavDropdown.Item as={Link} to= "/profile/admin-access">Admin</NavDropdown.Item>}
               <NavDropdown.Divider/>
               <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
-            </NavDropdown>)
-            : 
-            (<Nav.Link><div className = "red-box" onClick={handleLogin}>Login</div></Nav.Link>)}
+            </NavDropdown>)}
           </Nav>
         </Navbar.Collapse>
       </Container>
